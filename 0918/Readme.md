@@ -53,6 +53,6 @@ cpu가 빠른수록 clock이 많다
 
 어셈블리는 PC대신 IP를 쓴다 (PC는 program count로써 주소를 나타낸다. 한 명령어가 실행되면 그 다음 주소를 가르킨다.) 
 
-
+update status - 값을 변환해줌(이 과정까지가 cpu의 역할임)
 
 
