@@ -56,3 +56,18 @@ cpu가 빠른수록 clock이 많다
 update status - 값을 변환해줌(이 과정까지가 cpu의 역할임)
 
 
+java / c 의 메모리 구조
+
+instruction pointer
+program counter
+locatin counter 
+[세가지 모두 같은말]
+
+
+
+
+
+
+
+
+
