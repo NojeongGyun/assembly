@@ -111,8 +111,7 @@ EAX(32bit) ->  AX(16bit) -> AH(high)(8bit) - AL(Low)(8bit)
 
 64bit버전은 이름앞에 'r'을 붙임
 
-
-
+CPU & GPU 발표 
 
 
 
