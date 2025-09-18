@@ -84,6 +84,23 @@ cpu가 주기억장치에 내용을 꺼내오긴 보단 캐시메모리에서 �
 7페이지 Read sequence
 보조기억장치에 exe로 된 파일을 찾고, 주기억장치에 조달 후 cpu에 읽는 신호를 보낸후 기다리면, 데이터 copy가 일어난다
 
+protected mode - 각각의 프로세스는 보호되고 있음. ex) 액셀과 메모장은 될려고 하면 연결이 되지만 바로는 되지않음(4GB인데 64GB확장가능)
+
+Real Adress mode - 어디든 접근 가능 
+system manegement mode - 
+
+EAX(32bit) ->  AX(16bit) -> AH(high)(8bit) - AL(Low)(8bit)
+
+14p 목적에 맞게 무조권 써야하는 레지스터
+몇번 반복할려고 할때(ECX)
+....
+
+15p 콘택스트 스위칭 - alt tap을 눌러 프레임을 전환 -> 메모리의 ip에 화면에 보여지는 정보를 가지고 있음
+
+16p EIP JUMP(분기 점프)와 CALL은 한세트,         return과 call은 한세트?
+
+
+
 
 
 
