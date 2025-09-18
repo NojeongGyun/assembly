@@ -101,7 +101,15 @@ EAX(32bit) ->  AX(16bit) -> AH(high)(8bit) - AL(Low)(8bit)
 
 
 
+17p 연산 실행 -> status flag에 오버플로우 발생여부, 사인비트 0인지 1인지, 값이 0인지, 등 보고를 하고 신호를 보냄
 
+18p MMX FPU충돌 - 
+
+지금은 fpu가 cpu안에 내장되어있음
+
+하위 버젼 수용하고 같은 버전 또한 수용한다 - backward compatibliity
+
+64bit버전은 이름앞에 'r'을 붙임
 
 
 
