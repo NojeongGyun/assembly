@@ -32,6 +32,13 @@ Fatch 먼저 하는데 이 과정이 주기억장치에서 ALU로 버스를 타�
 내가 쳤던 내용들은 save 명령어에 의해서 주기억, 보조기억장치에 내장되어있음
 명령 하나 하나씩 레지스터에 들어감
 
+cpu는 읽는 신호, 쓰는 신호 2가지
+
+제어신호 - 데이터가 전달되었는지 확인하는 신호(그 신호를 contoal bus가 건내줌)
+Adress bus - cpu에서 콘텐츠의 주소를 주기억장치에 보내는 버스
+Data bus - cpu에서 콘텐츠 주소와 같은 데이터를 주기억장치에 보내는 버스
+
+
 ALU 산술 논리 연산을 한 후 레지스터에 놓고, memory에 다시 갖다 놓음
 모든 계산은 ALU를 사용한다. (하지만 ALU는 덧셈밖에 못함) 
 +(덧셈) - 그냥함
@@ -57,11 +64,14 @@ update status - 값을 변환해줌(이 과정까지가 cpu의 역할임)
 
 
 java / c 의 메모리 구조
+data, hip, stack영역
+
 
 instruction pointer
 program counter
 locatin counter 
 [세가지 모두 같은말]
+
 
 
 
