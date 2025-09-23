@@ -1,8 +1,8 @@
 <pre>
-<mark>1. In 32-bit mode, aside from the stack pointer (ESP), what other register points to variables on the stack? </mark>
+<b>1. In 32-bit mode, aside from the stack pointer (ESP), what other register points to variables on the stack? </b>
 A. 
   
-2. Name at least four CPU status flags.
+<b>2. Name at least four CPU status flags. </b>
 
 3. Which flag is set when the result of an unsigned arithmetic operation is too large to fit into
 the destination?
