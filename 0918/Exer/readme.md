@@ -1,14 +1,17 @@
 <pre>
 <b>1. In 32-bit mode, aside from the stack pointer (ESP), what other register points to variables on the stack? </b>
-A. 
+  (32비트 모드에서, 스택 포인터(ESP) 이외에 스택에 있는 변수들을 가리키는 다른 레지스터는 무엇인가?)
+A. EBP입니다.
   
   
 <b>2. Name at least four CPU status flags. </b>
-A.
+  (최소 네 개 이상의 CPU 상태 플래그를 말하시오.)
+A. ZF, SF, CF, OF 
   
   
 <b>3. Which flag is set when the result of an unsigned arithmetic operation is too large to fit into the destination?</b>
-A.
+  (부호 없는(Unsigned) 산술 연산 결과가 목적지 레지스터에 담기에는 너무 클 때 설정되는 플래그는 무엇인가?)
+A. CF 입니다.
   
   
 <b>4. Which flag is set when the result of a signed arithmetic operation is either too large or too small to fit into the destination? </b>
