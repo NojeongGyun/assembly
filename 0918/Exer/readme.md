@@ -20,7 +20,7 @@ A. OF
   
 
 <b>5. (True/False): When a register operand size is 32 bits and the REX prefix is used, the R8D register is available for programs to use.</b>
-  ([참/거짓] 레지스터 연산 피연산자 크기가 32비트이고 **REX 접두사(REX prefix)**가 사용될 때, 프로그램에서 R8D 레지스터를 사용할 수 있다.)
+  (<mark>[참/거짓]</mark> 레지스터 연산 피연산자 크기가 32비트이고 **REX 접두사(REX prefix)**가 사용될 때, 프로그램에서 R8D 레지스터를 사용할 수 있다.)
 A. 참
   
 
@@ -40,12 +40,12 @@ A. 80bit
 
   
 <b>9. (True/False): The x86-64 instruction set is backward-compatible with the x86 instruction set.</b>
-  ([참/거짓] x86-64 명령어 집합은 x86 명령어 집합과 하위 호환(backward-compatible)이 된다.)
+  (<mark>[참/거짓]</mark> x86-64 명령어 집합은 x86 명령어 집합과 하위 호환(backward-compatible)이 된다.)
 A. 참
 
   
 <b>10. (True/False): In current 64-bit chip implementations, all 64 bits are used for addressing.</b>
-  ([참/거짓] 현재 64비트 칩 구현에서, 모든 64비트가 메모리 주소 지정(addressing)에 사용된다.)
+  (<mark>[참/거짓]</mark> 현재 64비트 칩 구현에서, 모든 64비트가 메모리 주소 지정(addressing)에 사용된다.)
 A. 거짓 - 48비트 또는 52비트만 실제 주소 지정에 사용함
 
   
@@ -55,37 +55,44 @@ A. 참
   
   
 <b>12. (True/False): Static RAM is usually less expensive than dynamic RAM.</b>
-  ([참/거짓] 정적 RAM(Static RAM, SRAM)은 일반적으로 동적 RAM(DRAM)보다 저렴하다.)
+  (<mark>[참/거짓]</mark> 정적 RAM(Static RAM, SRAM)은 일반적으로 동적 RAM(DRAM)보다 저렴하다.)
 A. 거짓 - SRAM은 빠르고 전력 소모가 적고, 구조가 복잡해 비싸지면 DRAM은 그 반대입니다. 
   
   
 <b>13. (True/False): The 64-bit RDI register is available when the REX prefix is used.</b>
-  ([참/거짓] REX 접두사가 사용될 때 64비트 RDI 레지스터를 사용할 수 있다.)
+  (<mark>[참/거짓]</mark> REX 접두사가 사용될 때 64비트 RDI 레지스터를 사용할 수 있다.)
 A. 거짓 - REX 접두사는 32비트 범용레지스터를 64비트로 확장할 떄 사용되는데, RDI는 기본적으로 64비트 레지스터가 사용가능합니다.
 
 
 <b>14. (True/False): In native 64-bit mode, you can use 16-bit real mode, but not the virtual-8086 mode.</b>
-A.
+  (<mark>[참/거짓]</mark> 네이티브 64비트 모드에서는 16비트 실모드(real mode)는 사용할 수 있지만, 가상 8086 모드(virtual-8086 mode)는 사용할 수 없다.)
+A. 참
   
   
 <b>15. (True/False): The x86-64 processors have 4 more general-purpose registers than the x86 processors.</b>
-A.
+  (<mark>[참/거짓]</mark> x86-64 프로세서는 x86 프로세서보다 일반 목적 레지스터를 4개 더 가지고 있다.)
+A. 거짓 - x86 프로세서는 [EAX, EBX, ECX, EDX, ESI, EDI, EBP, ESP] 총 8개를 가지고 있고, x86-64프로세서는 x64프로세스의 레지스터를 포함하고 R8 ~ R15 까지 추가가 되어 
+  x86-64는 x86보다 8개를 더 가지고 있습니다.
   
   
 <b>16. (True/False): The 64-bit version of Microsoft Windows does not support virtual-8086 mode.</b>
-A.
+  (<mark>[참/거짓]</mark> 64비트 버전의 Microsoft Windows는 가상 8086 모드(virtual-8086 mode)를 지원하지 않는다.)
+A. 참
 
 
 <b>17. (True/False): DRAM can only be erased using ultraviolet light.</b>
-A.
+  (<mark>[참/거짓]</mark> DRAM은 자외선(UV)으로만 지울 수 있다.)
+A. DRAM은 휘발성으로 전원공급만 끊어도 데이터를 지울수 있습니다.
   
   
 <b>18. (True/False): In 64-bit mode, you can use up to eight floating-point registers.</b>
-A.
+  (<mark>[참/거짓]</mark> 64비트 모드에서는 최대 8개의 부동소수점(Floating-point) 레지스터를 사용할 수 있다.)
+A. 참
 
   
 <b>19. (True/False): A bus is a plastic cable that is attached to the motherboard at both ends, but does not sit directly on the motherboard.</b>
-A.
+  (<mark>[참/거짓]</mark> 버스(Bus)는 양쪽 끝이 메인보드에 연결되어 있지만, 메인보드 위에 직접 놓이지 않는 플라스틱 케이블이다.)
+A. 거짓 - 버스는 CPU, 메모리, I/O 장치 간 데이터를 전달하는 신호 통로를 의미합니다.
   
   
 <b>20. (True/False): CMOS RAM is the same as static RAM, meaning that it holds its value without any extra power or refresh cycles.</b>
