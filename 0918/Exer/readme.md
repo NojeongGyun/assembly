@@ -95,7 +95,7 @@ A. 참
 A. 거짓 - 버스는 CPU, 메모리, I/O 장치 간 데이터를 전달하는 신호 통로를 의미합니다.
   
   
-<b>20. (True/False): CMOS RAM is the same as static RAM, meaning that it holds its value without any extra power or refresh cycles.</b
+<b>20. (True/False): CMOS RAM is the same as static RAM, meaning that it holds its value without any extra power or refresh cycles.</b>
   (<mark>[참/거짓}</mark> CMOS RAM은 정적 RAM(SRAM)과 같아서, 추가 전력 공급이나 리프레시(refresh) 없이 값을 유지한다.)
 A. 거짓 - CMOS RAM은 휘발성이므로 전력 공급 없이는 데이터 저장을 할 수 없다.
 
