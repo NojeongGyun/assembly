@@ -95,35 +95,39 @@ A. 참
 A. 거짓 - 버스는 CPU, 메모리, I/O 장치 간 데이터를 전달하는 신호 통로를 의미합니다.
   
   
-<b>20. (True/False): CMOS RAM is the same as static RAM, meaning that it holds its value without any extra power or refresh cycles.</b>
-A.
+<b>20. (True/False): CMOS RAM is the same as static RAM, meaning that it holds its value without any extra power or refresh cycles.</b
+  (<mark>[참/거짓}</mark> CMOS RAM은 정적 RAM(SRAM)과 같아서, 추가 전력 공급이나 리프레시(refresh) 없이 값을 유지한다.)
+A. 거짓 - CMOS RAM은 휘발성이므로 전력 공급 없이는 데이터 저장을 할 수 없다.
 
   
 <b>21. (True/False): PCI connectors are used for graphics cards and sound cards.</b>
-A.
+  (<mark>[참/거짓}</mark> PCI 커넥터는 그래픽 카드와 사운드 카드에 사용된다.)
+A. 참
 
   
 <b>22. (True/False): The 8259A is a controller that handles external interrupts from hardware devices.</b>
-A.
+  (<mark>[참/거짓}</mark> 8259A는 하드웨어 장치로부터 오는 외부 인터럽트를 처리하는 컨트롤러이다.)
+A. 참
   
   
 <b>23. (True/False): The acronym PCI stands for programmable component interface. </b>
-A.
+  (<mark>[참/거짓}</mark> PCI라는 약어는 "Programmable Component Interface"를 의미한다.)
+A. 거짓 - Peripheral Component Interconnect
   
   
 <b>24. (True/False): VRAM stands for virtual random access memory.</b>
-A.
+  (<mark>[참/거짓}</mark> VRAM은 "Virtual Random Access Memory(가상 임의 접근 메모리)"를 의미한다.)
+A. 거짓 - Virtual Random Access Memory가 아닌 Video Random Access Memory 입니다.
   
   
 <b>25. At which level(s) can an assembly language program manipulate input/output?</b>
-A.
+  (어셈블리어 프로그램은 어느 수준(level)에서 입출력(I/O)을 조작할 수 있는가?)
+A. 하드웨어 수준에서 CPU의 IN/OUT 명령어로 직접 포트 입출력 할 수 있고, 운영체제 수준에서 인터럽트나 시스템 콜을 통해 I/O 수행 할 수 있습니다.
   
   
 <b>26. Why do game programs often send their sound output directly to the sound card’s hardware ports?</b>
-A.
+  (게임 프로그램이 소리 출력을 종종 사운드 카드의 하드웨어 포트로 직접 보내는 이유는 무엇인가?)
+A. 하드웨어 자원을 관리하는 운영체제가 하드웨어에 접근하려면 지연이 걸리기에 하드웨어에 포트로 보내 지연시간을 줄이고, 속도를 높일 수 있기 떄문입니다. 
   
-
-
-
 
 </pre>
