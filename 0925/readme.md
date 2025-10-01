@@ -15,7 +15,7 @@ ex) <code>
     mov eax, 10
     test ENDP
   
-    <b>END main<b>
+    <mark>END main</mark>
     </code>
 - 마지막에 END main이라는 main 엔트리포인트의 변수가 있으므로  main PROC가 엔트리 포인트이다.
 
