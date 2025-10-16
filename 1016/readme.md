@@ -28,7 +28,19 @@ p8 ax, bytetal (16비트, 8비트) 원래는 실행이 되지 않는데
 코드를 보면 byteVal에 1BYTE크기의 숫자를 넣고, MOVEZX ax, byteVal 명령어가 있습니다. 위에서 선언한 MOVZX 16reg, reg/mem8 를 써서 캐스팅을 하였기에 
 16비트, 8비트는 실행이 되지 않는데 실행이 되게 됩니다. 만약 ADD ax, byteVal 을 실행한다고 하면 위에 예외처리가 되어있지 않기 때문에 코드 실행 오류가 납니다. 
 
+p10 플래그 레지스터에 대한 설명
+연산 결과나 상태를 플래그 레지스터에 보고 하고, 하나의 명령이 종료되게 됩니다.
+플래그 레지스터도 비트 크기가 있기에 .data 세그먼트에 비트 할당을 하게 한 후 .code 세그먼트에서 씁니다.
 
+section .data
+saveflags db 0      ; 1바이트 (8비트)
+saveflags16 dw 0    ; 2바이트 (16비트)
+saveflags32 dd 0    ; 4바이트 (32비트)
+saveflags64 dq 0    ; 8바이트 (64비트)
+
+section .code
+mov saveflags16, ax    (16비트, 16비트)
+mov saveflags, ah      (8비트, 8비트)
 
 
 
