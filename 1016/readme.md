@@ -84,6 +84,12 @@ jump , loop, 있음
 p54 source byte "This is the source string",0  에서 마지막 0은  Null값입니다.
 
 
+
+Q. 인의예지신과 중도에 대해 설명
+인의지신, 광명지신, 십이지신, 측은지심
+
+
+연습문제에서 문제냄(하지만 영어로)
 Q.
 64비트 레지스터에 대한 기능을 설명하시오. (CS, DS, SS, ES, FS, GS)
 
