@@ -52,9 +52,21 @@ ax == val2가 되는데, 다시 레지스터에서 메모리로 옮기는 작업
 
 WORD(16비트 레지스터)
 
+p21 carry에 대한 설명
+add를 해서 carry가 발생하면 CF = 1
+빼기를 해서 carry가 발생해도 CF = 1
+
+p23 3번쨰 비트가 carry가 발생하면 AC = 1이 됩니다.
+
+p23 값이 홀수면 PF = 1, 아니면 PF = 0
+
+p24 할당된 비트보다 더 큰 값이 나타나면 overflow가 나타남. OF = 1
 
 
 
 
 Q.
 64비트 레지스터에 대한 기능을 설명하시오. (CS, DS, SS, ES, FS, GS)
+
+Q. flag레지스터의 종류 설명하기(8비트)
+zero, carry, Parity, overflow, sign, Auxiliary carry 
