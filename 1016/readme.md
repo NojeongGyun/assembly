@@ -43,9 +43,16 @@ section .code
 mov saveflags16, ax    (16비트, 16비트)
 mov saveflags, ah      (8비트, 8비트)
 
+lahf는 플래그 레지스터의 8비트 값을 뽑아 냅니다. 
+그 다음 mov saveflags, ah가 나오는데 ah를 flag 레지스터에 넣습니다.
 
+p11 xchg는 서로 바꾸는 명령어입니다. xchg val1, val2를 하면 메모리와 메모리를 서로 맞바꾸는거기에 실행 오류가 납니다.
+그렇기에 사전에 mov ax = val1(레지스터, 메모리)로 ax의 레지스터에 val1이라는 값을 이전 시키고, xchg ax, val2 (레지스터, 메모리)를 실행하면 ax의 값인 val1과 val2의 값이 서로 바뀌게 되고
+ax == val2가 되는데, 다시 레지스터에서 메모리로 옮기는 작업인 mov val1 ax(메모리, 레지스터)를 실행하여 본래 목적이었던 메모리 val1과 val2의 값이 서로 변경된 것을 확인할 수 있습니다.
 
 WORD(16비트 레지스터)
+
+
 
 
 
