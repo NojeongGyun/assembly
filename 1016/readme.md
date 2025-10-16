@@ -77,8 +77,11 @@ p46 PBYTE TYPEDEF PTR BYTE 알기
 
 p51 cx 레지스터는 loop하기 위한 레지스터입니다. ...
 ax 레지스터는 sum하기 위한 레지스터입니다.
+jump , loop, 있음
+~
 
 
+p54 source byte "This is the source string",0  에서 마지막 0은  Null값입니다.
 
 
 Q.
