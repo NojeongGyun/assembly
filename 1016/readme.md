@@ -87,5 +87,5 @@ p54 source byte "This is the source string",0  에서 마지막 0은  Null값입
 Q.
 64비트 레지스터에 대한 기능을 설명하시오. (CS, DS, SS, ES, FS, GS)
 
-Q. flag레지스터의 종류 설명하기(8비트)
+Q. flag레지스터의 종류 설명하기(8비트) 그리고 이 값이 언제 reset 되는지도 확인
 zero, carry, Parity, overflow, sign, Auxiliary carry 
