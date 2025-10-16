@@ -13,7 +13,26 @@ Add 5
 Move EAX EAX(32비트, 32비트) 가능 o
 Move EAX AH(32비트, 8비트) 불가능 x
 
+p5 다음에 실행할 주소를 가지고 있는 것이 ip   internet protocal이랑 다름
+처음에 할당받는 ip는 엔트리포인트를 가져온다.
 
+BYTE 1바이트
+WORD 2바이트
+DWORD 4바이트
+
+p6 이미 저장했던 DWORD값에 WORD값을 0을 넣어 1234 0000h 가 됩니다.
+
+p7 ecx, 0 인데 ecx, WORD로 하면 (16비트, 32비트) 서로 오퍼랜드의 비트 크기가 달라서 실행 오류가 납니다.
+
+p8 ax, bytetal (16비트, 8비트) 원래는 실행이 되지 않는데 
+코드를 보면 byteVal에 1BYTE크기의 숫자를 넣고, MOVEZX ax, byteVal 명령어가 있습니다. 위에서 선언한 MOVZX 16reg, reg/mem8 를 써서 캐스팅을 하였기에 
+16비트, 8비트는 실행이 되지 않는데 실행이 되게 됩니다. 만약 ADD ax, byteVal 을 실행한다고 하면 위에 예외처리가 되어있지 않기 때문에 코드 실행 오류가 납니다. 
+
+
+
+
+
+WORD(16비트 레지스터)
 
 
 
