@@ -157,7 +157,7 @@ ex)
 <b>OFFSET operator</b> -
 OFFSET연산자는 해당 주소인덱스를 가져오는 연산자입니다.
 ex)
-    - OFFSET 연산자 예시 -
+    - OFFSET 연산자 예시(1) -
     .data
     arrayB BYTE 10h, 20h, 30h 
     
@@ -169,17 +169,23 @@ ex)
     inc esi // esi의 값 1증가
     mov al,[esi] // esi레지스터의 주소에 대한 값을 al레지스터에 저장(30h)
 
-- []는 주소에 있는 값을 불러오는 것이고, OFFSET을 통한 esi는 주소이므로, +1증가 될떄마다 주소인덱스가 1 증가되며 al에 값이 복사 후 이동 되었습니다.
+- []는 주소에 있는 값을 불러오는 것이고, OFFSET을 통한 esi는 주소이므로, +1증가 될떄마다 주소인덱스가 1 증가되며 al에 값이 복사 후 이동 되었습니다. 
+  arrayB는 바이트 크기의 배열이기에, 1씩 증가하면 값이 나오는 것이고, 다른 크기의 단위를 하면 그만큼 바이트를 추가해야 값이 나옵니다.
 
+ex)
+    - OFFSET 연산자 예시(2) -
+    .data
+    arrayB WORD 1111h, 2222h, 3333h 
     
-p34 ??? 중요
-~
-~
-p39 [A]는 A의 주소의 값을 가져옵니다. 
-
-p43 WORD이면 인덱스가 2증가할때마다 배열의 값이 들어옵니다. [0, 2, 4..., ] OFFSET 각 2
-DWORD이면 인덱스가 4증가할때마다 배열의 값이 들어옵니다. [0, 4, 8, 12...] OFFSET 각 4
-
+    .code
+    mov esi, OFFSET arrayB
+    mov ax, [esi] // AX = 1111h
+    add esi, 2  // WORD는 크기가 2바이트라서 2증가
+    mov ax, [esi]  // AX = 2222h
+    add esi, 2
+    mov ax, [esi] // AX = 3333h
+    
+    
 p46 PBYTE TYPEDEF PTR BYTE 알기
 
 p51 cx 레지스터는 loop하기 위한 레지스터입니다. ...
