@@ -84,43 +84,49 @@ EAX 레지스터 00000000 00000000 00000000 00000000
 3	0 (항상 0)
 2	PF (Parity Flag) - 결과의 1 비트 개수가 짝수면 1, 나머지는 0
 1	1 (항상 1)
-0	CF (Carry Flag) - 덧셈/뺄셈 시 자리 올림/내림 발생일 때 1, 나머지는 0
+0	CF (Carry Flag) - 덧셈/뺄셈 시 자리 올림/내림 발생일 때 1, 나머지는 0(무부호일떄)
 
 - 이고 LAHF 명령으로 이 값이 AH레지스터에 저장이 됩니다. 반대인 명령어인 SAHF는 AH의 값이 하위 8비트 플래그 레지스터에 저장을 합니다.
+
+16비트 FLAGS에 11번째 인덱스에 OF가 있습니다. 
+
+11 OF (Overflow Flag) - Overflow가 되면 1, 아니면 0   으로 설정값이 바뀝니다.
+    
+- overflow란 지정된 비트가 표현할 수 있는 수 보다 더 크거나, 아니면 작게 값이 할당 되었을 떄 일어나는 상황입니다.
+
+    ex) 
+    - overflow 예시(1) -
+    mov al, 127 // al(8비트)레지스터에 정수 127 데이터 저장
+    add al, 1 // al레지스터에 정수 1을 더함 -> 128
+
+    - overflow 예시(2) -
+    mov al, -128 // al <- (-128)
+    sub al, -1 // al < - (-128 - (-1))
+
+- al은 8비트의 데이터 크기를 가지고 있습니다. 8비트는 정수를 -128~127까지 표현할 수 있는 크기입니다. "overflow 예시(1)"에서는 표현할 수 있는 정수보다 더 크게 잡아서 overflow가 일어 났고, "overflow 예시(2)" 에서는 표현 할 수 있는 정수보다 더 작게 잡아서 overflow가 일어 났습니다.
+    
 
 - <mark>off-set</mark> -
 주소 값은 설정한 바이트 크기에 따라 달라집니다. 예를 들어 DB의 크기로 여러개 생성하여 어셈블리 명령어를 수행 하려고 하면 주소값은 1바이트 증가됩니다.
 하지만 DW로 크기를 설정하면 주소값은 2바이트 증가합니다. DW는 4바이트, DQ는 8바이트 입니다.
 
 ex) - BYTE 크기 -
+    .data
     arrayA BYTE 10h, 20h, 30h 
+
+    .code
     mov al, arrayA // 10h값이 al(8비트)레지스터에 들어감
     mov al, [arrayA + 1] arrayA의 주소에서 1바이트 증가된 주소값이 들어감. 즉 20h
     mov al, [arrayA + 2] arrayA의 주소에서 2바이트 증가된 주소값이 들어감. 즉 30h
 
     - WORD 크기 -
+    .data
     arrayB WORD 1111h, 2222h, 3333h
+
+    .code
     mov ax, arrayB // 1111h를 ax(16비트)레지스터에 들어감
     mov ax, [arrayB + 2] arrayB의 주소에서 2바이트 증가된 주소값이 들어감. 즉 2222h
     mov ax, [arrayB + 4] arrayB의 주소에서 4바이트 증가된 주소값이 들어감. 즉 3333h
-
-    
-
-section .code
-mov saveflags16, ax    (16비트, 16비트)
-mov saveflags, ah      (8비트, 8비트)
-
-lahf는 플래그 레지스터의 8비트 값을 뽑아 냅니다. 
-그 다음 mov saveflags, ah가 나오는데 ah를 flag 레지스터에 넣습니다.
-
-WORD(16비트 레지스터)
-
-p21 carry에 대한 설명
-add를 해서 carry가 발생하면 CF = 1
-빼기를 해서 carry가 발생해도 CF = 1
-
-p23 3번쨰 비트가 carry가 발생하면 AC = 1이 됩니다. 
-p23 비트에서 1의 개수가 홀수면 PF = 0, 비트의 1의개수가 짝수면 PF = 1이입니다.
 
 
 p24 할당된 비트보다 더 큰 값이 나타나면 overflow가 나타남. OF = 1 
