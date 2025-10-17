@@ -184,9 +184,54 @@ ex)
     mov ax, [esi]  // AX = 2222h
     add esi, 2
     mov ax, [esi] // AX = 3333h
+
+<b>TYPE</b> -
+TYPE의 명령어는 데이터 크기를 알수 있는 명령어 입니다. 
+ex)
+    - TYPE 사용 예시 -
+    .data
+    arrayD DWORD 100h, 200h, 300h, 400h
     
+    .code
+    mov esi, 3 * TYPE arrayD // arrayD의 배열의 데이터 크기는 DWORD로 값은 4바이트 입니다. 4(BYTE) * 3의 값인 12가 esi에 저장 됩니다.
+    mov eax, arrayD(esi) // arrayD의 시작값에서 esi값을 주소의 값을 eax에 저장합니다   eax <- 400h
+
+<b>pointer</b> -
+포인터는 다른 변수나 데이터가 저장된 메모리 주소를 저장하는 변수입니다. pointer 타입에는 PBYTE, PWORD, PDWORD가 있고, BYTE, WORD, DWORD 타입의 포인터입니다.
+포인터 타입을 쓰기 전에는 선언 후 사용 할 수 있습니다.
+
+ex) 
+    - 포인터 사용 예시 -
+    PBYTE TYPEDEF PTR BYTE //PBTYE 선언
+    PWORD TYPEDEF PTR WORD // PWORD 선언
+    PDWORD TYPEDEF PTR DWORD // PDWORD 선언
+        
+    .data
+    arrayB BYTE 10h,20h,30h // BYTE크기의 배열 arrayB
+    arrayW WORD 1,2,3 // WORD크기의 배열 arrayW
+    arrayD DWORD 4,5,6 // DWORD크기의 배열 arrayD
     
-p46 PBYTE TYPEDEF PTR BYTE 알기
+    ptr1 PBYTE arrayB // arrayB의 시작 주소를 ptr1에 저장
+    ptr2 PWORD arrayW // arrayW의 시작 주소를 ptr2에 저장
+    ptr3 PDWORD arrayD // arrayD의 시작 주소를 ptr3에 저장
+
+    .code
+    mov esi,ptr1 // arrayB의 시작 주소가 담긴 ptr1을 esi에 저장
+    mov al,[esi] // arrayB의 시작 주소의 값을 al에 저장  al < - 10h
+    mov al,[esi + 1] // arrayB의 시작 주소에서 1BYTE 후의 값을 al에 저장   al <- 20h
+    mov al, [esi + 2] // arrayB의 시작 주소에서 2BYTE 후의 값을 al에 저장   al <- 30h
+        
+    mov esi,ptr2 // arrayW의 시작 주소가 담긴 ptr2을 esi에 저장
+    mov ax,[esi] // arrayW의 시작 주소의 값을 ax에 저장  ax < - 1
+    mov ax,[esi + 2] // arrayW의 시작 주소에서 2BYTE 즉 WORD만큼 후의 주소값을 ax에 저장  ax < - 2
+    mov ax,[esi + 4] // arrayW의 시작 주소에서 4BYTE만큼 후의 주소값을 ax에 저장  ax < - 3
+        
+    mov esi,ptr3 // arrayD의 시작 주소가 담긴 ptr3을 esi에 저장
+    mov eax,[esi] // arrayD 의 시작 주소의 값을 eax에 저장  eax < - 4
+    mov eax,[esi + 4] // arrayD 의 시작 주소에서 4BYTE 즉 DWORD만큼 후의 주소값을 eax에 저장  eax < - 5
+    mov eax,[esi + 8] // arrayD 의 시작 주소에서 8BYTE만큼 후의 주소값을 eax에 저장  eax < - 6
+
+- 
 
 p51 cx 레지스터는 loop하기 위한 레지스터입니다. ...
 ax 레지스터는 sum하기 위한 레지스터입니다.
