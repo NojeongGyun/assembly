@@ -138,7 +138,22 @@ ex)
     dVal DWORD ? : 00404004h ~ 00404007h // DWORD는 4바이트 주소 인덱스 추가 -> 다음 주소 인덱스는 00404008h
     dVall2 DWORD ? : 00404008h ~ 0040400Ch // DOWRD는 4바이트 주소 인덱스 추가 -> 다음 주소 인덱스는 0040400Dh
     
+<b>PTR operator</b> -
+PTR연산자는 메모리에 접근할 때 데이터 크기(자료형)를 명시하는 연산자 입니다. 
 
+ex) 
+    data
+    mydouble DWORD 12345678h
+    
+    .code
+    mov b1, BYTE PTR mydouble // b1는 1바이트 크기를 가지고, 그 크기에 맞게 78h의 값을 가지게 됩니다.
+    mov b2, BYTE PTR [mydouble + 1] b2는 1바이트 크기를 가지고, 56h의 값을 가지게 됩니다. 
+    mov b3, BYTE PTR [mydouble + 2] b3는 1바이트 크기를 가지고, 34h의 값을 가지게 됩니다. 
+    mov b4, BYTE PTR [mydouble + 3] b4는 1바이트 크기를 가지고, 12h의 값을 가지게 됩니다. ( +1, +2, +3한 이유는 그만큼의 BYTE(1바이트) 바이트가 사용되었기에 증가됨)
+    
+    mov a1, WORD PTR mydouble // a1은 2바이트 크기를 가지고, 그 크기에 맞게 5678h의 값을 가지게 됩니다.
+    mov a2, WORD PTR [mydouble + 2] a2는 2바이트 크기를 가지고, 1234h의 값을 가지게 됩니다. (+2한 이유는 앞에서 WORD(2바이트) 바이트가 사용되었기에 증가됨)
+    
 p34 ??? 중요
 ~
 ~
