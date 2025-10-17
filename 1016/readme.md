@@ -234,25 +234,8 @@ ex)
 - esi에 시작 주소를 넣고, eax에 주소값을 넣을 때 더하는 값이 다른 이유는 BYTE는 1바이트, WORD는 2바이트, DWORD는 4바이트 배열에서 각 값이 가지는 데이터의 크기이고, 
  배열이기에 주소값이 같은 배열끼리는 연결 되어 있기 떄문입니다.
 
-p51 cx 레지스터는 loop하기 위한 레지스터입니다. ...
-ax 레지스터는 sum하기 위한 레지스터입니다.
-jump , loop, 있음
-~
+- <mark>jump, loop</mark> -
+점프는 어떤 조건이든간에 항상 점프하는 무조권 점프, 점프하는 데에 조건이 있는 조건부 점프가 있고, 루프는 cx나 ecx의 값이 0이 될떄까지 반복 하는 걸 말합니다.
 
-
-p54 source byte "This is the source string",0  에서 마지막 0은  Null값입니다.
-
-
-
-Q. 인의예지신과 중도에 대해 설명
-측은지심, 광명지신, 십이지신, 
-
-
-연습문제에서 문제냄(하지만 영어로)
-Q.
-64비트 레지스터에 대한 기능을 설명하시오. (CS, DS, SS, ES, FS, GS)
-
-Q. flag레지스터의 종류 설명하기(8비트) 그리고 이 값이 언제 reset 되는지도 확인
-zero, carry, Parity, overflow, sign, Auxiliary carry 
 
 </pre>
