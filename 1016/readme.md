@@ -153,6 +153,24 @@ ex)
     
     mov a1, WORD PTR mydouble // a1은 2바이트 크기를 가지고, 그 크기에 맞게 5678h의 값을 가지게 됩니다.
     mov a2, WORD PTR [mydouble + 2] a2는 2바이트 크기를 가지고, 1234h의 값을 가지게 됩니다. (+2한 이유는 앞에서 WORD(2바이트) 바이트가 사용되었기에 증가됨)
+
+<b>OFFSET operator</b> -
+OFFSET연산자는 해당 주소인덱스를 가져오는 연산자입니다.
+ex)
+    - OFFSET 연산자 예시 -
+    .data
+    arrayB BYTE 10h, 20h, 30h 
+    
+    .code
+    mov esi, OFFSET arrayB // esi레지스터에 arrayB주소 인덱스를 저장
+    mov al,[esi] // esi레지스터의 주소에 대한 값을 al레지스터에 저장(10h)
+    inc esi // esi의 값 1증가
+    mov al,[esi] // esi레지스터의 주소에 대한 값을 al레지스터에 저장(20h)
+    inc esi // esi의 값 1증가
+    mov al,[esi] // esi레지스터의 주소에 대한 값을 al레지스터에 저장(30h)
+
+- []는 주소에 있는 값을 불러오는 것이고, OFFSET을 통한 esi는 주소이므로, +1증가 될떄마다 주소인덱스가 1 증가되며 al에 값이 복사 후 이동 되었습니다.
+
     
 p34 ??? 중요
 ~
