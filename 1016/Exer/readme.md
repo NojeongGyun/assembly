@@ -77,6 +77,111 @@ A. 0000000084326732h
 A. 00035678h 입니다. 이유는 word단위로 쪼개면 daval은 0바이트~1바이트 5678h, 2바이트~3바이트 1234h입니다.
 ax레지스터는 2바이트의 크기를 차지합니다. daval의 주소에 2바이트 떨어진 곳에 ax 값인 0003h를 넣는 것이기에 00035678h 입니다.
 
+<b>Q.4.9.1(11). What will EAX contain after the following instructions execute?</b>
+  (다음 명령들이 실행된 후 EAX 레지스터에는 어떤 값이 저장됩니까?)
+            .data
+            .dVal DWORD ?
+            .code
+            mov dVal,12345678h
+            mov ax,WORD PTR dVal+2    //  ax에 1234h저장
+            add ax,3                  //  ax에 1237h저장
+            mov WORD PTR dVal,ax      // dval에 하위 4비트에 1237h저장 
+            mov eax,dVal              // eax는 00001237h
+A. 12341237h
 
- 
+<b>Q.4.9.1(12). (Yes/No): Is it possible to set the Overflow flag if you add a positive integer to a negative integer? </b>
+  ([<mark>Yes/No</mark>] 양수와 음수를 더할 때 **Overflow Flag(OF)**가 설정될 수 있나요?)
+A. No.  두 양수와 음수는 범위를 벗어나지 않는 다는 전제가 OF에 깔려있기에 OF는 무조권 0이 됩니다.
 
+<b>Q.4.9.1(13). (Yes/No): Will the Overflow flag be set if you add a negative integer to a negative integer and produce a positive result?</b>
+  ([<mark>Yes/No</mark>]두 음수를 더했는데 결과가 양수가 되면 Overflow Flag(OF)가 설정되나요?)
+A. Yes    범위보다 작아지면 오버플로우가 발생하고, 해당 최대 음수제한 정수에서 넘어간 절대값 만큼 양수가 됩니다.
+
+<b>Q.4.9.1(14). (Yes/No): Is it possible for the NEG instruction to set the Overflow flag?</b>
+  ([<mark>Yes/No</mark>] NEG 명령어가 Overflow Flag(OF)를 설정할 수 있나요?)
+A. Yes   항상 범위에서 음수제한 값이 양수 제한값보다 한개더 많기에 최소 음수 제한 값을 neg(부호 반전) 시킬 때에 한에서 오버플로우가 발생합니다.
+
+<b>Q.4.9.1(15). (Yes/No): Is it possible for both the Sign and Zero flags to be set at the same time? Use the following variable definitions for Questions 16–19</b>
+  ([<mark>Yes/No</mark>]Sign Flag(SF)와 Zero Flag(ZF)가 동시에 설정될 수 있나요?)
+A. No    ZF는 값이 0이 되면 ZF = 1 로 되는데 SF는 음수일 떄 SF = 1로 설정이 되어, 두개 동시에 1이 되지않는다.
+
+
+Use the following variable definitions for Questions 16–19: (다음 변수 정의를 사용하여 16–19번 문제를 풀어보세요)
+.data
+var1 SBYTE -4,-2,3,1
+var2 WORD 1000h,2000h,3000h,4000h
+var3 SWORD -16,-42
+var4 DWORD 1,2,3,4,5
+
+<b>Q.4.9.1(16). For each of the following statements, state whether or not the instruction is valid</b>
+  (다음 명령어들 각각이 유효한지 여부를 말하시오.)
+              .data
+              var1 SBYTE -4,-2,3,1
+              var2 WORD 1000h,2000h,3000h,4000h
+              var3 SWORD -16,-42
+              var4 DWORD 1,2,3,4,5
+  
+              a. mov ax,var1?     
+              b. mov ax,var2
+              c. mov eax,var3
+              d. mov var2,var3
+              e. movzx ax,var2
+              f. movzx var2,al
+              g. mov ds,ax
+              h. mov ds,1000h
+A.  a, c, d, f, h가 틀리고 나머지는 다 맞습니다.
+a가 틀린 이유는 ax는 2바이트 레지스터고, var1은 1바이트 메모리입니다. 데이터의 크기가 맞지 않아 오류
+c가 틀린 이유는 eax는 4바이트 레지스터고, var3는 2바이트 메모리입니다. 데이터의 크기가 맞지 않아 오류
+d가 틀린 이유는 메모리 to 메모리기에 오류
+f가 틀린 이유는 레지스터에 메모리 값이 저장되어야하는데 반대이므로 오류
+h가 틀린 이유는 세그먼트 레지스터에 즉시 값을 바로 넣을 수 없습니다. 넣고 싶다면 레지스터에 값을 할당 후 레지스터로 넣어야합니다.
+
+<b>Q.4.9.1(17). What will be the hexadecimal value of the destination operand after each of the following instructions execute in sequence?</b>
+  (다음 명령들이 순서대로 실행된 후, 목적 피연산자의 16진수 값은 무엇이 될까요?)
+              .data
+              var1 SBYTE -4,-2,3,1
+              var2 WORD 1000h,2000h,3000h,4000h
+              var3 SWORD -16,-42
+              var4 DWORD 1,2,3,4,5
+  
+              mov al, var1 ; a.
+              mov ah,[var1+3] ; b.
+A. al = FCh , ah = 01h 입니다.
+
+<b>Q.4.9.1(18). What will be the value of the destination operand after each of the following instructions execute in sequence?</b>
+  (각 명령 실행 후 AX 레지스터(목적지 operand)에 어떤 값이 들어가나요?)
+                .data
+              var1 SBYTE -4,-2,3,1
+              var2 WORD 1000h,2000h,3000h,4000h
+              var3 SWORD -16,-42
+              var4 DWORD 1,2,3,4,5
+
+              mov ax,var2 ; a.
+              mov ax,[var2+4] ; b.
+              mov ax,var3 ; c.
+              mov ax,[var3-2] ; d.
+A. a - ax = 1000h    b - ax = 3000h  c - ax = FFF0h  d - 4000h
+
+<b>Q.4.9.1(19) What will be the value of the destination operand after each of the following instructions execute in sequence?</b>
+  (다음 명령어들이 순서대로 실행된 후, 목적지 오퍼랜드(EDX 레지스터)의 값은 무엇인가?)
+              .data
+              var1 SBYTE -4,-2,3,1                             0000 0100     1111 1100
+              var2 WORD 1000h,2000h,3000h,4000h
+              var3 SWORD -16,-42
+              var4 DWORD 1,2,3,4,5
+  
+              mov edx,var4 ; a.
+              movzx edx,var2 ; b.
+              mov edx,[var4+4] ; c.
+              movsx edx,var1 ; d.
+A. a - edx = 00000001h    b - edx = 00001000h  c - edx = 00000002h    d - FFFFFFFCh
+
+  
+<b>Q.4.9.2(1). Write a sequence of MOV instructions that will exchange the upper and lower words in a doubleword variable named three.</b>
+  (three라는 이름의 doubleword(32비트) 변수에서 상위 WORD(16비트)와 하위 WORD(16비트)를 서로 교환하는 MOV 명령어 시퀀스를 작성하시오.)
+A. 
+
+
+  
+  
+</pre>
