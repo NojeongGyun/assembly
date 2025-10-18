@@ -304,14 +304,28 @@ A.             .data
 
                 mov eax, DWORD PTR myBytes
 
-<b>Q.4.9.2(17).  Insert a LABEL directive in the given data that permits myWords to be moved directly to a 32-bit register.
+<b>Q.4.9.2(17). Insert a LABEL directive in the given data that permits myWords to be moved directly to a 32-bit register.</b>
   (myWords 배열을 32비트 레지스터(EAX, EBX 등)로 바로 이동할 수 있도록 데이터 섹션에 LABEL 지시어를 추가하라.)
 A.              .data
                 myBytes BYTE 10h,20h,30h,40h
+  
+                myWords LABEL DWORD 
                 myWords WORD 3 DUP(?),2000h
+  
                 myString BYTE "ABCDE" 
 
-                
+<b>Q.4.9.2(18). Insert a LABEL directive in the given data that permits myBytes to be moved directly to a 16-bit register.</b>        
+  (myBytes 배열을 16비트 레지스터(DX, AX 등)로 바로 이동할 수 있도록 데이터 섹션에 LABEL 지시어를 추가하라.)
+A.             .data
+                myBytes LABEL WORD
+                myBytes BYTE 10h,20h,30h,40h
+  
+                myWords WORD 3 DUP(?),2000h
+                myString BYTE "ABCDE"
 
+
+
+
+                
   
 </pre>
