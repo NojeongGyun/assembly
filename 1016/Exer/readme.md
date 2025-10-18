@@ -214,7 +214,7 @@ A. mov al, 0FFh
    sub al, -1
 
 <b>Q.4.9.2(7). Implement the following arithmetic expression in assembly language: EAX = –val2 + 7 – val3 + val1. 
-  Assume that val1, val2, and val3 are 32-bit integer variables.
+  Assume that val1, val2, and val3 are 32-bit integer variables.</b>
   (다음 산술식을 어셈블리 언어로 구현하라 : EAX = –val2 + 7 – val3 + val1   | "val1, val2, val3는 32비트 정수입니다.")
 A. mov eax, val2
    neg eax
