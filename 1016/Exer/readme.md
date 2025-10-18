@@ -322,10 +322,4 @@ A.             .data
   
                 myWords WORD 3 DUP(?),2000h
                 myString BYTE "ABCDE"
-
-
-
-
-                
-  
 </pre>
