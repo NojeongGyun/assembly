@@ -1,19 +1,108 @@
+1. In 32-bit mode, aside from the stack pointer (ESP), what other register points to variables on the stack? 
+  (32비트 모드에서, 스택 포인터(ESP) 이외에 스택에 있는 변수들을 가리키는 다른 레지스터는 무엇인가?)
+A. EBP
   
+  
+2. Name at least four CPU status flags. 
+  (최소 네 개 이상의 CPU 상태 플래그를 말하시오.)
+A. CF, OF, SF, ZF
+  
+  
+3. Which flag is set when the result of an unsigned arithmetic operation is too large to fit into the destination?
+  (부호 없는(Unsigned) 산술 연산 결과가 목적지 레지스터에 담기에는 너무 클 때 설정되는 플래그는 무엇인가?)
+A. CF
+  
+  
+4. Which flag is set when the result of a signed arithmetic operation is either too large or too small to fit into the destination? 
+  (부호 있는(signed) 산술 연산 결과가 너무 커서 또는 너무 작아서 목적지 레지스터에 담기지 못할 때 설정되는 플래그는 무엇인가?)
+A. OF
+  
+
+5. (True/False): When a register operand size is 32 bits and the REX prefix is used, the R8D register is available for programs to use.
+  ([참/거짓] 레지스터 연산 피연산자 크기가 32비트이고 **REX 접두사(REX prefix)**가 사용될 때, 프로그램에서 R8D 레지스터를 사용할 수 있다.)
+A. 거짓 80비트
+  
+
+6. Which flag is set when an arithmetic or logical operation generates a negative result?
+  (산술 연산이나 논리 연산의 결과가 음수일 때 설정되는 플래그는 무엇인가?)
+A. SF
+  
+  
+7. Which part of the CPU performs floating-point arithmetic?
+  (CPU의 어느 부분이 부동소수점(floating-point) 연산을 수행하는가?)
+A. FPU
+  
+  
+8. On a 32-bit processor, how many bits are contained in each floating-point data register?
+  (32비트 프로세서에서 각 부동소수점(Floating-point) 데이터 레지스터는 몇 비트를 포함하는가?)
+A. 80비트
+
+  
+9. (True/False): The x86-64 instruction set is backward-compatible with the x86 instruction set.
+  ([참/거짓] x86-64 명령어 집합은 x86 명령어 집합과 하위 호환(backward-compatible)이 된다.)
+A. 참
+
+  
+10. (True/False): In current 64-bit chip implementations, all 64 bits are used for addressing.
+  ([참/거짓] 현재 64비트 칩 구현에서, 모든 64비트가 메모리 주소 지정(addressing)에 사용된다.)
+A. 
+  
+11. (True/False): The Itanium instruction set is completely different from the x86 instruction set.
+  ([참/거짓] Itanium 명령어 집합은 x86 명령어 집합과 완전히 다르다.)
+A. 몰라
+  
+  
+12. (True/False): Static RAM is usually less expensive than dynamic RAM.
+  ([참/거짓] 정적 RAM(Static RAM, SRAM)은 일반적으로 동적 RAM(DRAM)보다 저렴하다.)
+A. 거짓 DRAM이 더 비쌈     
+
+  
+13. (True/False): The 64-bit RDI register is available when the REX prefix is used.
+  ([참/거짓] REX 접두사가 사용될 때 64비트 RDI 레지스터를 사용할 수 있다.)
+A. 참
+
+
+14. (True/False): In native 64-bit mode, you can use 16-bit real mode, but not the virtual-8086 mode.
+  ([참/거짓] 네이티브 64비트 모드에서는 16비트 실모드(real mode)는 사용할 수 있지만, 가상 8086 모드(virtual-8086 mode)는 사용할 수 없다.)
+A.몰라
+  
+  
+15. (True/False): The x86-64 processors have 4 more general-purpose registers than the x86 processors.
+  ([참/거짓] x86-64 프로세서는 x86 프로세서보다 일반 목적 레지스터를 4개 더 가지고 있다.)
+A. 거짓 8개 더 가지고있음
+
+17. (True/False): DRAM can only be erased using ultraviolet light.
+  ([참/거짓] DRAM은 자외선(UV)으로만 지울 수 있다.)
+A. 거짓  전원을 끄면 자동으로 지워짐
+  
+  
+18. (True/False): In 64-bit mode, you can use up to eight floating-point registers.
+  ([참/거짓] 64비트 모드에서는 최대 8개의 부동소수점(Floating-point) 레지스터를 사용할 수 있다.)
+A. 거짓   최대 16개
+  
+24. (True/False): VRAM stands for virtual random access memory.
+  ([참/거짓} VRAM은 "Virtual Random Access Memory(가상 임의 접근 메모리)"를 의미한다.)
+A. 
+  
+26. Why do game programs often send their sound output directly to the sound card’s hardware ports?
+  (게임 프로그램이 소리 출력을 종종 사운드 카드의 하드웨어 포트로 직접 보내는 이유는 무엇인가?)
+A. 운영체제를 거치면 시간이 많이 걸리지만, 하드웨어 포트로 보내면 실시간 소리 출력이 가능하기 떄문입니다.
+
 1. Provide examples of three different instruction mnemonics.
   (세 가지 다른 명령어 니모닉(Mnemonic)의 예시를 제시하시오.)
-A
+A.  mov, add, sub, inc, dec
 
 2. What is a calling convention, and how is it used in assembly language declarations?
   (호출 규약(calling convention)이란 무엇이며, 어셈블리 언어 선언에서 어떻게 사용되는가?)
-A
+A 함수 호출 시 인자 전달, 함수값 반환, 레지스터/ 메모리 사용 방법을 정한 규칙입니다. 
   
 3.How do you reserve space for the stack in a program?
   (프로그램에서 스택을 위한 공간은 어떻게 예약(할당)하는가?)
-A
+A 스택 공간은 스택 포인터를 감소 시켜 로컬 변수와 임시 데이터를 위한 공간을 확보함으로써 예약한다. 
 
 4.  Explain why the term assembler language is not quite correct.  
   (왜 “assembler language(어셈블러 언어)”라는 용어가 정확하지 않은지 설명하시오.)
-A
+A. 어셈블러는 어셈블리 언어를 해독하는 기계이므로 어셈블러 언어는 맞지 않다.
   
 5. Explain the difference between big endian and little endian. Also, look up the origins of this term on the Web  
   (빅 엔디안과 리틀 엔디안의 차이점을 설명하고, 이 용어의 유래를 웹에서 찾아보세요.)
@@ -21,35 +110,27 @@ A
 
 6. Why might you use a symbolic constant rather than an integer literal in your code?  
   (코드에서 정수 리터럴(integer literal) 대신 **기호 상수(symbolic constant)를 사용하는 이유는 무엇인가?)
-A
+A. 가독성과 유지 보수성을 높기 때문입니다.
 
 7.  How is a source file different from a listing file? 
   (소스 파일(source file)과 리스트 파일(listing file)은 어떻게 다른가?)
-A
+A 소스파일은 입력 코드, 리스트 파일은 기계어 + 주소 가 포함된 출력 문서입니다.
 
 8. How are data labels and code labels different?
   (데이터 레이블(data label)과 코드 레이블(code label)은 어떻게 다른가?)
-A.
+A. 데이터 레이블은 데이터 상 데이터 위치를 나타내고, 코드 레이블은 실행될 데이터의 위치를 나타냅니다.
   
 9. (True/False): An identifier cannot begin with a numeric digit.  
   ([참/거짓]식별자는 숫자(digit)로 시작할 수 없다)
-A
+A 참
   
 10. (True/False): A hexadecimal literal may be written as 0x3A
   ([참/거짓]16진수 리터럴은 0x3A처럼 쓸 수 있다.)
-A
-
-11. (True/False): Assembly language directives execute at runtime.  
-  ([참/거짓]어셈블리 언어 지시자(directives)는 런타임에 실행된다.)
-A
-
-12. (True/False): Assembly language directives can be written in any combination of uppercase and lowercase letters.
-  ([참/거짓]어셈블리 언어 지시자는 대문자와 소문자를 혼합하여 작성할 수 있다.)
-A
+A. 참
 
 13. Name the four basic parts of an assembly language instruction
   (어셈블리 언어 명령어의 네 가지 기본 구성 요소를 말하시오.)
-A
+A. 레이블, 명령어, 피연산자, 주석
 
 14 (True/False): MOV is an example of an instruction mnemonic.
   ([참/거짓]MOV는 명령어 기호(instruction mnemonic)의 예이다.)
@@ -61,59 +142,47 @@ A
   
 16. Show an example of a block comment.
   (블록 주석(block comment)의 예를 보여라.)
-A
+A /* 안령하세요 허잇 */
 
 17.  Why is it not a good idea to use numeric addresses when writing instructions that access variables?
   (변수를 접근하는 명령어를 작성할 때, 숫자 주소(numeric address)를 사용하는 것이 좋지 않은 이유는 무엇인가?)
-A
+A. 가독성이 떨어지고, 유지보수가 힘들어서 숫자 주소를 사용하지 않는다.
 
 18. What type of argument must be passed to the ExitProcess procedure?
   (ExitProcess라는 함수(프로시저)에 전달해야 하는 인자는 어떤 타입인가?)
-A
+A unsigned int
 
 19. Which directive ends a procedure?  
   (어떤 지시어가 프로시저를 끝내는가?)
-A
+A ENDP
 
 20. In 32-bit mode, what is the purpose of the identifier in the END directive?
   (32비트 모드에서, END 지시어에 있는 식별자의 목적은 무엇인가?)
-A
+A. 어셈블리에게 프로그램의 시작 주소를 지정하는 것입니다.
   
 21. What is the purpose of the PROTO directive?
   (PROTO 지시어의 목적은 무엇인가?)
-A
-  
-22. (True/False): An Object file is produced by the Linker.
-  ([참/거짓]객체 파일(Object file)은 링커(Linker)에 의해 생성된다.)
-A
-
-23. (True/False): A Listing file is produced by the Assembler  
-  ([참/거짓]리스트 파일(Listing file)은 어셈블러에 의해 생성된다.)
-A
-
-24. (True/False): A link library is added to a program just before producing an Executable file.
-  ([참/거짓]링크 라이브러리는 실행 파일을 생성하기 바로 전에 프로그램에 추가된다.)
-A
+A 어셈블리어에서 함수(프로시저)의 이름, 인자 타입과 개수를 미리 선언하여 호출 시 검증할 수 있게 하는 것
 
 25.  Which data directive creates a 32-bit signed integer variable?
   (어떤 데이터 지시어가 32비트 부호 있는 정수 변수를 생성하는가?)
-A
+A. DD
 
 26. Which data directive creates a 16-bit signed integer variable?
   (어떤 데이터 지시어가 16비트 부호 있는 정수 변수를 생성하는가?)
-A
+A. DW
 
 27. Which data directive creates a 64-bit unsigned integer variable?
   (어떤 데이터 지시어가 64비트 부호 없는 정수 변수를 생성하는가?)
-    
+A.  QWORD
 
 28. Which data directive creates an 8-bit signed integer variable?
   (어떤 데이터 지시어가 8비트 부호 있는 정수 변수를 생성하는가?)
-    
+ A. DB 
 
 29. Which data directive creates a 10-byte packed BCD variable?
   (어떤 데이터 지시어가 10바이트 패킹된 BCD 변수를 생성하는가?)
-A.
+A. DT
 
 
 <3.9.2>
@@ -147,56 +216,47 @@ A.
 
 3. Create a data definition for a doubleword that stored it in memory in big endian format.
   (빅 엔디안(big endian) 형식으로 메모리에 저장되는 더블워드(doubleword, 32비트) 변수를 정의하라.)
-A. 
-
-4.Find out if you can declare a variable of type DWORD and assign it a negative value. What does this tell you about the assembler’s type checking?
-  (DWORD 타입 변수를 선언하고 음수 값을 할당할 수 있는지 확인하라. 이것이 어셈블러의 타입 검사(type checking)에 대해 무엇을 알려주는가?)
-A. 
-
-5. Write a program that contains two instructions: (1) add the number 5 to the EAX register, and (2) add 5 to the EDX register. Generate a listing file and examine the
-machine code generated by the assembler. What differences, if any, did you find between the two instructions?
-  (다음 두 명령을 포함하는 프로그램을 작성하고, 어셈블러가 생성한 리스트 파일을 확인하라. (1) EAX 레지스터에 5를 더하는 명령, (2) EDX 레지스터에 5를 더하는 명령. 두 명령의 머신 코드에서 차이가 있는가?)
-A. 
+A.  32비트값 12345678h   myval DB 12h 34h 
 
 6. Given the number 456789ABh, list out its byte values in little-endian order.
   (숫자 456789ABh를 리틀 엔디안(Little-endian) 순서로 메모리에 저장할 때 각 바이트 값을 나열하라)
-A. 
+A. ABh, 89h, 67h, 45h
 
 7. Declare an array of 120 uninitialized unsigned doubleword values
   (120개의 초기화되지 않은 부호 없는 더블워드(DWORD) 값으로 이루어진 배열을 선언하라.)
-A. 
+A. myval DWORD 120 DUP(?)
 
 8. Declare an array of byte and initialize it to the first 5 letters of the alphabet
   (바이트 배열을 선언하고 알파벳 첫 5글자로 초기화하라.)
-A. 
+A. myArray DB 'A','B','C','D','E'
 
 9. Declare a 32-bit signed integer variable and initialize it with the smallest possible
   (32비트 부호 있는 정수 변수를 선언하고, 가능한 가장 작은 값으로 초기화하라.)
-A.
+A. num DW 대충 - (2의 31승) 이라는뜻
 
 10. Declare an unsigned 16-bit integer variable named wArray that uses three initializers.
   (wArray라는 이름의 16비트 부호 없는 정수 변수를 선언하고, 세 개의 초기값을 사용하라.)
-A.
+A. wArray DW 1000h, 2000h, 3000h
 
 11. Declare a string variable containing the name of your favorite color. Initialize it as a nullterminated string.
   (좋아하는 색 이름을 담는 문자열 변수를 선언하고, 널(null) 종료 문자열로 초기화하라.)
-A. 
+A. favoriteColor DB 'Blue',0 
 
 12. Declare an uninitialized array of 50 signed doublewords named dArray
   (dArray라는 이름의 50개 부호 있는 더블워드(DWORD) 배열을 초기화하지 않고 선언하라.)
-A.
+A. dArray DD 50 DUP(?) 
 
 13. Declare a string variable containing the word “TEST” repeated 500 times.
   (문자열 변수 하나를 선언하고, ‘TEST’라는 단어를 500번 반복하여 초기화하라.)
-A. 
+A. mystring DB 500 DUP("T", "E", "S", "T")
 
 14. Declare an array of 20 unsigned bytes named bArray and initialize all elements to zero
   (bArray라는 이름의 20개 부호 없는 바이트 배열을 선언하고, 모든 요소를 0으로 초기화하라.)
-A. 
+A. bArray DB 20 DUP(0)
 
 15. Show the order of individual bytes in memory (lowest to highest) for the following doubleword variable: val1 DWORD 87654321h
   (val1 DWORD 87654321h 변수의 메모리에서 바이트 순서(낮은 주소 → 높은 주소)를 보여라.)
-A. 
+
 
 
 
