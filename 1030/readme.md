@@ -38,10 +38,27 @@ $ - 현재
 현재 주소 - 13바이트 - 1
 그림 이해하기
 
+p13
+Destination::은 sample PROC에서 main PROC로 넘길수 있음
 
+p15
+모든 변수는 스택영역에 저장됨
+call 명령 다음의 명령은 stack에 push후 ret명령을 만나면 ip레지스터
 
+p16
+그림에서 보면 00000020이 스택에 들어가있어야 더하기가 가능하다.
 
+p17
+ret을 만나면 주소 호출 후 리턴을 한다.
 
+p19
+esi, ecx가 왜 push했는지, 알고, L1 루프를 왜 하는지 왜 pop을 하는지
+
+p23
+ Using Procedures는 반복작업을 줄임
+ USES esi ecx 는 esi와 ecx는 push와 pop이 자동으로 된다.
+
+ pop하면 Destination::을 적어줘야함
 
 
 
