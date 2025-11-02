@@ -81,8 +81,8 @@ link library은 미리 만들어 놓은 함수 묶음 파일입니다.(Irvine32.
 (img)
  <img src="image/libray(1).png" width="500" alt="로고">
  <img src="image/libray(2).png" width="500" alt="로고">
-
-
+ <img src="image/libray(3).png" width="500" alt="로고">
+ <img src="image/libray(4).png" width="500" alt="로고">
 
 </pre>
 
