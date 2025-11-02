@@ -45,6 +45,15 @@ PUSHAD - EAX → ECX → EDX → EBX → ESP(old) → EBP → ESI → EDI 순서
 POPAD - EDI → ESI → EBP → ESP(old 제외) → EBX → EDX → ECX → EAX 순서대로 총 8개의 레지스터를 한 번에 스택에서 꺼내는 명령어
  (4바이트씩 꺼냄, 따라서 총 32바이트 스택포인터 증가)
 
+USES - 프로시저 시작 시 지정한 레지스터 자동 PUSH, 프로시저 끝에서 지정한 레지스터 자동 POP을 해주어
+       사용자가 일일이 PUSH/POP 코드를 작성할 필요 없게 해주는 지시어입니다.
+(ex1)
+     <img src="image/USES(2).png" width="500" alt="로고">
+
+(ex2)
+     <img src="image/USES(1).png" width="500" alt="로고">
+
+ -
 - <mark>주소</mark> -
 각 데이터는 메모리 안에서 위치를 가지며, 이 위치를 주소라고 부릅니다. 데이터의 주소를 알 수 있는 방법은 OFFSET 연산자 및 &가 있습니다.
 OFFSET은 해당 데이터의 시작 주소를 알 수 있고, &는 현재 주소를 알 수 있습니다.
