@@ -177,16 +177,55 @@ Q19.<b>Which statement is true about what will happen when the example code runs
   13: ret
   14: Ex5Sub ENDP
 
-  a. EDX will equal 40 on line 6 (7번 줄에서 EAX는 30이 될 것이다.)
+  a. EDX will equal 40 on line 6 (7번 줄에서 EAX는 40이 될 것이다.)
   b. The program will halt with a runtime error on Line 13 (프로그램은 13번 줄에서 런타임 오류로 멈출 것이다.)
   c. EDX will equal 0 on line 6 (6번 줄에서 EDX는 0이 될 것이다.)
   d. The program will halt with a runtime error on Line 11 (프로그램은 11번 줄에서 런타임 오류로 멈출 것이다.)
 
+A. 2번쨰 코드에서 edx에 0, 3번째 코드에서 eax에 40이 저장이 되고, 스택에 40을 저장 시킵니다. 그다음 call을 하여 스택에 다음 주소값인 6번 실행
+  주소를 남기고, Ex5Sub프로시저에 들어오게 됩니다. 10번쨰 줄을 실행하면 eax에 6번쨰 실행 주소를 저장하고, 그 다음 edx에 그 다음 top값인 40이 저장되고,
+  12번째 코드에 의해서 eax 값인 6번째 주소가 스택에 저장되고 ret에 의해 스택 top에 있는 6번째 주소를 받아 jump하게 됩니다. 따라서 정답은 A 입니다.
 
+Q20.<b>What values will be written to the array when the following code executes?</b>
+  (코드가 실행되면 배열 안에 최종적으로 어떤 값들이 들어가게 되는지 구하시오.)
 
+    .data
+    array DWORD 4 DUP(0)
+      
+    .code
+    186 Chapter 5 • Procedures
+    main PROC
+    mov eax,10
+    mov esi,0
+    call proc_1
+    add esi,4
+    add eax,10
+    mov array[esi],eax
+    INVOKE ExitProcess,0
+    main ENDP
+      
+    proc_1 PROC
+    call proc_2
+    add esi,4
+    add eax,10
+    mov array[esi],eax
+    ret
+    proc_1 ENDP
+      
+    proc_2 PROC
+    call proc_3
+    add esi,4
+    add eax,10
+    mov array[esi],eax
+    ret
+    proc_2 ENDP
+      
+    proc_3 PROC
+    mov array[esi],eax
+    ret
+    proc_3 ENDP
 
-
-
+A. array = { 10, 20, 30, 40 }
 
 
 
