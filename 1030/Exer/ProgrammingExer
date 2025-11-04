@@ -96,7 +96,7 @@ Write a program that clears the screen, locates the cursor near the middle of th
 the user for two integers, adds the integers, and displays their sum
 (화면을 지우고, 커서를 화면 중앙 근처로 이동시키며, 사용자에게 두 개의 정수 입력을 요청하고, 두 정수를 더한 결과를 화면에 출력하는 프로그램을 작성하세요.)
 
-[Q3.code]
+------------------------------------------------------[Q3.code]-------------------------------------------------------------------------------------------------------
 .386
 .model flat, stdcall
 .stack 4096
@@ -152,7 +152,7 @@ LocateCursorMiddle PROC
 LocateCursorMiddle ENDP
 
 END main
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Q4. [Simple Addition (2)]
 Use the solution program from the preceding exercise as a starting point. Let this new program
@@ -160,7 +160,7 @@ repeat the same steps three times, using a loop. Clear the screen after each loo
 (이전 연습 문제에서 작성한 프로그램을 기본으로 사용합니다. 이 새로운 프로그램은 같은 과정을 3번 반복하도록 루프를 사용합니다.
 각 반복이 끝날 때마다 화면을 지웁니다.)
 
-[Q4.code]
+------------------------------------------------------[Q4.code]-------------------------------------------------------------------------------------------------------
 .386
 .model flat, stdcall
 .stack 4096
@@ -225,7 +225,7 @@ LocateCursorMiddle PROC
 LocateCursorMiddle ENDP
 
 END main
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Q5. [BetterRandomRange Procedure]
 The RandomRange procedure from the Irvine32 library generates a pseudorandom integer between
@@ -241,7 +241,7 @@ Display each randomly generated value.
 호출자는 M을 EBX, N을 EAX에 전달합니다. 예제: BetterRandomRange를 호출하면 EBX에 하한, EAX에 상한을 넣고 호출합니다. 50번 반복하는 루프에서 BetterRandomRange를 호출하고,
 생성된 난수를 각각 화면에 출력하는 짧은 테스트 프로그램을 작성하세요.)
 
-[Q5.code]
+------------------------------------------------------[Q5.code]-------------------------------------------------------------------------------------------------------
 .386
 .model flat, stdcall
 .stack 4096
@@ -284,7 +284,7 @@ generate_loop:
 main ENDP
 
 END main
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Q6. [Random Strings]
 Create a procedure that generates a random string of length L, containing all capital letters.
@@ -294,7 +294,7 @@ that will hold the random string. Write a test program that calls your procedure
 호출할 때: EAX에 문자열 길이 L, EDX(또는 다른 레지스터)에 난수 문자열을 저장할 배열의 주소(pointer) 전달
 20번 반복하여 난수 문자열을 생성하고, 콘솔에 출력하는 테스트 프로그램을 작성하세요.)
 
-[Q6.code]
+------------------------------------------------------[Q6.code]-------------------------------------------------------------------------------------------------------
 .386
 .model flat, stdcall
 .stack 4096
@@ -349,7 +349,7 @@ test_loop:
 main ENDP
 
 END main
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Q7 [Random Screen Locations]
 Write a program that displays a single character at 100 random screen locations, using a timing
@@ -358,7 +358,7 @@ the console window.
 (100번 반복해서 화면에 한 문자를 랜덤한 위치에 출력하는 프로그램을 작성하세요. 
 힌트: GetMaxXY 프로시저를 사용해서 **콘솔 화면의 현재 크기(X 최대, Y 최대)**를 알아낼 수 있습니다.)
 
-[Q7.code]
+------------------------------------------------------[Q7.code]-------------------------------------------------------------------------------------------------------
 .model flat, stdcall
 .stack 4096
 include \Irvine\Irvine32.inc
@@ -419,7 +419,7 @@ LocateCursor PROC
 LocateCursor ENDP
 
 END main
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Q8. [Color Matrix]
 Write a program that displays a single character in all possible combinations of foreground and
@@ -429,7 +429,7 @@ nested loop to generate all possible combinations.
 색상 번호는 0~15이며, **중첩 루프(nested loop)**를 사용하여 모든 조합을 만들 수 있습니다.
 즉, 흐름은 다음과 같습니다: 1.전경색(Foreground) 0~15 반복, 2.배경색(Background) 0~15 반복, 3.각 조합으로 문자 출력)
 
-[Q8.code]
+------------------------------------------------------[Q8.code]-------------------------------------------------------------------------------------------------------
 .386
 .model flat, stdcall
 .stack 4096
@@ -488,6 +488,7 @@ SetColor PROC
 SetColor ENDP
 
 END main
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Q9 [Recursive Procedure]
 Direct recursion is the term we use when a procedure calls itself. Of course, you never want to
@@ -500,7 +501,7 @@ for the recursive procedure to call itself a fixed number of times.
 (ECX 레지스터에 재귀 호출을 허용할 횟수를 넣습니다. 예를 들어, ECX에 5를 넣으면 재귀가 최대 5번만 실행됩니다.
 LOOP 명령어만 사용하고, 이후 장에서 배우는 조건문(JZ, JNZ, CMP 등)은 사용하지 않고, 재귀 프로시저가 정확히 지정된 횟수만큼 자기 자신을 호출하도록 구현합니다.)
 
-[Q9.code]
+------------------------------------------------------[Q9.code]-------------------------------------------------------------------------------------------------------
 .386
 .model flat, stdcall
 .stack 4096
@@ -537,7 +538,7 @@ main PROC
 main ENDP
 
 END main
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Q10. [Fibonacci Generator]
 Write a procedure that produces N values in the Fibonacci number series and stores them in an
@@ -550,7 +551,7 @@ Use the Visual Studio debugger to open and inspect the array contents.
 2. 생성할 피보나치 수의 개수(N)입니다. 작성한 프로시저를 테스트할 프로그램을 만들고, N = 47을 전달해서 호출하세요.
 배열의 첫 번째 값은 1, 마지막 값은 2,971,215,073이 됩니다. Visual Studio의 디버거를 사용하여 배열의 내용을 열고 확인합니다.)
 
-[Q10.code]
+------------------------------------------------------[Q10.code]-------------------------------------------------------------------------------------------------------
 .386
 .model flat, stdcall
 .stack 4096
@@ -629,7 +630,7 @@ main PROC
 main ENDP
 
 END main
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Q11. [Finding Multiples of K]
 In a byte array of size N, write a procedure that finds all multiples of K that are less than N. Initialize the array to all zeros at the beginning of the program, and then whenever a multiple is
@@ -641,7 +642,7 @@ prime numbers is known as the Sieve of Eratosthenes. You will be able to impleme
 K의 배수를 찾으면 해당 배열 요소를 1로 설정합니다. 프로시저는 자신이 수정한 레지스터를 저장하고 복원해야 합니다.
 프로시저를 두 번 호출합니다. 첫 번째: K = 2, 두 번째: K = 3, 배열 크기 N = 50 입니다. 디버거를 사용하여 배열 값이 올바르게 설정되었는지 확인합니다.
 
-[Q11.code]
+------------------------------------------------------[Q11.code]-------------------------------------------------------------------------------------------------------
 .386
 .model flat, stdcall
 .stack 4096
@@ -718,7 +719,7 @@ init_loop:
 main ENDP
 
 END main
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
