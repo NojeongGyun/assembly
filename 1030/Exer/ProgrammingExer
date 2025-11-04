@@ -1,3 +1,55 @@
-<pre> 
+Q1. [Draw Text Colors]
+Write a program that displays the same string in four different colors, using a loop. Call the SetTextColor procedure from the book’s link library.
+Any colors may be chosen, but you may find it easiest to change the foreground color.
+(동일한 문자열을 4가지 다른 색상으로 표시하는 프로그램을 작성하세요. 루프를 사용합니다. 책에서 제공하는 link library의 SetTextColor 프로시저를 호출하세요.
+색상은 아무거나 선택 가능하지만, 전경색(foreground color)을 변경하는 것이 가장 쉬울 것입니다.)
 
-</pre>
+Q1.code
+.386
+.model flat, stdcall
+.stack 4096
+include \Irvine\Irvine32.inc
+
+.data
+msg BYTE "Hello, MASM!", 0      ; 출력할 문자열
+colors DWORD 4 DUP (0FFh, 0Ah, 0Ch, 0Eh) ; 글자색 (임의 지정)
+index DWORD 0                   ; 루프 인덱스
+
+.code
+main PROC
+    mov index, 0                ; 루프 초기화
+
+print_loop:
+    mov eax, colors[index]      ; 현재 색상
+    call SetTextColor           ; 글자 색 변경
+    mov edx, OFFSET msg         ; 문자열 주소
+    call WriteString            ; 문자열 출력
+    call CrLf                   ; 줄 바꿈
+
+    inc index                    ; 인덱스 증가
+    cmp index, 4
+    jl print_loop               ; 4번 반복
+
+    call ExitProcess
+main ENDP
+
+END main
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
