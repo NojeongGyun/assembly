@@ -135,12 +135,27 @@ A. 2번쨰 줄에서 eax에 30을 넣습니다. push가 되더라도 eax값은 �
   pusha 명령어를 통해 eax레지스터를 포함한 레지스터 값들을 전부 스택에 저장하게 됩니다. 그 후 eax에 80이라는 값을 받게 되는데, popa명령어로
   인해 다시 eax는 30값을 얻게 됩니다. 따라서 정답은 C 입니다.
 
-Q18.<b></b>
+Q18.<b> Which statement is true about what will happen when the example code runs?</b>
+  (예시 코드가 실행될 때 무엇이 일어나는지에 대해 어떤 문장이 참인가?)
+   1: main PROC
+   2: mov eax,40
+   3: push offset Here
+   4: jmp Ex4Sub
+   5: Here:
+   6: mov eax,30
+   7: INVOKE ExitProcess,0
+   8: main ENDP
+   9:
+  10: Ex4Sub PROC
+  11: ret
+  12: Ex4Sub ENDP
 
+  a. EAX will equal 30 on line 7 (7번 줄에서 EAX는 30이 될 것이다.)
+  b. The program will halt with a runtime error on Line 4 (프로그램은 4번 줄에서 런타임 오류로 멈출 것이다.)
+  c. EAX will equal 30 on line 6 (6번 줄에서 EAX는 30이 될 것이다.)
+  d. The program will halt with a runtime error on Line 11 (프로그램은 11번 줄에서 런타임 오류로 멈출 것이다.)
 
-
-
-
+A. 
 
 
 
