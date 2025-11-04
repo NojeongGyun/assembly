@@ -227,12 +227,81 @@ Q20.<b>What values will be written to the array when the following code executes
 
 A. array = { 10, 20, 30, 40 }
 
+<mark>5.8.2 Qustion</mark> -
+Q1.<b>Write a sequence of statements that use only PUSH and POP instructions to exchange the values 
+  in the EAX and EBX registers (or RAX and RBX in 64-bit mode)</b>
+  (PUSH와 POP만 사용해서 EAX와 EBX 값을 교환(swap)하라. 단 다른 명령 사용 금지 (XOR, MOV 등 사용 금지))
+A. push eax
+   push ebx
+   pop eax
+   pop ebx
 
+Q2.<b>Suppose you wanted a subroutine to return to an address that was 3 bytes higher in memory
+than the return address currently on the stack. Write a sequence of instructions that would be
+inserted just before the subroutine’s RET instruction that accomplish this task.</b>
+  (스택에 있는 현재 리턴 주소보다 3바이트 높은 주소로 반환되도록 바꿔라.)
+A. pop eax      
+   add eax,3    
+   push eax     
 
+Q3.<b>Functions in high-level languages often declare local variables just below the return address
+on the stack. Write an instruction that you could put at the beginning of an assembly language
+subroutine that would reserve space for two integer doubleword variables. Then, assign the
+values 1000h and 2000h to the two local variables</b>
+  (고급 언어에서 함수는 종종 스택에서 리턴 주소 바로 아래에 로컬 변수를 선언합니다.
+어셈블리 언어 서브루틴의 시작 부분에 두 개의 32비트 정수형 로컬 변수를 위한 공간을 예약하는 명령을 작성하고,
+이어서 그 두 변수에 각각 1000h와 2000h 값을 저장하는 코드를 작성하세요.)
+A.  mySub PROC
+    sub esp, 8            
+    mov DWORD PTR [esp], 0x1000    
+    mov DWORD PTR [esp+4], 0x2000  
+    add esp, 8
+    ret
+    mySub ENDP
 
+Q4.<b> Write a sequence of statements using indexed addressing that copies an element in a doubleword 
+  array to the previous position in the same array.</b>
+  (인덱스(첨자) 주소 지정(indexed addressing)을 사용하여 doubleword 배열에서 한 요소를 바로 이전 위치로 복사하는 명령어들을 작성하시오.)
+A. .data
+    array DWORD 4, 7, 10, 15  ; 예제 배열
 
+    .code
+    main PROC
+        mov esi, 1              
+        mov eax, array[esi*4]  
+        mov array[(esi-1)*4], eax 
 
+        INVOKE ExitProcess, 0
+    main ENDP
 
+Q5.<b>Write a sequence of statements that display a subroutine’s return address. Be sure that whatever modifications you make to 
+  the stack do not prevent the subroutine from returning to its caller.</b>
+  (서브루틴의 리턴 주소를 화면이나 레지스터로 표시하는 명령어들을 작성하시오. 단, 스택을 수정해도 서브루틴이 정상적으로 호출자에게 복귀할 수 있어야 한다.)
+A. .386
+.model flat, stdcall
+option casemap:none
 
+include \masm32\include\masm32rt.inc  ; printf, exit 등 사용
+
+.data
+fmt db "Return address = 0x%08X",0Ah,0
+
+.code
+main PROC
+    call MySub          
+    exit                  
+main ENDP
+
+MySub PROC
+    mov eax, [esp]        
+    push eax
+    push offset fmt
+    call printf
+    add esp, 8          
+    ret                   
+MySub ENDP
+
+END main
+  
   
 </pre>
