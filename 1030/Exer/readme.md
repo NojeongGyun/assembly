@@ -141,7 +141,7 @@ Q18.<b> Which statement is true about what will happen when the example code run
    2: mov eax,40
    3: push offset Here
    4: jmp Ex4Sub
-   5: Here:
+   5:   Here:
    6: mov eax,30
    7: INVOKE ExitProcess,0
    8: main ENDP
@@ -155,13 +155,32 @@ Q18.<b> Which statement is true about what will happen when the example code run
   c. EAX will equal 30 on line 6 (6번 줄에서 EAX는 30이 될 것이다.)
   d. The program will halt with a runtime error on Line 11 (프로그램은 11번 줄에서 런타임 오류로 멈출 것이다.)
 
-A. 
+A. 2번쨰 줄에 의해 eax는 40값이 저장되고, 3번째 줄에 의해 Here의 주소가 스택에 저장되게 됩니다. jmp Ex4Sub 인해 
+  Ex4Sub로 이동하게 되고, ret을 만나 스택 top에 있는 Here의 주소로 이동하게 됩니다. 그 다음 코드인 mov eax, 30으로
+  인해 eax는 30의 값이 저장됩니다. 그렇기에 정답은 A 입니다.
 
+Q19.<b>Which statement is true about what will happen when the example code runs?</b>
+  (예시 코드가 실행될 때 무엇이 일어나는지에 대해 어떤 문장이 참인가?)
 
+   1: main PROC
+   2: mov edx,0
+   3: mov eax,40
+   4: push eax
+   5: call Ex5Sub
+   6: INVOKE ExitProcess,0
+   7: main ENDP
+   8:
+   9: Ex5Sub PROC
+  10: pop eax
+  11: pop edx
+  12: push eax
+  13: ret
+  14: Ex5Sub ENDP
 
-
-
-
+  a. EDX will equal 40 on line 6 (7번 줄에서 EAX는 30이 될 것이다.)
+  b. The program will halt with a runtime error on Line 13 (프로그램은 13번 줄에서 런타임 오류로 멈출 것이다.)
+  c. EDX will equal 0 on line 6 (6번 줄에서 EDX는 0이 될 것이다.)
+  d. The program will halt with a runtime error on Line 11 (프로그램은 11번 줄에서 런타임 오류로 멈출 것이다.)
 
 
 
