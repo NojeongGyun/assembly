@@ -31,6 +31,12 @@ p16
   CMP - 비교 연산자
   if A > B, X > 0 and X < 200 등 비교 연산자를 실행시키면 CMP가 활성화된다?
 
+  -cmp의 활용법-
+    cmp reg1, reg2
+    reg1 - reg2 를 연산하여, 값에 맞는 플래그 레지스터인 CF, ZF, SF, OF를 set합니다.
+
+    cmp가 같으면 0, 크면 양수, 작으면 음수
+    
 ~
 
 p18
