@@ -46,7 +46,13 @@ p18
     stc - Carry flag를 1로 바꿈
     clc - Carry flag를 0으로 초기화함
 
+p25~26 니모닉
 
+
+p27 jne - Zero flag가 0일때, 점프
+    je - Zero flag가 1일때 점프
+
+  
  
   
 
