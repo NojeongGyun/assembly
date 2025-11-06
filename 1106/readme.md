@@ -59,9 +59,22 @@ p27
     jg = jnle 
     jl - jnge
 
-
+p31(test예제)
+    test - 
     
-  
+ ~~~~~~ 
+
+p41
+  Loop
+
+~~~~
+
+p55
+  table에 관한 예제
+
+p59
+  어셈블리 언어의 반복문 
+
 
 
 
