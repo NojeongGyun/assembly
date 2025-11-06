@@ -30,7 +30,10 @@ p15
 p16
   CMP - 비교 연산자
   if A > B, X > 0 and X < 200 등 비교 연산자를 실행시키면 CMP가 활성화된다?
+    
+     cmp 활용 -         플레그 레지스터인 ZF, CF를 보고 점프할지 결정함
 
+    
   -cmp의 활용법-
     cmp reg1, reg2
     reg1 - reg2 를 연산하여, 값에 맞는 플래그 레지스터인 CF, ZF, SF, OF를 set합니다.
@@ -43,8 +46,8 @@ p18
     stc - Carry flag를 1로 바꿈
     clc - Carry flag를 0으로 초기화함
 
-p
-  
+
+ 
   
 
 
