@@ -55,8 +55,11 @@ p27
     jne - Zero flag가 0일때, 점프
     je - Zero flag가 1일때 점프
 
-  
- 
+    니모닉 단축어?
+    jg = jnle 
+    jl - jnge
+
+    
   
 
 
