@@ -25,7 +25,19 @@ p13
 p15
   and연산자를 시행하면 Destination에 저장되어, 플래그 레지스터를 변경합니다.
   히지만 Test를 시행하면 ???
+  test명령어는 and논리 연산자와 같다.
+  
+p16
+  CMP - 비교 연산자
+  if A > B, X > 0 and X < 200 등 비교 연산자를 실행시키면 CMP가 활성화된다?
 
+~
+
+p18
+    stc - Carry flag를 1로 바꿈
+    clc - Carry flag를 0으로 초기화함
+
+p
   
   
 
