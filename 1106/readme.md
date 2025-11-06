@@ -49,7 +49,10 @@ p18
 p25~26 니모닉
 
 
-p27 jne - Zero flag가 0일때, 점프
+p27 
+    -!cmp와 sub차이점 알기!-
+    
+    jne - Zero flag가 0일때, 점프
     je - Zero flag가 1일때 점프
 
   
