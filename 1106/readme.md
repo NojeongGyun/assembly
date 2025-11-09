@@ -35,11 +35,7 @@ CMP는 비교연산 명령입니다. 피연산자의 값은 저장이 되지 않
 
 - <mark>조건 분기</mark> -
 조건 분기란 특정 상황이 되었을 떄 다른 코드로 점프하는 것을 말합니다.
-조건 분기 명령어에는 JC, JNC, JNZ, JZ가 있습니다.
-JC (Jump if Carry) - CF가 1이면 점프
-JNC (Jump if Not Carry) - CF가 0이면 점프
-JNZ (Jump if Not Zero) - ZF가 0이면 점프
-JZ (Jump if Zero) - ZF가 1이면 점프
+
 
     
 
