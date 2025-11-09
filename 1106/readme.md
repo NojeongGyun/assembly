@@ -37,7 +37,8 @@ CMP는 비교연산 명령입니다. 피연산자의 값은 저장이 되지 않
 조건 분기란 특정 상황이 되었을 떄 다른 코드로 점프하는 것을 말합니다.
 <img src="images/jump1.png" alt="Example" width="500" heigh ="300"/>
 <img src="images/jump2.png" alt="Example" width="500" heigh ="300"/>
-    
+
+- 이미지에 있는 나온 것처럼 명령어들이 있고, 명령어에 대한 조건들이 있습니다. 조건이 맞으면 정해놓은 위치로 분기 합니다.
 
     
 ~
