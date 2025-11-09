@@ -26,7 +26,8 @@ test명령은 AND논리 연산자와 같은 역할은 하되, 피연산자에 �
 ex) AND  AL, BL  -  AL과 BL의 AND연산을 한 후 레지스터 플래그가 변경이 되고, AL에 AND연산 값이 저장됨
     TEST AL, BL  -  AL과 BL의 AND연산을 한 후 레지스터 플래그가 변경이 되고, AL, BL의 값은 변함없음
 
- 
+- <mark>비교 연산자</mark> -
+
 
 
   
