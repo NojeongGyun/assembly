@@ -34,18 +34,15 @@ CMP는 비교연산 명령입니다. 피연산자의 값은 저장이 되지 않
 목적지 오퍼랜드 = 다른 오퍼랜드     - ZF = 1, CF = 0
 
 - <mark>조건 분기</mark> -
-p16
-  CMP - 비교 연산자
-  if A > B, X > 0 and X < 200 등 비교 연산자를 실행시키면 CMP가 활성화된다?
-    
-     cmp 활용 -         플레그 레지스터인 ZF, CF를 보고 점프할지 결정함
+조건 분기란 특정 상황이 되었을 떄 다른 코드로 점프하는 것을 말합니다.
+조건 분기 명령어에는 JC, JNC, JNZ, JZ가 있습니다.
+JC (Jump if Carry) - CF가 1이면 점프
+JNC (Jump if Not Carry) - CF가 0이면 점프
+JNZ (Jump if Not Zero) - ZF가 0이면 점프
+JZ (Jump if Zero) - ZF가 1이면 점프
 
     
-  -cmp의 활용법-
-    cmp reg1, reg2
-    reg1 - reg2 를 연산하여, 값에 맞는 플래그 레지스터인 CF, ZF, SF, OF를 set합니다.
 
-    cmp가 같으면 0, 크면 양수, 작으면 음수
     
 ~
 
