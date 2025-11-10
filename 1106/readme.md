@@ -42,41 +42,26 @@ CMP는 비교연산 명령입니다. 피연산자의 값은 저장이 되지 않
 
 - 이미지에 있는 나온 것처럼 명령어들이 있고, 명령어에 대한 조건들이 있습니다. 조건이 맞으면 정해놓은 위치로 분기 합니다.
 
+- <mark>LOOPNZ</mark>
+LOOPNZ 명령은 카운터 레지스터(CX, ECX,..)가 1이상이고, ZF = 0을 만족하면 카운터 레지스터를 1감소시키고 점프합니다.
+
+- <mark>테이블 기반 선택</mark>
+한 테이블 안에 여러 프로시저(함수)의 시작 주소(오프셋)를 넣어두고, 필요할 때 이 테이블을 조회해서 원하는 프로시저를 호출하는 방식입니다.
+한 번의 테이블 접근과 call로 필요한 인덱스에 접근할 수 있어 접근 속도면에서 보다 빠릅니다. 
+
+ex) .data
+    ProcTable DWORD OFFSET Proc0, OFFSET Proc1, OFFSET Proc2 ; DWORD는 4바이트
     
-42페이지 부터 시작
+    .code
+    mov ebx, OFFSET ProcTable 
+    mov edx, [ebx + eax*4]  ; eax = 입력값(인덱스)
+    call edx 
 
-p18
-    stc - Carry flag를 1로 바꿈
-    clc - Carry flag를 0으로 초기화함
+- 예시에서 본 것과 같이 PorcTable이라는 곳에 Proc0, Proc1, Proc2 인덱스 값을 배열에 넣고, ebx에 ProcTable의 시작주소를 ebx에 넣고 eax가 0이면 
+ ebx + 0 * 4이므로 Proc0을, eax가 1이면 ebx + 1 * 4이므로 Proc1, ... 이렇게 됩니다. 4씩 증가해서 바뀌는 이유는 DWORD가 4바이트라 ProcTable에 
+ 4바이트씩 저장 되기 떄문입니다.
 
-p25~26 니모닉
-
-
-p27 
-    -!cmp와 sub차이점 알기!-
-    
-    jne - Zero flag가 0일때, 점프
-    je - Zero flag가 1일때 점프
-
-    니모닉 단축어?
-    jg = jnle 
-    jl - jnge
-
-p31(test예제)
-    test - 
-    
- ~~~~~~ 
-
-p41
-  Loop
-
-~~~~
-
-p55
-  table에 관한 예제
-
-p59
-  어셈블리 언어의 반복문 
+ 
 
 
 
