@@ -1,1 +1,1204 @@
+Q1. [Filling an Array]
+Create a procedure that fills an array of doublewords with N random integers, making sure the
+values fall within the range j...k, inclusive. When calling the procedure, pass a pointer to the
+array that will hold the data, pass N, and pass the values of j and k. Preserve all register values
+between calls to the procedure. Write a test program that calls the procedure twice, using different values for j and k. Verify your results using a debugger.
+N개의 랜덤 정수를 담는 배열을 생성하는 절차(procedure)를 작성하세요. 각 정수는 j...k 범위에 포함되어야 함(양 끝값 포함).
+절차를 호출할 때: 데이터를 담을 배열의 포인터 전달, N 전달, j와 k 전달, 절차 호출 전후로 모든 레지스터 값 보존
+테스트 프로그램 작성: 절차를 두 번 호출하고, 서로 다른 j, k 값 사용
+디버거로 결과 확인
+
+------------------------------------------------------[Q1.code]-------------------------------------------------------------------------------------------------------
+
+.data
+array1 dd 20 dup(?)     
+array2 dd 20 dup(?)     
+N dd 20                 
+j1 dd 10
+k1 dd 50
+j2 dd -20
+k2 dd 20
+
+.code
+FillArrayRandom PROC
+    pushad                  ; 모든 레지스터 보존
+
+    mov esi, [esp+32]       ; 배열 포인터 (pushad로 인해 offset 증가)
+    mov ecx, [esp+36]       ; N
+    mov eax, [esp+40]       ; j
+    mov edx, [esp+44]       ; k
+
+    sub edx, eax             ; edx = k - j
+    inc edx                  ; 범위 크기 = (k - j + 1)
+
+FillLoop:
+    test ecx, ecx
+    jz Done
+
+    rdtsc
+    xor eax, edx            ; 간단 랜덤화
+    cdq
+    idiv edx                ; eax = eax % 범위
+    add eax, [esp+40]       ; eax += j → 범위 j..k
+
+    mov [esi], eax
+    add esi, 4
+    dec ecx
+    jmp FillLoop
+
+Done:
+    popad
+    ret 16                  ; 4 params * 4 bytes
+FillArrayRandom ENDP
+
+start:
+
+    push k1
+    push j1
+    push N
+    push OFFSET array1
+    call FillArrayRandom
+
+    push k2
+    push j2
+    push N
+    push OFFSET array2
+    call FillArrayRandom
+
+    push 0
+    call ExitProcess
+
+END start
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q2. [Summing Array Elements in a Range]
+Create a procedure that returns the sum of all array elements falling within the range j...k (inclusive).
+Write a test program that calls the procedure twice, passing a pointer to a signed doubleword array, the size of the array, 
+and the values of j and k. Return the sum in the EAX register, and preserve all other register values between calls to the procedure
+배열 요소 중에서 j...k 범위에 포함된 값만 합산하는 절차(procedure)를 작성하세요.
+- 매개변수 -
+1. 배열 포인터 (signed doubleword 배열)
+2. 배열 크기 (N)
+3. j
+4. k
+반환값: EAX → 합계
+절차 호출 전후로 나머지 레지스터 값 보존, 테스트 프로그램 작성: 절차를 두 번 호출하고, 서로 다른 j, k 사용
+
+------------------------------------------------------[Q2.code]-------------------------------------------------------------------------------------------------------
+.data
+array1 dd 10, 20, -5, 50, 0, 30, -10, 40
+array2 dd -20, -5, 0, 5, 10, 15, 20
+size1 dd 8
+size2 dd 7
+j1 dd 0
+k1 dd 30
+j2 dd -10
+k2 dd 10
+
+.code
+SumArrayInRange PROC
+    pushad                  ; 모든 레지스터 보존
+    mov esi, [esp+32]       ; 배열 포인터
+    mov ecx, [esp+36]       ; size N
+    mov ebx, [esp+40]       ; j
+    mov edx, [esp+44]       ; k
+
+    xor eax, eax            ; 합계 초기화
+
+SumLoop:
+    test ecx, ecx
+    jz Done
+
+    mov edi, [esi]          ; 배열 요소 읽기
+    cmp edi, ebx
+    jl Skip                 ; 요소 < j → 스킵
+    cmp edi, edx
+    jg Skip                 ; 요소 > k → 스킵
+
+    add eax, edi            ; 합계에 더함
+
+Skip:
+    add esi, 4
+    dec ecx
+    jmp SumLoop
+
+Done:
+    popad
+    ret 16                  ; 4 params * 4 bytes
+SumArrayInRange ENDP
+
+start:
+    ; 첫 번째 호출: array1, size1, j1..k1
+    push k1
+    push j1
+    push size1
+    push OFFSET array1
+    call SumArrayInRange
+
+    mov ebx, eax            ; 예시: 저장
+
+    push k2
+    push j2
+    push size2
+    push OFFSET array2
+    call SumArrayInRange
+
+    mov ecx, eax            ; 예시: 저장
+
+    ; 프로그램 종료
+    push 0
+    call ExitProcess
+
+END start
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q3. [Summing Array Elements in a Range]
+Create a procedure named CalcGrade that receives an integer value between 0 and 100, and returns a single capital letter in the AL register. 
+Preserve all other register values between calls to the procedure. 
+The letter returned by the procedure should be according to the following ranges: SOCORE RANGE(90 to 100, 80 to 89, 70 to 79, 60 to 69, 0 to 59) Letter grade(A, B, C, D, F) 
+Write a test program that generates 10 random integers between 50 and 100, inclusive. Each time an integer is generated,
+pass it to the CalcGrade procedure. You can test your program using a debugger, or if you prefer to use the book’s library, you can display each integer and its corresponding letter grade. 
+(The Irvine32 library is required for this solution program because it uses the RandomRange procedure.)
+목표:
+College Registration 예제(Section 6.7.3)를 기반으로 다음을 수행:
+1.IF / .ELSEIF 대신 CMP와 조건 점프 명령어 사용하여 로직 재작성
+2. 학점(credits) 값 범위 검사: 1 ≤ credits ≤ 30, 범위를 벗어나면 오류 메시지 출력
+3.사용자에게 평균 점수(grade average)와 학점(credits) 입력 받기
+4. 평가 결과 출력: "The student can register" 또는 "The student cannot register"
+5. Irvine32 라이브러리 사용
+
+------------------------------------------------------[Q3.code]-------------------------------------------------------------------------------------------------------
+.386
+.model flat, stdcall
+.stack 4096
+include Irvine32.inc
+
+.data
+count   DWORD 10        ; 생성할 랜덤 점수 개수
+score   DWORD ?
+grade   BYTE ?
+
+.code
+
+; -----------------------------
+; Procedure: CalcGrade
+; Input:  EAX = score (0..100)
+; Output: AL = grade (A,B,C,D,F)
+; -----------------------------
+CalcGrade PROC
+    pushad                 ; 모든 레지스터 보존
+
+    mov al, 'F'            ; 기본값 F
+
+    cmp eax, 60
+    jb Skip60
+    mov al, 'D'
+    cmp eax, 70
+    jb Skip70
+    mov al, 'C'
+    cmp eax, 80
+    jb Skip80
+    mov al, 'B'
+    cmp eax, 90
+    jb Skip90
+    mov al, 'A'
+
+Skip90:
+Skip80:
+Skip70:
+Skip60:
+
+    popad
+    ret
+CalcGrade ENDP
+
+; -----------------------------
+; Main Program
+; -----------------------------
+main PROC
+    mov ecx, count
+
+GenerateLoop:
+    call RandomRange50to100
+    mov eax, score
+    call CalcGrade
+
+    ; 출력: 점수와 학점
+    movzx eax, grade      ; 학점 출력 준비
+    call WriteChar
+    call CrLf
+
+    loop GenerateLoop
+
+    exit
+main ENDP
+
+; -----------------------------
+; Procedure: RandomRange50to100
+; - Generates random integer 50..100
+; - Result stored in 'score'
+; -----------------------------
+RandomRange50to100 PROC
+    mov ebx, 51           ; 범위 크기 (100-50+1)
+    call RandomRange       ; Irvine32: 0..50
+    add eax, 50            ; 50..100
+    mov score, eax
+    ret
+RandomRange50to100 ENDP
+
+END main
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q4. [College Registration]
+Using the College Registration example from Section 6.7.3 as a starting point, do the following:
+• Recode the logic using CMP and conditional jump instructions (instead of the .IF and
+.ELSEIF directives).
+• Perform range checking on the credits value; it cannot be less than 1 or greater than 30. If an
+invalid entry is discovered, display an appropriate error message.
+• Prompt the user for the grade average and credits values.
+• Display a message that shows the outcome of the evaluation, such as “The student can register” or “The student cannot register”.
+(The Irvine32 library is required for this solution program.)
+목표:
+1. College Registration 예제(Section 6.7.3)를 기반으로 .IF / .ELSEIF 대신 CMP와 조건 점프 사용
+2. 학점(credits) 값 범위 검사: 1 ≤ credits ≤ 30. 범위 벗어나면 오류 메시지 출력
+3.사용자에게 평균 점수(grade average)와 학점(credits) 입력 받기
+4. 평가 결과 출력: "The student can register", "The student cannot register"
+5. Irvine32 라이브러리 사용
+
+------------------------------------------------------[Q4.code]-------------------------------------------------------------------------------------------------------
+.386
+.model flat, stdcall
+.stack 4096
+include Irvine32.inc
+
+.data
+promptGrade   BYTE "Enter grade average (0-100): ",0
+promptCredits BYTE "Enter credits (1-30): ",0
+errCredits    BYTE "Error: Credits must be between 1 and 30.",0
+msgCanReg     BYTE "The student can register",0
+msgCannotReg  BYTE "The student cannot register",0
+gradeAverage  DWORD ?
+credits       DWORD ?
+
+.code
+main PROC
+    ; --- Prompt for grade average ---
+    mov edx, OFFSET promptGrade
+    call WriteString
+    call ReadInt
+    mov gradeAverage, eax
+
+    ; --- Prompt for credits ---
+    mov edx, OFFSET promptCredits
+    call WriteString
+    call ReadInt
+    mov credits, eax
+
+    ; --- Check credits range: 1 <= credits <= 30 ---
+    cmp credits, 1
+    jl CreditsError
+    cmp credits, 30
+    jg CreditsError
+
+    ; --- Evaluate registration ---
+    cmp gradeAverage, 65      ; 최소 평균 65 가정
+    jl CannotRegister         ; grade < 65 → cannot register
+    cmp credits, 18           ; 최대 학점 18 가정
+    jg CannotRegister         ; credits > 18 → cannot register
+
+    ; --- Student can register ---
+    mov edx, OFFSET msgCanReg
+    call WriteString
+    jmp Done
+
+CreditsError:
+    mov edx, OFFSET errCredits
+    call WriteString
+    jmp Done
+
+CannotRegister:
+    mov edx, OFFSET msgCannotReg
+    call WriteString
+
+Done:
+    call CrLf
+    exit
+main ENDP
+END main
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q5. [Boolean Calculator (1)]
+Create a program that functions as a simple boolean calculator for 32-bit integers. It should display a menu that asks the user to make a selection from the following list:
+1. x AND y
+2. x OR y
+3. NOT x
+4. x XOR y
+5. Exit program
+When the user makes a choice, call a procedure that displays the name of the operation about to
+be performed. You must implement this procedure using the Table-Driven Selection technique,
+shown in Section 6.5.4. (You will implement the operations in Exercise 6.) (The Irvine32 library
+is required for this solution program.)
+목표:
+1. 32비트 정수용 간단한 불리언 계산기 프로그램 작성
+2. 메뉴 출력:
+  (1) x AND y
+  (2) x OR y
+  (3) NOT x
+  (4) x XOR y
+3. 사용자 선택 시, 선택한 연산 이름을 표시하는 절차 호출
+4. Table-Driven Selection 기법 사용 (Section 6.5.4 참고)
+5. 실제 연산은 Exercise 6에서 구현한 것처럼 처리
+6. Irvine32 라이브러리 필요
+------------------------------------------------------[Q5.code]-------------------------------------------------------------------------------------------------------
+.386
+.model flat, stdcall
+.stack 4096
+include Irvine32.inc
+
+.data
+menuText    BYTE "Simple Boolean Calculator",13,10,0
+menuOptions BYTE "1. x AND y",13,10,
+               "2. x OR y",13,10,
+               "3. NOT x",13,10,
+               "4. x XOR y",13,10,
+               "5. Exit program",13,10,0
+
+promptChoice BYTE "Enter your choice (1-5): ",0
+promptX      BYTE "Enter value for x: ",0
+promptY      BYTE "Enter value for y: ",0
+errChoice    BYTE "Invalid choice!",13,10,0
+
+opNames     BYTE "x AND y",0, "x OR y",0, "NOT x",0, "x XOR y",0
+
+xVal DWORD ?
+yVal DWORD ?
+choice DWORD ?
+
+.code
+main PROC
+menuLoop:
+
+    ; --- Display menu ---
+    mov edx, OFFSET menuText
+    call WriteString
+    mov edx, OFFSET menuOptions
+    call WriteString
+
+    ; --- Prompt for choice ---
+    mov edx, OFFSET promptChoice
+    call WriteString
+    call ReadInt
+    mov choice, eax
+
+    cmp choice, 5
+    je exitProgram
+    cmp choice, 1
+    jl invalidChoice
+    cmp choice, 4
+    jg invalidChoice
+
+    ; --- Call procedure to display operation name ---
+    push choice
+    call DisplayOpName
+    add esp, 4
+
+    ; --- Get input values ---
+    mov edx, OFFSET promptX
+    call WriteString
+    call ReadInt
+    mov xVal, eax
+
+    cmp choice, 3
+    je doNotXor      ; NOT x 는 y 필요 없음
+
+    mov edx, OFFSET promptY
+    call WriteString
+    call ReadInt
+    mov yVal, eax
+
+doNotXor:
+    ; --- Here you would implement the operation itself (Exercise 6) ---
+    ; For demonstration, we only display the operation
+
+    jmp menuLoop
+
+invalidChoice:
+    mov edx, OFFSET errChoice
+    call WriteString
+    jmp menuLoop
+
+exitProgram:
+    exit
+main ENDP
+
+; --- Table-Driven Procedure ---
+DisplayOpName PROC
+    ; expects choice in stack
+    push ebp
+    mov ebp, esp
+    mov eax, [ebp+8] ; get choice
+
+    ; Calculate offset in opNames
+    ; Each string is null-terminated, so we need offsets:
+    ; 1 -> offset 0
+    ; 2 -> offset 7
+    ; 3 -> offset 13
+    ; 4 -> offset 19
+
+    cmp eax,1
+    je op1
+    cmp eax,2
+    je op2
+    cmp eax,3
+    je op3
+    cmp eax,4
+    je op4
+
+    jmp done
+
+op1:
+    mov edx, OFFSET opNames
+    call WriteString
+    jmp done
+op2:
+    mov edx, OFFSET opNames + 7
+    call WriteString
+    jmp done
+op3:
+    mov edx, OFFSET opNames + 13
+    call WriteString
+    jmp done
+op4:
+    mov edx, OFFSET opNames + 19
+    call WriteString
+
+done:
+    call CrLf
+    pop ebp
+    ret 4
+DisplayOpName ENDP
+
+END main
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q6. [Boolean Calculator (2)]
+Continue the solution program from Exercise 5 by implementing the following procedures:
+• AND_op: Prompt the user for two hexadecimal integers. AND them together and display the
+result in hexadecimal.
+• OR_op: Prompt the user for two hexadecimal integers. OR them together and display the
+result in hexadecimal.
+• NOT_op: Prompt the user for a hexadecimal integer. NOT the integer and display the result in
+hexadecimal.
+• XOR_op: Prompt the user for two hexadecimal integers. Exclusive-OR them together and
+display the result in hexadecimal.
+(The Irvine32 library is required for this solution program.)
+Exercise 5에서 작성한 프로그램을 이어서 다음과 같은 절차를 구현하세요:
+1. AND_op: 사용자에게 두 개의 16진수 정수를 입력받고, 이 두 수를 AND 연산한 결과를 16진수로 출력
+2. OR_op: 사용자에게 두 개의 16진수 정수를 입력받고, OR 연산한 결과를 16진수로 출력
+3. NOT_op: 사용자에게 한 개의 16진수 정수를 입력받고, NOT 연산한 결과를 16진수로 출력
+4. XOR_op: 사용자에게 두 개의 16진수 정수를 입력받고, XOR 연산한 결과를 16진수로 출력
+5. 이 프로그램을 작성할 때 Irvine32 라이브러리를 사용해야 합니다.
+------------------------------------------------------[Q6.code]-------------------------------------------------------------------------------------------------------
+.386
+.model flat, stdcall
+.stack 4096
+include Irvine32.inc
+
+.data
+menuText    BYTE "Simple Boolean Calculator",13,10,0
+menuOptions BYTE "1. x AND y",13,10,
+               "2. x OR y",13,10,
+               "3. NOT x",13,10,
+               "4. x XOR y",13,10,
+               "5. Exit program",13,10,0
+
+promptChoice BYTE "Enter your choice (1-5): ",0
+promptX      BYTE "Enter value for x (hex): ",0
+promptY      BYTE "Enter value for y (hex): ",0
+errChoice    BYTE "Invalid choice!",13,10,0
+resultMsg   BYTE "Result = ",0
+
+opNames     BYTE "x AND y",0, "x OR y",0, "NOT x",0, "x XOR y",0
+
+xVal DWORD ?
+yVal DWORD ?
+choice DWORD ?
+
+.code
+main PROC
+menuLoop:
+
+    ; --- Display menu ---
+    mov edx, OFFSET menuText
+    call WriteString
+    mov edx, OFFSET menuOptions
+    call WriteString
+
+    ; --- Prompt for choice ---
+    mov edx, OFFSET promptChoice
+    call WriteString
+    call ReadInt
+    mov choice, eax
+
+    cmp choice, 5
+    je exitProgram
+    cmp choice, 1
+    jl invalidChoice
+    cmp choice, 4
+    jg invalidChoice
+
+    ; --- Display operation name ---
+    push choice
+    call DisplayOpName
+    add esp, 4
+
+    ; --- Call the corresponding procedure ---
+    cmp choice, 1
+    je AND_op
+    cmp choice, 2
+    je OR_op
+    cmp choice, 3
+    je NOT_op
+    cmp choice, 4
+    je XOR_op
+
+    jmp menuLoop
+
+invalidChoice:
+    mov edx, OFFSET errChoice
+    call WriteString
+    jmp menuLoop
+
+exitProgram:
+    exit
+main ENDP
+
+; --- Table-Driven Procedure ---
+DisplayOpName PROC
+    push ebp
+    mov ebp, esp
+    mov eax, [ebp+8]
+
+    cmp eax,1
+    je op1
+    cmp eax,2
+    je op2
+    cmp eax,3
+    je op3
+    cmp eax,4
+    je op4
+    jmp done
+
+op1: mov edx, OFFSET opNames
+     call WriteString
+     jmp done
+op2: mov edx, OFFSET opNames + 7
+     call WriteString
+     jmp done
+op3: mov edx, OFFSET opNames + 13
+     call WriteString
+     jmp done
+op4: mov edx, OFFSET opNames + 19
+     call WriteString
+
+done:
+    call CrLf
+    pop ebp
+    ret 4
+DisplayOpName ENDP
+
+; -----------------------------
+; --- AND Operation Procedure ---
+AND_op PROC
+    mov edx, OFFSET promptX
+    call WriteString
+    call ReadHex
+    mov xVal, eax
+
+    mov edx, OFFSET promptY
+    call WriteString
+    call ReadHex
+    mov yVal, eax
+
+    mov eax, xVal
+    and eax, yVal
+
+    mov edx, OFFSET resultMsg
+    call WriteString
+    call WriteHex
+    call CrLf
+    ret
+AND_op ENDP
+
+; --- OR Operation Procedure ---
+OR_op PROC
+    mov edx, OFFSET promptX
+    call WriteString
+    call ReadHex
+    mov xVal, eax
+
+    mov edx, OFFSET promptY
+    call WriteString
+    call ReadHex
+    mov yVal, eax
+
+    mov eax, xVal
+    or eax, yVal
+
+    mov edx, OFFSET resultMsg
+    call WriteString
+    call WriteHex
+    call CrLf
+    ret
+OR_op ENDP
+
+; --- NOT Operation Procedure ---
+NOT_op PROC
+    mov edx, OFFSET promptX
+    call WriteString
+    call ReadHex
+    mov eax, eax   ; EAX already has input
+
+    not eax
+
+    mov edx, OFFSET resultMsg
+    call WriteString
+    call WriteHex
+    call CrLf
+    ret
+NOT_op ENDP
+
+; --- XOR Operation Procedure ---
+XOR_op PROC
+    mov edx, OFFSET promptX
+    call WriteString
+    call ReadHex
+    mov xVal, eax
+
+    mov edx, OFFSET promptY
+    call WriteString
+    call ReadHex
+    mov yVal, eax
+
+    mov eax, xVal
+    xor eax, yVal
+
+    mov edx, OFFSET resultMsg
+    call WriteString
+    call WriteHex
+    call CrLf
+    ret
+XOR_op ENDP
+
+END main
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q7. [ Probabilities and Colors]
+Write a program that randomly chooses among three different colors for displaying text on
+the screen. Use a loop to display 20 lines of text, each with a randomly chosen color. The
+probabilities for each color are to be as follows: white  30%, blue  10%, green  60%.
+Suggestion: Generate a random integer between 0 and 9. If the resulting integer falls in the
+range 0 to 2 (inclusive), choose white. If the integer equals 3, choose blue. If the integer falls in
+the range 4 to 9 (inclusive), choose green. Test your program by running it ten times, each time
+observing whether the distribution of line colors appears to match the required probabilities.
+(The Irvine32 library is required for this solution program.)
+화면에 텍스트를 표시할 때 세 가지 색 중 하나를 무작위로 선택하는 프로그램을 작성하세요.
+루프를 사용하여 20줄의 텍스트를 출력하고, 각 줄의 색은 무작위로 선택됩니다.
+색상 선택 확률은 다음과 같습니다:
+ 흰색(white) 30%
+ 파란색(blue) 10%
+ 초록색(green) 60%
+힌트:
+ 1. 0~9 사이의 무작위 정수를 생성합니다.
+ 2. 생성된 값에 따라 색상을 선택합니다:
+ 3. 0~2 → 흰색
+ 4. 3 → 파란색
+ 5. 4~9 → 초록색
+테스트:
+ 프로그램을 10번 실행하며, 각 실행 시 출력된 줄 색의 분포가 요구된 확률과 일치하는지 관찰합니다.
+
+※ 프로그램 작성 시 Irvine32 라이브러리 사용이 필요합니다.
+------------------------------------------------------[Q7.code]-------------------------------------------------------------------------------------------------------
+INCLUDE Irvine32.inc
+
+.data
+    whiteMsg BYTE "This line is WHITE", 0
+    blueMsg  BYTE "This line is BLUE", 0
+    greenMsg BYTE "This line is GREEN", 0
+    counter DWORD 20
+
+.code
+main PROC
+    mov ecx, counter       ; 20줄 반복 루프
+
+printLoop:
+    call RandomRange       ; 랜덤 값 생성 (0~9)
+    mov ebx, eax           ; 랜덤 값을 ebx에 저장
+
+    ; 색상 결정
+    cmp ebx, 2
+    jle WhiteSelected      ; 0~2 -> white
+    cmp ebx, 3
+    je BlueSelected        ; 3 -> blue
+    jmp GreenSelected      ; 4~9 -> green
+
+WhiteSelected:
+    mov al, 0Fh            ; 흰색 (bright white)
+    call SetColor
+    mov edx, OFFSET whiteMsg
+    call WriteString
+    jmp ContinueLoop
+
+BlueSelected:
+    mov al, 09h            ; 파란색
+    call SetColor
+    mov edx, OFFSET blueMsg
+    call WriteString
+    jmp ContinueLoop
+
+GreenSelected:
+    mov al, 0Ah            ; 초록색
+    call SetColor
+    mov edx, OFFSET greenMsg
+    call WriteString
+
+ContinueLoop:
+    call CrLf              ; 줄 바꿈
+    loop printLoop
+
+    exit
+main ENDP
+
+; ===============================
+; SetColor: AL에 들어있는 색상값을 콘솔에 적용
+; ===============================
+SetColor PROC
+    push eax
+    mov ah, 09h
+    int 21h
+    pop eax
+    ret
+SetColor ENDP
+
+END main
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q8. [Message Encryption]
+Revise the encryption program in Section 6.3.4 in the following manner: Create an encryption
+key consisting of multiple characters. Use this key to encrypt and decrypt the plaintext by XORing each character of the key against a corresponding byte in the message. Repeat the key as
+many times as necessary until all plain text bytes are translated. Suppose, for example, the key
+were equal to “ABXmv#7”. This is how the key would align with the plain text bytes:
+Section 6.3.4의 암호화 프로그램을 다음과 같이 수정하세요:
+ 1. 여러 문자로 구성된 암호 키를 생성합니다.
+ 2. 평문(plaintext)을 암호화하고 복호화(decrypt)할 때, 메시지의 각 바이트와 키의 대응하는 문자를 XOR 연산하여 처리합니다.
+ 3. 메시지의 모든 바이트가 처리될 때까지 키를 반복해서 사용합니다.
+예를 들어, 키가 "ABXmv#7"이라면, 평문 바이트에 키 문자가 순서대로 반복되어 XOR 연산에 사용됩니다.
+------------------------------------------------------[Q8.code]-------------------------------------------------------------------------------------------------------
+INCLUDE Irvine32.inc
+
+.data
+    message     BYTE "Hello, Assembly World!",0      ; 평문 메시지
+    encrypted   BYTE 100 DUP(0)                      ; 암호화된 메시지 저장
+    decrypted   BYTE 100 DUP(0)                      ; 복호화된 메시지 저장
+    key         BYTE "ABXmv#7",0                     ; 암호화 키
+    msgLen      DWORD ?
+    keyLen      DWORD ?
+    i           DWORD ?
+    j           DWORD ?
+
+.code
+main PROC
+    ; 메시지 길이 계산
+    mov edx, OFFSET message
+    call StrLen
+    mov msgLen, eax
+
+    ; 키 길이 계산
+    mov edx, OFFSET key
+    call StrLen
+    mov keyLen, eax
+
+    ; ========================
+    ; 암호화
+    ; ========================
+    mov i, 0                  ; 메시지 인덱스 초기화
+encryptLoop:
+    cmp i, msgLen
+    jge encryptDone
+
+    ; 메시지 바이트 XOR 키 바이트
+    mov al, message[i]
+    mov bl, key[i % keyLen]   ; 키 반복
+    xor al, bl
+    mov encrypted[i], al
+
+    inc i
+    jmp encryptLoop
+encryptDone:
+
+    ; ========================
+    ; 복호화 (암호화와 동일)
+    ; ========================
+    mov i, 0
+decryptLoop:
+    cmp i, msgLen
+    jge decryptDone
+
+    mov al, encrypted[i]
+    mov bl, key[i % keyLen]   ; 동일 키 사용
+    xor al, bl
+    mov decrypted[i], al
+
+    inc i
+    jmp decryptLoop
+decryptDone:
+
+    ; ========================
+    ; 결과 출력
+    ; ========================
+    mov edx, OFFSET message
+    call WriteString
+    call CrLf
+
+    mov edx, OFFSET encrypted
+    call WriteString
+    call CrLf
+
+    mov edx, OFFSET decrypted
+    call WriteString
+    call CrLf
+
+    exit
+main ENDP
+
+END main
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q9. [Validating a PIN]
+Banks use a Personal Identification Number (PIN) to uniquely identify each customer. Let us
+assume that our bank has a specified range of acceptable values for each digit in its customers’
+5-digit PINs. The table shown below contains the acceptable ranges, where digits are numbered
+from left to right in the PIN. Then we can see that the PIN 52413 is valid. But the PIN 43534 is
+invalid because the first digit is out of range. Similarly, 64535 is invalid because of its last digit.
+Your task is to create a procedure named Validate_PIN that receives a pointer to an array of byte
+containing a 5-digit PIN. Declare two arrays to hold the minimum and maximum range values,
+and use these arrays to validate each digit of the PIN that was passed to the procedure. If any
+digit is found to be outside its valid range, immediately return the digit’s position (between
+1 and 5) in the EAX register. If the entire PIN is valid, return 0 in EAX. Preserve all other
+register values between calls to the procedure. Write a test program that calls Validate_PIN at
+least four times, using both valid and invalid byte arrays. By running the program in a debugger,
+verify that the return value in EAX after each procedure call is valid. Or, if you prefer to use the
+book’s library, you can display "Valid" or "Invalid" on the console after each procedure call.
+은행은 개인 식별 번호(PIN)로 각 고객을 고유하게 식별합니다.
+우리 은행은 고객의 5자리 PIN의 각 자리 숫자마다 허용 범위를 지정했다고 가정합니다.
+예를 들어:
+ PIN 52413 → 유효함 
+ PIN 43534 → 첫 번째 숫자가 범위를 벗어나므로 무효
+ PIN 64535 → 마지막 숫자가 범위를 벗어나므로 무효
+
+과제:
+ 1. Validate_PIN이라는 프로시저를 만듭니다.
+ 2. 인자로 5자리 PIN 배열의 포인터를 받습니다.
+ 3. 최소/최대 범위 배열 2개를 선언하여 각 자리 숫자가 유효한지 검사합니다.
+ 4. 범위를 벗어나는 숫자를 발견하면 즉시 그 자리 위치(1~5)를 EAX에 반환합니다.
+ 5. 모든 숫자가 유효하면 EAX에 0을 반환합니다.
+ 6. 다른 레지스터 값은 호출 전과 동일하게 유지해야 합니다.
+
+테스트 프로그램 작성:
+ 최소 4회 Validate_PIN 호출 (유효/무효 배열 모두 포함).
+ 디버거를 사용해 호출 후 EAX 반환값 확인.
+ 또는 콘솔에 "Valid" / "Invalid" 표시 가능.
+------------------------------------------------------[Q9.code]-------------------------------------------------------------------------------------------------------
+;-------------------------------
+; Validate_PIN.asm
+;-------------------------------
+INCLUDE Irvine32.inc
+.MODEL SMALL, STDCALL
+.STACK 100h
+.DATA
+; 최소값 배열 (각 자리 숫자의 최소 허용값)
+MinValues BYTE 1, 2, 0, 1, 0
+
+; 최대값 배열 (각 자리 숫자의 최대 허용값)
+MaxValues BYTE 5, 5, 9, 4, 3
+
+; 테스트용 PIN 배열 (유효/무효)
+PIN1 BYTE 5,2,4,1,3   ; 유효
+PIN2 BYTE 4,3,5,3,4   ; 무효 (1번째 자리)
+PIN3 BYTE 6,4,5,3,5   ; 무효 (5번째 자리)
+PIN4 BYTE 1,2,0,2,3   ; 유효
+
+.CODE
+main PROC
+    ; 테스트 PIN 1
+    lea eax, PIN1
+    call Validate_PIN
+    cmp eax,0
+    je Valid1
+    mov edx,eax
+    call PrintInvalid
+    jmp Next1
+Valid1:
+    call PrintValid
+Next1:
+
+    ; 테스트 PIN 2
+    lea eax, PIN2
+    call Validate_PIN
+    cmp eax,0
+    je Valid2
+    mov edx,eax
+    call PrintInvalid
+    jmp Next2
+Valid2:
+    call PrintValid
+Next2:
+
+    ; 테스트 PIN 3
+    lea eax, PIN3
+    call Validate_PIN
+    cmp eax,0
+    je Valid3
+    mov edx,eax
+    call PrintInvalid
+    jmp Next3
+Valid3:
+    call PrintValid
+Next3:
+
+    ; 테스트 PIN 4
+    lea eax, PIN4
+    call Validate_PIN
+    cmp eax,0
+    je Valid4
+    mov edx,eax
+    call PrintInvalid
+    jmp EndProg
+Valid4:
+    call PrintValid
+
+EndProg:
+    exit
+main ENDP
+
+;-------------------------------
+; Validate_PIN
+; 입력: EAX = PIN 배열 포인터
+; 반환: EAX = 0 (유효) / 1~5 (무효 자리)
+;-------------------------------
+Validate_PIN PROC
+    push ebx
+    push ecx
+    push edx
+    push esi
+
+    mov esi, eax        ; ESI = PIN 포인터
+    mov ecx,5           ; 5자리 반복
+    xor eax,eax         ; 기본 반환값 0 (유효)
+    xor ebx,ebx         ; EBX = 인덱스 (0~4)
+
+CheckLoop:
+    mov al, [esi+ebx]   ; 현재 PIN 자리값
+    mov dl, MinValues[ebx]  ; 최소값
+    cmp al, dl
+    jl InvalidDigit     ; 최소값 미만이면 무효
+    mov dl, MaxValues[ebx]  ; 최대값
+    cmp al, dl
+    jg InvalidDigit     ; 최대값 초과면 무효
+
+    inc ebx
+    loop CheckLoop
+    jmp EndValidate
+
+InvalidDigit:
+    mov eax, ebx
+    inc eax             ; 자리번호는 1~5
+EndValidate:
+    pop esi
+    pop edx
+    pop ecx
+    pop ebx
+    ret
+Validate_PIN ENDP
+
+;-------------------------------
+; 출력용 루틴
+;-------------------------------
+PrintValid PROC
+    mov edx, OFFSET MsgValid
+    call WriteString
+    call Crlf
+    ret
+PrintValid ENDP
+
+PrintInvalid PROC
+    ; EDX = 자리번호
+    mov ecx, edx
+    mov edx, OFFSET MsgInvalid
+    call WriteString
+    mov eax, ecx
+    call WriteDec
+    call Crlf
+    ret
+PrintInvalid ENDP
+
+.DATA
+MsgValid BYTE "Valid PIN",0
+MsgInvalid BYTE "Invalid PIN at position ",0
+
+END main
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q10. [Parity Checking]
+Data transmission systems and file subsystems often use a form of error detection that relies on
+calculating the parity (even or odd) of blocks of data. Your task is to create a procedure that
+returns True in the EAX register if the bytes in an array contain even parity, or False if the parity
+is odd. In other words, if you count all the bits in the entire array, their count will be even or odd.
+Preserve all other register values between calls to the procedure. Write a test program that calls
+your procedure twice, each time passing it a pointer to an array and the length of the array. The
+procedure’s return value in EAX should be 1 (True) or 0 (False). For test data, create two arrays
+containing at least 10 bytes, one having even parity, and another having odd parity.
+Tip: 
+ Earlier in this chapter, we showed how you can repeatedly apply the XOR instruction to a
+ sequence of byte values to determine their parity. So, this suggests the use of a loop. But be careful, 
+ since some machine instructions affect the Parity flag, and others do not. You can find this out
+ by looking at the individual instructions in Appendix B. The code in your loop that checks the parity will have to carefully 
+ save and restore the state of the Parity flag to avoid having it unintentionally modified by your code.
+데이터 전송 시스템이나 파일 서브시스템에서는 블록 단위로 데이터를 처리할 때 **짝수/홀수 패리티(parity)**를 계산하여 오류를 감지하는 경우가 많습니다.
+여러분의 작업은 다음과 같습니다:
+ 1. **절차(프로시저)**를 만들어 배열의 바이트 전체에 있는 비트 수를 계산합니다.
+ 2. 전체 비트 수가 짝수이면 EAX 레지스터에 True(1)를 반환하고, 홀수이면 False(0)를 반환합니다.
+즉, 배열 안 모든 비트의 합이 짝수인지 홀수인지 판단합니다.
+ 3. 프로시저 호출 전후에는 다른 레지스터 값을 보존해야 합니다.
+ 4. 테스트 프로그램을 작성하여 프로시저를 두 번 호출합니다.
+ 5.각각 다른 배열 포인터와 길이를 전달합니다.
+ 6. 배열 데이터는 최소 10바이트 이상이어야 하며, 한 배열은 짝수 패리티, 다른 배열은 홀수 패리티를 갖도록 합니다.
+
+힌트:
+ 1. 이전 장에서 XOR 연산을 반복해서 바이트 시퀀스의 패리티를 결정할 수 있다고 했습니다.
+ 2. 루프를 사용할 수 있으며, 주의할 점은 일부 명령어는 Parity Flag(PF)에 영향을 주고, 일부는 주지 않는다는 점입니다.
+따라서 루프 안에서 PF 상태를 의도치 않게 바꾸지 않도록 PF 상태를 저장하고 복원해야 합니다.
+------------------------------------------------------[Q10.code]-------------------------------------------------------------------------------------------------------
+.386
+.model flat, stdcall
+.stack 4096
+.data
+arrayEven BYTE 1,2,3,4,5,6,7,8,9,10      ; 짝수 패리티 예시
+arrayOdd  BYTE 1,2,3,4,5,6,7,8,9,11       ; 홀수 패리티 예시
+lenEven  DWORD LENGTHOF arrayEven
+lenOdd   DWORD LENGTHOF arrayOdd
+msgTrue  BYTE "Parity is EVEN",0
+msgFalse BYTE "Parity is ODD",0
+
+.code
+include Irvine32.inc
+
+main PROC
+    ; 짝수 패리티 확인
+    lea eax, arrayEven
+    push lenEven
+    push eax
+    call CheckParity
+    add esp, 8
+    cmp eax, 1
+    je DisplayEven
+    jmp DisplayOdd
+
+DisplayEven:
+    mov edx, OFFSET msgTrue
+    call WriteString
+    call Crlf
+    jmp NextTest
+
+DisplayOdd:
+    mov edx, OFFSET msgFalse
+    call WriteString
+    call Crlf
+
+NextTest:
+    ; 홀수 패리티 확인
+    lea eax, arrayOdd
+    push lenOdd
+    push eax
+    call CheckParity
+    add esp, 8
+    cmp eax, 1
+    je DisplayEven2
+    jmp DisplayOdd2
+
+DisplayEven2:
+    mov edx, OFFSET msgTrue
+    call WriteString
+    call Crlf
+    jmp ExitProgram
+
+DisplayOdd2:
+    mov edx, OFFSET msgFalse
+    call WriteString
+    call Crlf
+
+ExitProgram:
+    exit
+main ENDP
+
+;----------------------------------------
+; CheckParity
+; Input: pointer to array in [esp+4], length in [esp+8]
+; Output: EAX = 1 if even parity, 0 if odd parity
+; Preserves all other registers
+;----------------------------------------
+CheckParity PROC
+    push ebx
+    push ecx
+    push edx
+
+    mov eax, [esp+12]  ; EAX = array pointer
+    mov ecx, [esp+16]  ; ECX = length
+    xor ebx, ebx       ; EBX will hold XOR of all bytes
+
+NextByte:
+    cmp ecx, 0
+    je DoneXOR
+    mov dl, [eax]
+    xor bl, dl
+    inc eax
+    dec ecx
+    jmp NextByte
+
+DoneXOR:
+    ; EBX에 XOR 결과가 들어있음
+    ; 전체 XOR의 비트 수의 패리티 확인
+    mov eax, ebx
+    mov ecx, 8          ; 한 바이트
+    xor edx, edx        ; EDX = 0, parity count
+
+CountBits:
+    test al, 1
+    jz Skip1
+    xor dl, 1           ; 하나씩 XOR
+Skip1:
+    shr al, 1
+    loop CountBits
+
+    mov eax, edx        ; EAX = 1 if odd number of 1s, 0 if even
+    xor eax, 1          ; EAX = 1 for even parity, 0 for odd
+
+    pop edx
+    pop ecx
+    pop ebx
+    ret
+CheckParity ENDP
+
+END main
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
