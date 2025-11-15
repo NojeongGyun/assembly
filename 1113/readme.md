@@ -61,39 +61,63 @@ ex) mov al, 3   // mul연산일 떄 만약 -3을 넣으면 -3값이 아닌, 256 
     mul bx    // bx는 10이고 al은 3이므로 10 * 3 = 30 즉 ax에 30값이 저장이 됩니다.  
   
 <b>imul</b>
-mul명령어는 signed연산을 포함하여 곱 연산을 진행합니다.
+imul명령어는 signed연산을 포함하여 곱 연산을 진행합니다.
 1,2,3 - operand는 위에 설명한 것과 같습니다.
 ex) mov al, -3   
     mov bx, 10
     imul bx    // imul은 signed연산을 하는 명령어이기에 al은 -3 그대로 들어오고, bx는 10이므로 10 * -3 = -30 즉 ax에 -30값이 저장이 됩니다.
 
+-<mark>div, idiv</mark>
+div와 idiv는 나누기 명령어 입니다.  다른점은 signed 연산을 하냐 하지 않냐의 차이입니다.
 
+<b>div</b> -
+div명령어는 signed연산을 하지 않고, 나누기 연산을 진행합니다.
+mul과 2-operand, 3-operand연산은 비슷합니다. 
+하지만 1-operand에서 오퍼랜드가 8/16/32 비트인경우 ax/dx:ax/edx:eax 값과 나눈 후 값은 al/ax/eax에 저장되고, 나머지는 ah/dx/edx에 저장됩니다.
 
+<b>idiv</b> -
+idiv명령어는 signed연산을 포함하여, 나누기 연산을 진행합니다.
+위에서 설명한 imul원리에 곱 대신 나누기를 넣으면 되고, 
+1-operand에서는 div에 설명한 원리를 적용시키면 됩니다.
+주의 사항으로 idiv를 할 떄 제시된 비트가 맞지 않으면 부호 확장을 시키고 계산을 하여야합니다.
+ex) mov AL, -5 
+    cbw  // 부호 확장(al -> ax) 
+    idiv bl // bl이 8비트이므로 ax레지스터가 필요하기에 cbw를 써서 부호 확장을 시키고 bl과 나눕니다.
 
+그리고 나눈 몫이 담을 레지스터보다 크면 오버플로우가 발생하기에 사용하는 비트(피연산자)가 크면 클수록 오버플로우가 날 가능성이 적어집니다.
 
+- <mark>ADC(add with carry)</mark> -
+ADC명령어는 목적지 오퍼랜드 + 소스 오퍼랜드를 계산 후 CF의 값을 더해주면 됩니다.
+계산 해 주면 CF = 0이 되는데, 이때 목적지 오퍼랜드의 비트 범위를 초과하면 목적지 오퍼랜드 + 소스 오퍼랜드 + CF값의 
+하위 비트만 남기고 저장되고, CF = 1이 됩니다.
 
+- <mark>SBB(subtract with borrow)</mark> -
+SBB명령어는 목적지 오퍼랜드 - 소스 오퍼랜드를 계산 후 CF의 값을 뺴주면 됩니다.
+계산하면 CF = 0이 되는데, 만약 언더 플로우가 일어나면 목적지 오퍼랜드 - 소스 오퍼랜드 - CF값의 하위 비트만 남기고 저장되고, CF = 1이 됩니다.
 
+-<mark>Unpacked BCD</mark>-
+ASCII 코드로 숫자 한 자리를 표현하면, 그 값의 상위 4비트는 항상 0011b이고, 하위 4비트에는 실제 숫자 값(0~9)이 들어갑니다.
+실제 숫자로 만들면 상위 4비트는 0000이 되고, 하위 4비트에는 실제 숫자 값(0~9)을 넣으면 됩니다.
 
+<b>AAA(ASCII adjust after addition)</b> -
+AAA명령어는 ADD/ADC 후 AL의 10진수 결과를 올바른 unpacked decimal 형태로 조정합니다.
 
+<b>AAS(ASCII adjust after subtraction)</b> -
+AAS명령어는 SUB/SBB 후 결과가 BCD 범위를 벗어나면 AL에서 6을 빼고 AH에서 1을 빼서 정상적인 BCD 형태로 고쳐줍니다.
 
+<b>AAM(ASCII adjust after multiplication)</b> -
+AAM명령어는 MUL로 나온 이진 곱셈 결과를 unpacked decimal 10진수 형태로 변환합니다.
 
+<b>AAD(ASCII adjust before division)</b> -
+AAD명령어는 AX에 있는 unpacked decimal 값을 DIV 실행을 위해 이진(binary) 형태로 변환합니다
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<b>DAA(decimal adjust after addition)</b> -
+DAA명령어는 ADD/ADC 후 AL의 이진 합을 packed decimal 형태로 조정합니다.
   
+<b>DAS(decimal adjust after subtraction)</b> -
+DAS명령어는 SUB/SBB 후 AL의 이진 결과를 packed decimal 형태로 조정합니다.
+
+
 </pre>
 
 
@@ -133,11 +157,7 @@ imul은 오퍼랜드 2개 이상일 때만 사용할 수 있음
 
 
 
-p34
-div는 반대로 al로 나누고, ah에 저장합니다.
 
-p35
-몫은 AX, 나머지는 DX에 들어간다.
 
 p37
 cwd - 부호 확장 명령어(SiGN비트가 어떤 숫자에 따라서 부호 확장할때, 1로 채우는지, 0으로 채우는지 결정된다.)
@@ -157,31 +177,6 @@ ADC명령어 - ??
 p48
 SBB - 자리 빌림
 최상위 비트에서 캐리가 발생하거나, 자리 빌림이 발생하면, 1로 세팅되는게 캐리 플래그입니다. 그럴경우에 carry flag로 같이 연산에 포함하세요 라는게 SBB입니다.
-
-p50~51
-ASCII
-
-p51
-AAA명령어 - ??...
-add
-
-p55
-AAS명령어 - ??? 
-sub 
-popf - ???
-
-p56
-AAM명령어 - ???
-
-
-p57
-AAD명령어 - ????
-
-p59
-DAA - 16진수이면 그걸 무시하고, h를 뺀 숫자(10진수로 h뺀 숫자)를 더해준다.  
-
-p60
-DAS명령어 - ????
 
 
 
