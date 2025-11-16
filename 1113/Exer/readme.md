@@ -296,17 +296,29 @@ adding two unknown ASCII decimal digits. Use the Intel 64 and IA-32 Instruction 
 문제: AAA를 실행하면 AL과 AH가 어떻게 변하고, CF/AF가 어떻게 되는지 설명하라.
 AX = 0072h, Auxiliary Carry(AC) 플래그가 세트됨 (즉, 하위 4비트 덧셈에서 자리 올림 발생) , AAA (ASCII Adjust after Addition) 명령어를 실행하면 AL 레지스터가 **BCD(Decimal Adjusted)**로 변환됨.
 
-A. AX = 0178h, AL = 78h, AH = 01h, CF = 1, AF = 1 
+A. AAA는 AF가 세트되면 하위 4비트에 6을 더하고 상위 자리 올림을 수행하기에 AL = 78h, AH = 01h, CF = 1, AF = 1 
 
+Q15.<b> Challenge: Using only SUB, MOV, and AND instructions, show how to calculate x = n mod y, assuming that you are given the values of n and y. 
+You can assume that n is any 32-bit unsigned integer, and y is a power of 2.</b>
+SUB, MOV, AND 명령어만 사용해서 x = n mod y를 계산하는 방법을 보여주세요. n과 y의 값이 주어져 있다고 가정하고, n은 32비트 부호 없는 정수이고, y는 2의 거듭제곱이라고 가정합니다.
+A. mov eax, n      
+   mov ebx, y      
+   sub ebx, 1     
+   and eax, ebx    
+   mov x, eax      
 
+Q16.<b>Challenge: Using only SAR, ADD, and XOR instructions (but no conditional jumps), write code that calculates the absolute value of the signed 
+integer in the EAX register. Hints: A number can be negated by adding 1 to it and then forming its one’s complement. Also, if
+you XOR an integer with all 1s, its 1s are reversed. On the other hand, if you XOR an integer with all zeros, the integer is unchanged.</b>
+EAX 레지스터에 들어있는 부호 있는 정수의 절댓값을 계산하라. 사용할 수 있는 명령어는 SAR, ADD, XOR 뿐이며, 조건문이나 점프는 사용 불가.
+힌트:
+ 1. 수를 **부호 반전(negate)**하려면, 1을 더한 후 1의 보수(complement)를 취하면 됨.
+ 2. XOR를 사용하면 특정 패턴과 비트 단위로 반전 가능: XOR 0 → 값 그대로, XOR 0xFFFFFFFF → 모든 비트 반전
 
+A. mov ebx, eax     
+  sar eax, 31       
+  add ebx, eax      
+  xor ebx, eax 
+  mov eax, ebx   
 
-
-
-  
-
-
-
-  
-  
 </pre>
