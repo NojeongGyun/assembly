@@ -27,6 +27,8 @@ p38깊이 안들어감
 p49
 subl@0 EXTERN subl@0:PROC 둘다 사용하면 없어도 에러가 나지 않고, subl만 사용하면 없으면 에러가 납니다.
 
+p52
+외부에서 허용할때는 public, 쓸때는 EXTERNDEF을 씀
 
 
 
