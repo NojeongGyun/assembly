@@ -99,15 +99,7 @@ ex) MyProc PROC param1:DWORD, param2:BYTE // param1은 [ebp+8], param2는 [ebp+1
 2. 프로시저에서 읽고 수정 
 3. 호출자에게 반영
   
-
-p16 
-예시잘보기
-  
-p17
-  Enter을 하면 Leave를 함
-
-
-p38깊이 안들어감
+~~~~p47부터 시작~~~~
   
 p49
 subl@0 EXTERN subl@0:PROC 둘다 사용하면 없어도 에러가 나지 않고, subl만 사용하면 없으면 에러가 납니다.
