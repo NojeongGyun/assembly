@@ -46,6 +46,27 @@ LEAVE 명령어는 사실상 1. mov esp, ebp  2.pop ebp  두개의 명령을 합
 LOCAL지시어는 하나 이상의 지역 변수를 이름을 붙여서 선언하고, 각 변수에 크기 속성을 지정합니다.
 ex) LOCAL var1:DWORD, var2:BYTE // var1은 DWORD크기로, var2는 BYTE크기로 변수 지정
 
+<b>INVOKE</b> -
+INVOKE 지시어는 MODEL 지시어의 언어 규칙에 따라 인수들을 스택에 push하고, 그 후 해당 프로시저를 호출합니다. 
+INVOKE는 여러 개의 인수를 한 줄에 전달할 수 있기 때문에 CALL 명령어를 편리하게 대체합니다.
+ex) - Call -
+    push param3
+    push param2
+    push param1
+    call Func
+
+    - invoke(1) -
+  INVOKE Func, param1, param2, param3
+
+    - invoke(2) -
+  INVOKE Func,
+         param1,
+         param2,
+         param3
+
+- invoke 명령어는 invoke(2)처럼 각 인수를 소스 코드에서 여러줄에 나누어 작성 할 수도 있습니다.
+
+  
 - <mark>재귀 서브루틴</mark> -
 재귀 서브 루틴은 직접 또는 간접적으로 자기 자신을 호출하는 서브루틴을 말합니다. 만약 종료 조건이 없다면 무한 반복하여 해당 내용을 실행하기에 종료조건을 넣어야합니다.
 재귀 서브 루틴은 임시 데이터를 스택 매개변수에 저장하는 경우가 있는데, 재귀 호출이 종료되어 차례로 되돌아갈 때, 스택에 저장된 데이터는 유용하게 사용될 수 있습니다.
