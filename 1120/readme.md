@@ -27,22 +27,22 @@ EBP는 현재 스택 프레임의 기준점 역할을 합니다. ESP는 push와 
 STDCALL은 함수 호출 규약 중 하나로, 함수가 return할 때 인수를 정리합니다. 즉 호출한 쪽이 아니라, 함수가 스택에서 인자를 제거합니다.
 ex) ret 12 //ret 12는 반환과 동시에 12바이트만큼 스택을 정리(pop)하는 명령입니다. 스택은 push 할 때 ESP가 내려가고, pop 할 때 ESP가 올라갑니다.
              따라서 ret 12는 ESP를 12바이트 증가시켜, 4바이트 인자 3개를 한꺼번에 제거하는 것과 같다.
-
-- <mark>LEA</mark> -
+- <mark>명령어 및 지시어</mark> -
+<b>LEA</b> -
 LEA명령어는 간접 피연산자의 주소를 반환하는 명령어 입니다.
 ex) mov eax, [ebx]   ; ebx가 가리키는 주소의 값을 eax에 저장함
     lea eax, [ebx]   ; ebx가 가리키는 주소를 eax에 저장함
 
-- <mark>ENTER</mark> -
+<b>ENTER</b> -
 ENTER 명령어는 호출된 프로시저를 위해 자동으로 스택 프레임을 생성한다. 이 명령어는 지역 변수를 위한 스택 공간을 확보하고, EBP를 스택에 저장할 떄 사용됩니다.
 ENTER 명령어 사용방법은 첫 번째 오퍼랜드는 지역 변수를 위해 확보할 스택 공간의 바이트 수를 지정하는 상수이고, 두 번째 오퍼랜드는 해당 프로시저의 중첩 수준을 지정합니다.
 ex) ENTER 12, 1 // 지역 변수 공간 12바이트 확보, 상위 EBP 1개 더 저장
 
-- <mark>LEAVE</mark> -
+<b>LEAVE</b> -
 LEAVE 명령어는 프로시저의 스택 프레임을 종료합니다. LEAVE는 이전 ENTER 명령어의 동작을 되돌려서, 프로시저가 호출될 때의 값으로 ESP와 EBP를 복원합니다.
 LEAVE 명령어는 사실상 1. mov esp, ebp  2.pop ebp  두개의 명령을 합쳐 놓은 것입니다.
 
-- <mark>LOCAL</mark> -
+<b>LOCAL</b> -
 LOCAL지시어는 하나 이상의 지역 변수를 이름을 붙여서 선언하고, 각 변수에 크기 속성을 지정합니다.
 ex) LOCAL var1:DWORD, var2:BYTE // var1은 DWORD크기로, var2는 BYTE크기로 변수 지정
 
