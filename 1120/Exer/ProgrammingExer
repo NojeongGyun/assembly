@@ -354,6 +354,7 @@ main ENDP
 END main
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 Q8. [Counting Matching Elements]
 Write a procedure named CountMatches that receives points to two arrays of signed doublewords, and a third parameter that indicates the length of the two arrays. For each element xi
 in the first array, if the corresponding yiin the second array is equal, increment a count. At the end,
@@ -445,6 +446,7 @@ END main
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 Q9. [Counting Nearly Matching Elements]
 Write a procedure named CountNearMatches that receives pointers to two arrays of signed doublewords, 
 a parameter that indicates the length of the two arrays, and a parameter that indicates the
@@ -526,6 +528,7 @@ CountNearMatches ENDP
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 Q10.[Show Procedure Parameters]
 Write a procedure named ShowParams that displays the address and hexadecimal value of the
 32-bit parameters on the runtime stack of the procedure that called it. The parameters are to be
