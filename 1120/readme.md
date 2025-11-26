@@ -78,6 +78,9 @@ ex) MyProc PROC param1:DWORD, param2:BYTE // param1은 [ebp+8], param2는 [ebp+1
     ...
     MyProc ENDP
 
+<b>EXTERN</b>
+ EXTERN 지시어는 현재 모듈 외부의 프로시저를 호출할 때 사용하며, 해당 프로시저의 이름과 스택 프레임 크기를 지정합니다. 
+
 
 - <mark>재귀 서브루틴</mark> -
 재귀 서브 루틴은 직접 또는 간접적으로 자기 자신을 호출하는 서브루틴을 말합니다. 만약 종료 조건이 없다면 무한 반복하여 해당 내용을 실행하기에 종료조건을 넣어야합니다.
@@ -109,6 +112,11 @@ ex) mysub Proc Private // mysub라는 프로시저는 이 모듈 내부에서만
 <b>PUBLIC</b> -
 PUBLIC지시어는 현재 모듈의 심볼(프로시저, 변수 등)을 다른 모듈에서 사용할 수 있도록 공개하는 역할을 합니다.
 PUBLIC 지시어는 이름들을 쉼표로 구분한 목록을 인수로 여러개 받을 수 있고, 개별 프로시저를 직접 public으로 지정할 수도 있습니다.
+ex) - 쉼표로 여러개 받기 -
+  PUBLIC AddTwo, SubTwo, Multiply  // AddTwo, SubTwo, Multiply 프로시저에 PUBLIC을 적용
+    - 한개 받기 -
+  main PROC Public // main 프로시저에 PUBLIC 적용  
+
 
 ~~~~p47부터 시작~~~~
   
