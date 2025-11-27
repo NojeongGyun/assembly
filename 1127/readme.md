@@ -31,6 +31,16 @@ rep movsb RDI RSI //  ECX만큼 RSI[0] -> RDI[0], RSI[1] -> RDI[1]... RSI[ECX] -
                       위치는 RSI, RDI는 ECX만큼 주소값이 증가하고, 값은 RSI는 그대로고, RDI는 ECX만큼의 수만큼 앞의 문자열이 바뀝니다.
 
 
+p7
+repe - RCX = 0, ZF = 1일때까지 반복
+
+p11
+cmp는 무조권 결과를 플래그레지스터에 저장하기에 레지스터에 따라 점프할지말지 결정함
+
+p25
+bx의 목적
+
+
 
 
 
