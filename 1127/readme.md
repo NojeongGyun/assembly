@@ -28,6 +28,7 @@ RDI - 쓰기
 
 movsb - 메모리에 복사하는 명령어인데, RSI(원본), RDI(목적지)가 필요한 이유는 말 그대로 목적지에 원본을 저장하기 때문이다.
 rep movsb RDI RSI //  ECX만큼 RSI[0] -> RDI[0], RSI[1] -> RDI[1]... RSI[ECX] -> RDI[ECX] 
+                      위치는 RSI, RDI는 ECX만큼 주소값이 증가하고, 값은 RSI는 그대로고, RDI는 ECX만큼의 수만큼 앞의 문자열이 바뀝니다.
 
 
 
