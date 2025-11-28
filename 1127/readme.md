@@ -10,19 +10,27 @@ ESI는 원본 메모리 주소를 가리키는 레지스터입니다. 목적의 
 EDI는 목적지 메모리 주소를 가리키는 레지스터입니다. 목적의 문자를 쓰는 위치를 가리킬 떄 사용합니다.
 
 <b>MOVS</b> -
-
+ESI에서 1바이트 읽어서 EDI에 저장
     
 <b>CMPS</b>-
-
+[ESI]와 [EDI]를 비교 → ZF, CF 등의 플래그에 영향
     
 <b>STOS</b> -
-
+stosb  ; AL → [EDI]
+stosw  ; AX → [EDI]
+stosd  ; EAX → [EDI]
     
 <b>LODS</b> -
-
+lodsb  ; 1바이트 읽어서 AL에 저장
+lodsw  ; 2바이트 읽어서 AX에 저장
+lodsd  ; 4바이트 읽어서 EAX에 저장
+AL/AX/EAX ← [ESI]
     
 <b>SCAS</b> -
-
+[EDI]와 AL/AX/EAX 비교 → ZF 등 플래그 설정
+scasb  ; 1바이트 비교
+scasw  ; 2바이트 비교
+scasd  ; 4바이트 비교
     
 - <mark>반복 접두사</mark> -
 반복 접두사란 명령어를 여러 번 자동으로 반복하게 만드는 접두사입니다. 반복 접두사는 REP, REPZ | REPE, REPNZ | REPENE가 있습니다.
