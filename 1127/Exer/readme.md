@@ -68,18 +68,18 @@ A. 조건문 통합이나 불필요한 점프 제거를 통해 L4 라벨의 명�
 
 <mark>9.9.2</mark>
 Q1. Show an example of a base-index operand in 32-bit mode.
-  ()
-A.
+  (32비트 모드에서 base-index operand의 예를 보여주세요.)
+A. mov eax, [ebx + esi*4]
   
 Q2. Show an example of a base-index-displacement operand in 32-bit mode.
-  ()
-A.
+  (32비트 모드에서 base-index-displacement operand의 예를 보여주세요.)
+A. mov eax, [ebx + esi*4 + 8]
   
 Q3. Suppose a two-dimensional array of doublewords has three logical rows and four logical
 columns. Write an expression using ESI and EDI that addresses the third column in the second row. (Numbering for rows and columns starts at zero.)
   [해석]
-
-A.
+두 차원 배열이 있으며, 이 배열은 3개의 논리적 행과 4개의 논리적 열을 가지고 있습니다. ESI와 EDI를 사용하여 두 번째 행의 세 번째 열을 주소 지정하는 표현식을 작성하세요. (행과 열의 번호는 0부터 시작합니다.)
+A. mov eax, [esi + edi*4 + 4*4]
   
 Q4. Write instructions using CMPSW that compare two arrays of 16-bit values named sourcew and targetw.
   ()
