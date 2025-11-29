@@ -1,7 +1,10 @@
 <pre>
 <mark>9.9.1</mark> 
-1. Which Direction flag setting causes index registers to move backward through memory
-when executing string primitives?
+Q1. Which Direction flag setting causes index registers to move backward through memory 
+  when executing string primitives?
+  (어떤 방향 플래그 설정이 문자열 처리 명령어 실행 시 인덱스 레지스터가 메모리에서 뒤로 이동하게 만드나요?)
+A. DF = 1
+
 2. When a repeat prefix is used with STOSW, what value is added to or subtracted from the
 index register?
 3. In what way is the CMPS instruction ambiguous?
