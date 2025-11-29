@@ -184,28 +184,48 @@ A. Str_lcase:
     end:
         ret
 
-  
 Q9. Create a 64-bit version of the Str_trim procedure. 
-  ()
-A.
+  (Str_trim 절차의 64비트 버전을 작성하세요.)
+A. Str_trim_64:
+    mov rsi, rdi
+  
+find_end:
+    cmp byte [rsi], 0         
+    je  done                 
+    inc rsi                   
+    jmp find_end
+
+done:
+    dec rsi                     
+
+trim_loop:
+    cmp byte [rsi], al         
+    jne done_trim            
+    dec rsi                   
+    cmp rsi, rdi               
+    je  done_trim
+    jmp trim_loop
+
+done_trim:
+    mov byte [rsi + 1], 0      
+    ret
   
 Q10. Show an example of a base-index operand in 64-bit mode.
-  ()
-A. 
+  (64비트 모드에서 기준-인덱스 오퍼랜드의 예시를 보여주세요.)
+A. mov rax, [rdi + rsi*4]
   
 Q11. Assuming that EBX contains a row index into a two-dimensional array of 32-bit integers
 named myArray and EDI contains the index of a column, write a single statement that
 moves the content of the given array element into the EAX register.
   [해석]
-
-A.
+EBX 레지스터에 2차원 배열 myArray의 행 인덱스가 들어 있고, EDI 레지스터에 열 인덱스가 들어 있을 때, 주어진 배열 요소의 내용을 EAX 레지스터로 이동시키는 한 문장을 작성하세요.
+A. mov eax, [myArray + ebx*4 + edi*4]
   
 Q12. Assuming that RBX contains a row index into a two-dimensional array of 64-bit integers
 named myArray and RDI contains the index of a column, write a single statement that
 moves the content of the given array element into the RAX register
   [해석]
-
-A. 
-
+RBX 레지스터에 64비트 정수형 2차원 배열 myArray의 행 인덱스가 들어 있고, RDI 레지스터에 열 인덱스가 들어 있을 때, 주어진 배열 요소의 내용을 RAX 레지스터로 이동시키는 한 문장을 작성하세요.
+A. mov rax, [myArray + rbx*8 + rdi*8]
 
 </pre>
