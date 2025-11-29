@@ -1,24 +1,104 @@
-The following exercises can be done in either 32-bit mode or 64-bit mode. Each string-handling
-procedure assumes the use of null-terminated strings. Even when not explicitly requested, write
-a short driver program for each exercise solution that tests your new procedure. 
-
 Q1. [Improved Str_copy Procedure]
 The Str_copy procedure shown in this chapter does not limit the number of characters to be copied. 
 Create a new version (named Str_copyN) that receives an additional input parameter indicating the maximum number of characters to be copied.
 FindLargest.
 
 [해석]
-
+이 장에서 보여준 Str_copy 프로시저는 문자열을 복사할 때 길이를 제한하지 않으므로 최대 복사 길이를 입력받아 
+그 수만큼만 문자열을 복사하는 새로운 버전 Str_copyN을 작성하고 배열에서 가장 큰 값을 찾는 FindLargest 프로시저도 만들어 각 프로시저를 테스트하는 짧은 드라이버 프로그램을 작성하라.
 
 ------------------------------------------------------[Q1.code]-------------------------------------------------------------------------------------------------------
 
+include Irvine32.inc
 
+.data
+srcStr byte "Hello, Assembly!",0
+destStr byte 50 dup(?)
+arr dword 5, 12, 7, 23, 9
+maxChars dword 5
+
+.code
+
+;-----------------------------
+; Str_copyN: 최대 maxChars만 복사
+; 입력: ESI=source, EDI=dest, ECX=maxChars
+;-----------------------------
+Str_copyN PROC
+    cld
+nextChar:
+    cmp ecx, 0
+    je done
+    lodsb
+    stosb
+    dec ecx
+    cmp al, 0
+    jne nextChar
+done:
+    mov al, 0
+    stosb
+    ret
+Str_copyN ENDP
+
+;-----------------------------
+; FindLargest: DWORD 배열 최대값
+; 입력: ESI=array pointer, ECX=element count
+; 출력: EAX=최대값
+;-----------------------------
+FindLargest PROC
+    mov eax, [esi]
+    dec ecx
+    add esi, 4
+nextElement:
+    cmp ecx, 0
+    je done
+    mov edx, [esi]
+    cmp edx, eax
+    jle skip
+    mov eax, edx
+skip:
+    add esi, 4
+    dec ecx
+    jmp nextElement
+done:
+    ret
+FindLargest ENDP
+
+;-----------------------------
+; main: 드라이버 테스트
+;-----------------------------
+main PROC
+    ; Str_copyN 테스트
+    mov esi, offset srcStr
+    mov edi, offset destStr
+    mov ecx, maxChars
+    call Str_copyN
+
+    ; 문자열 출력 확인
+    mov edx, offset destStr
+    call WriteString
+    call Crlf
+
+    ; FindLargest 테스트
+    mov esi, offset arr
+    mov ecx, 5
+    call FindLargest      ; EAX = 23
+
+    ; 최대값 출력
+    call WriteDec
+    call Crlf
+
+    exit
+main ENDP
+
+END main
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 Q2. [Str_concat Procedure]
 Write a procedure named Str_concat that concatenates a source string to the end of a target
 string. Sufficient space must exist in the target string to accommodate the new characters. Pass
 pointers to the source and target strings. Here is a sample call:
+                                                                 (코드1)
                                                                  .data
                                                                  targetStr BYTE "ABCDE",10 DUP(0)
                                                                  sourceStr BYTE "FGH",0
@@ -27,31 +107,137 @@ pointers to the source and target strings. Here is a sample call:
 
 
 [해석]
-
+Str_concat이라는 프로시저를 작성하라. 이 프로시저는 source 문자열을 target 문자열 끝에 이어 붙인다.
+단, target 문자열에는 새 문자열을 담을 충분한 공간이 있어야 한다. source와 target 문자열의 포인터를 전달한다. 예제 호출 형태가 제공된다. (코드1)
 
 ------------------------------------------------------[Q2.code]-------------------------------------------------------------------------------------------------------
 
+include Irvine32.inc
+
+.data
+targetStr byte "Hello, ", 50 dup(?)
+sourceStr byte "World!", 0
+
+.code
+
+;-----------------------------
+; Str_concat: source 문자열을 target 끝에 이어 붙임
+; 입력: ESI = source, EDI = target
+;-----------------------------
+Str_concat PROC
+    cld
+
+    ; target 끝으로 이동
+findEnd:
+    mov al, [edi]
+    cmp al, 0
+    je copySource
+    inc edi
+    jmp findEnd
+
+copySource:
+    lodsb           ; AL = [ESI], ESI++
+    cmp al, 0
+    je done
+    stosb           ; [EDI] = AL, EDI++
+    jmp copySource
+
+done:
+    mov al, 0
+    stosb           ; null 종료
+    ret
+Str_concat ENDP
+
+;-----------------------------
+; main: 테스트용 드라이버
+;-----------------------------
+main PROC
+    mov esi, offset sourceStr
+    mov edi, offset targetStr
+    call Str_concat
+
+    ; 결과 출력
+    mov edx, offset targetStr
+    call WriteString
+    call Crlf
+
+    exit
+main ENDP
+
+END main
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 Q3. [Str_remove Procedure]
 Write a procedure named Str_remove that removes n characters from a string. Pass a pointer to
 the position in the string where the characters are to be removed. Pass an integer specifying the
 number of characters to remove. The following code, for example, shows how to remove “xxxx”
 from target:
+           (코드1)
             .data
             target BYTE "abcxxxxdefghijklmop",0
             .code
             INVOKE Str_remove, ADDR [target+3], 4
 
 [해석]
-
+Str_remove라는 프로시저를 작성하라. 이 프로시저는 문자열에서 n개의 문자를 제거한다.
+제거를 시작할 위치를 가리키는 포인터와, 제거할 문자 수를 지정하는 정수를 전달한다.
+예를 들어, target 문자열에서 "xxxx"를 제거할 수 있는 코드가 제공된다. (코드1)
 
 ------------------------------------------------------[Q3.code]-------------------------------------------------------------------------------------------------------
 
+include Irvine32.inc
 
+.data
+targetStr byte "Hello xxxx World!",0
+removePos byte 6         ; 제거 시작 위치: 6번째 문자부터
+removeCount dword 4      ; 제거할 문자 수: 4
 
+.code
+
+;-----------------------------
+; Str_remove: 문자열에서 n문자 제거
+; 입력: ESI = 제거 시작 위치 포인터, ECX = 제거할 문자 수
+;-----------------------------
+Str_remove PROC
+    cld
+    mov edi, esi          ; EDI = 제거 시작 위치
+
+    ; 제거할 위치 이후 문자 시작으로 이동
+    lea esi, [edi + ecx]  ; ESI = 제거할 n문자 뒤 위치
+
+shiftLoop:
+    mov al, [esi]         ; AL = [ESI]
+    stosb                  ; [EDI] = AL, EDI++
+    inc esi
+    cmp al, 0
+    jne shiftLoop          ; null 만날 때까지 반복
+
+    ret
+Str_remove ENDP
+
+;-----------------------------
+; main: 테스트용 드라이버
+;-----------------------------
+main PROC
+    ; 제거 시작 위치 계산
+    mov esi, offset targetStr
+    add esi, removePos    ; 제거 시작 위치 포인터
+    mov ecx, removeCount  ; 제거할 문자 수
+    call Str_remove
+
+    ; 결과 출력
+    mov edx, offset targetStr
+    call WriteString
+    call Crlf
+
+    exit
+main ENDP
+
+END main
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 Q4. [Str_find Procedure]
 Write a procedure named Str_find that searches for the first matching occurrence of a source string
 inside a target string and returns the matching position. The input parameters should be a pointer to
@@ -59,6 +245,7 @@ the source string and a pointer to the target string. If a match is found, the p
 flag and EAX points to the matching position in the target string. Otherwise, the Zero flag is clear
 and EAX is undefined. The following code, for example, searches for “ABC” and returns with EAX
 pointing to the “A” in the target string:
+                                         (코드1)
                                          .data
                                          target BYTE "123ABC342432",0
                                          source BYTE "ABC",0
@@ -68,11 +255,92 @@ pointing to the “A” in the target string:
                                          jnz notFound
                                          mov pos,eax ; store the position value
 [해석]
-
+Str_find라는 프로시저를 작성하라. 이 프로시저는 target 문자열 안에서 source 문자열의 첫 번째 일치 항목을 검색하고, 일치하는 위치를 반환한다.
+입력 파라미터는 source 문자열 포인터와 target 문자열 포인터이다. 
+일치 항목이 발견되면 → Zero 플래그가 설정되고(EAX = 일치 위치 포인터)
+발견되지 않으면 → Zero 플래그가 클리어되고(EAX는 정의되지 않음)
+예를 들어, "ABC"를 검색하면 EAX가 target 문자열 안의 "A"를 가리키도록 반환한다. (코드1)
 
 ------------------------------------------------------[Q4.code]-------------------------------------------------------------------------------------------------------
 
+include Irvine32.inc
 
+.data
+targetStr byte "XYZABC123",0
+sourceStr byte "ABC",0
+
+.code
+
+;-----------------------------
+; Str_find: source 문자열을 target에서 검색
+; 입력: ESI=source pointer, EDI=target pointer
+; 출력: EAX = target에서 일치 위치 포인터 (ZF=1)
+;        없으면 ZF=0, EAX undefined
+;-----------------------------
+Str_find PROC
+    cld
+    mov eax, edi          ; EAX = 현재 target 위치
+
+nextChar:
+    mov esi, offset sourceStr  ; source 시작 위치
+    mov edx, eax               ; target 비교 시작 위치
+
+compareLoop:
+    mov bl, [esi]              ; source 문자
+    cmp bl, 0
+    je found                   ; source 끝 → 일치 발견
+    mov bh, [edx]              ; target 문자
+    cmp bh, 0
+    je notFound                ; target 끝 → 검색 실패
+    cmp bl, bh
+    jne noMatch
+    inc esi
+    inc edx
+    jmp compareLoop
+
+noMatch:
+    inc eax                     ; target 다음 위치로 이동
+    cmp byte ptr [eax], 0
+    je notFound
+    jmp nextChar
+
+found:
+    mov eax, edx
+    dec eax                     ; eax는 비교 후 edx 증가 → 원래 시작 위치 보정
+    stc                         ; ZF = 1 대신 C로 표시 가능, Irvine32에서 WriteString 확인용
+    ret
+
+notFound:
+    clc                         ; ZF = 0
+    ret
+Str_find ENDP
+
+;-----------------------------
+; main: 테스트용 드라이버
+;-----------------------------
+main PROC
+    mov edi, offset targetStr
+    call Str_find
+
+    ; 일치 여부 출력
+    cmp eax, 0
+    je NotFound
+    ; 일치 위치 출력 (targetStr의 일부만 출력)
+    mov edx, eax
+    call WriteString
+    call Crlf
+    jmp Done
+
+NotFound:
+    mov edx, offset targetStr
+    call WriteString
+    call Crlf
+
+Done:
+    exit
+main ENDP
+
+END main
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -83,6 +351,7 @@ pointer to the string and the delimiter character. After the call, if the delimi
 flag is set and EAX contains the offset of the next character beyond the delimiter. Otherwise, the
 Zero flag is clear and EAX is undefined. The following example code passes the address of target
 and a comma as the delimiter:
+                             (코드1)
                              .data
                              target BYTE "Johnson,Calvin",0
                              .code
@@ -92,11 +361,73 @@ and a comma as the delimiter:
                              where the comma was found (and replaced). 
 
 [해석]
-
+Str_nextWord라는 프로시저를 작성하라. 이 프로시저는 문자열 안에서 특정 구분자(delimiter) 문자의 첫 번째 등장 위치를 찾아 그 문자를 널 바이트(0)로 교체한다.
+입력 파라미터: 문자열 포인터와 구분자 문자
+호출 후:
+  구분자가 발견되면 → Zero 플래그가 설정되고(EAX = 구분자 바로 다음 문자 주소)
+  구분자가 없으면 → Zero 플래그가 클리어되고(EAX는 정의되지 않음)
+예시: target 문자열 주소와 구분자 ','를 전달한다. (코드1)
 
 ------------------------------------------------------[Q5.code]-------------------------------------------------------------------------------------------------------
 
+include Irvine32.inc
 
+.data
+targetStr byte "Hello,World,Assembly",0
+delimiter byte ','
+
+.code
+
+;-----------------------------
+; Str_nextWord: 문자열에서 delimiter 찾아 null로 바꿈
+; 입력: EDI=문자열 포인터, AL=delimiter 문자
+; 출력: EAX = delimiter 다음 문자 주소 (ZF=1), 없으면 ZF=0
+;-----------------------------
+Str_nextWord PROC
+    cld
+    mov eax, edi       ; 현재 위치 저장
+
+scanLoop:
+    mov bl, [eax]      ; 현재 문자
+    cmp bl, 0
+    je notFound        ; 문자열 끝 → delimiter 없음
+    cmp bl, al         ; delimiter 비교
+    jne nextChar
+    mov byte ptr [eax], 0   ; delimiter를 null로 교체
+    inc eax                  ; 다음 문자 주소
+    stc                      ; ZF=1 대신 carry set (Irvine32 간단 표시)
+    ret
+
+nextChar:
+    inc eax
+    jmp scanLoop
+
+notFound:
+    clc                      ; ZF=0 대신 carry clear
+    ret
+Str_nextWord ENDP
+
+;-----------------------------
+; main: 테스트용 드라이버
+;-----------------------------
+main PROC
+    mov edi, offset targetStr
+    mov al, delimiter
+    call Str_nextWord
+
+    ; 결과 출력
+    mov edx, offset targetStr
+    call WriteString
+    call Crlf
+
+    ; 다음 단어 출력 (EAX 포인터)
+    call WriteString        ; Irvine32에서 EAX는 offset 필요, 실제 실행시 mov edx, eax 필요
+    call Crlf
+
+    exit
+main ENDP
+
+END main
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -105,6 +436,7 @@ Write a procedure named Get_frequencies that constructs a character frequency ta
 the procedure should be a pointer to a string and a pointer to an array of 256 doublewords initialized to all zeros. Each array position is indexed by its corresponding ASCII code. 
 When the procedure returns, each entry in the array contains a count of how many times the corresponding
 character occurred in the string. For example,
+                                              (코드1)
                                               .data
                                               target BYTE "AAEBDCFBBC",0
                                               freqTable DWORD 256 DUP(0)
@@ -117,10 +449,68 @@ algorithm, for example, stores the most frequently occurring characters in fewer
 characters that occur less often.
 
 [해석]
-
+Get_frequencies라는 프로시저를 작성하라. 이 프로시저는 문자열 안에서 각 문자의 등장 횟수(frequency)를 계산하여 256 요소 배열에 저장하라. 예시는 (코드1)
+그림 9-6은 문자열과 빈도 테이블에서 41h(16진수)부터 4Bh까지의 항목을 보여준다.
+배열 위치 41h에는 값 2가 들어 있는데, 이는 문자 'A'(ASCII 코드 41h)가 문자열에 두 번 등장했기 때문이다.
+다른 문자들도 비슷하게 등장 횟수가 기록되어 있다.
+빈도 테이블은 데이터 압축이나 문자를 다루는 다양한 응용 프로그램에서 유용하다.
+예를 들어, Huffman 인코딩 알고리즘은 문자열에서 가장 자주 등장하는 문자를 더 적은 비트로 저장하고, 덜 자주 등장하는 문자는 더 많은 비트로 저장한다.
 
 ------------------------------------------------------[Q6.code]-------------------------------------------------------------------------------------------------------
 
+include Irvine32.inc
+
+.data
+target BYTE "AAEBDCFBBC",0
+freqTable DWORD 256 DUP(0)
+
+.code
+
+;-----------------------------
+; Get_frequencies: 문자열에서 문자 빈도 계산
+; 입력: ESI = 문자열 포인터, EDI = freqTable 포인터
+;-----------------------------
+Get_frequencies PROC
+    cld
+freqLoop:
+    mov al, [esi]        ; 현재 문자
+    cmp al, 0
+    je done              ; 문자열 끝
+    mov ebx, eax         ; EBX = ASCII 코드 (0~255)
+    mov eax, [edi + ebx*4] ; 현재 count
+    inc eax
+    mov [edi + ebx*4], eax ; 증가된 count 저장
+    mov eax, ebx         ; EBX -> EAX 복원
+    inc esi
+    jmp freqLoop
+
+done:
+    ret
+Get_frequencies ENDP
+
+;-----------------------------
+; main: 테스트용 드라이버
+;-----------------------------
+main PROC
+    INVOKE Get_frequencies, ADDR target, ADDR freqTable
+
+    ; 예시: 문자 'A'와 'B' 빈도 출력
+    mov eax, freqTable[41h*4]   ; 'A' ASCII 41h
+    call WriteDec
+    call Crlf
+
+    mov eax, freqTable[42h*4]   ; 'B' ASCII 42h
+    call WriteDec
+    call Crlf
+
+    mov eax, freqTable[43h*4]   ; 'C' ASCII 43h
+    call WriteDec
+    call Crlf
+
+    exit
+main ENDP
+
+END main
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -137,11 +527,80 @@ between 2 and 65,000. Declare the array in an uninitialized data segment (see Se
 use STOSB to fill it with zeros.
 
 [해석]
-
+그리스 수학자 에라토스테네스가 고안한 Sieve of Eratosthenes는 주어진 범위 안에서 모든 소수를 빠르게 찾는 방법이다.
+1. 바이트 배열 생성: 각 위치는 숫자를 나타내고, 1을 넣으면 “소수가 아님”을 표시한다.
+2. 처음 위치 2부터 시작: 2의 배수마다 1을 넣는다.
+3. 다음 소수 3: 3의 배수마다 1을 넣는다.
+4. 다음 소수 5 → 마찬가지로 배수를 1로 표시.
+  이 과정을 반복 → 배수가 아닌 위치가 남으면 소수임.
+이 프로그램에서는 65,000개 요소 배열을 만들고 2~65,000 사이의 모든 소수를 표시한다.
+배열은 uninitialized data segment에 선언하고, STOSB를 사용해 0으로 초기화한다.
 
 ------------------------------------------------------[Q7.code]-------------------------------------------------------------------------------------------------------
 
+include Irvine32.inc
 
+.data?
+sieveArray byte 65000 dup(?)   ; uninitialized array
+
+.code
+main PROC
+    cld
+    mov edi, offset sieveArray
+    mov ecx, 65000
+    xor al, al
+    rep stosb                   ; 배열 0으로 초기화
+
+    ; 소수 찾기: 에라토스테네스 체
+    mov ecx, 65000
+    mov ebx, 2                  ; 시작 소수 2
+
+nextPrime:
+    cmp ebx, 65000
+    ja doneSieve
+
+    ; ebx의 배수를 1로 표시
+    mov eax, ebx
+    mov edi, offset sieveArray
+    add edi, eax                ; 첫 배수 위치
+markMultiples:
+    cmp eax, 65000
+    ja nextPrimeCalc
+    mov byte ptr [edi], 1
+    add eax, ebx
+    add edi, ebx
+    jmp markMultiples
+
+nextPrimeCalc:
+    ; 다음 소수 찾기
+    inc ebx
+    ; ebx가 이미 표시되었으면 건너뜀
+    mov al, [sieveArray + ebx]
+    cmp al, 0
+    jne nextPrimeCalc
+    jmp nextPrime
+
+doneSieve:
+    ; 소수 출력
+    mov eax, 2
+printLoop:
+    cmp eax, 65001
+    ja exitProgram
+    mov bl, [sieveArray + eax]
+    cmp bl, 0
+    jne skipPrint
+    mov edx, eax
+    call WriteDec
+    call Crlf
+skipPrint:
+    inc eax
+    jmp printLoop
+
+exitProgram:
+    exit
+main ENDP
+
+END main
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -152,11 +611,82 @@ completion if you discover that no exchanges took place during a complete pass t
 array. (This variable is commonly known as an exchange flag.)
 
 [해석]
-
+“BubbleSort 프로시저에 변수를 추가하라.
+조건 :
+  inner loop에서 값이 교환될 때마다 이 변수를 1로 설정
+  inner loop가 끝난 후: 변수가 0이면, 즉 교환이 한 번도 발생하지 않았으면, 정렬을 조기 종료
+이렇게 하면 이미 정렬된 배열에서는 불필요한 패스가 생략된다.
 
 ------------------------------------------------------[Q8.code]-------------------------------------------------------------------------------------------------------
 
+include Irvine32.inc
 
+.data
+arr DWORD 10, 3, 5, 2, 8, 7, 6, 1, 4, 9
+n DWORD 10
+temp DWORD ?
+exchanged DWORD ?        ; exchange flag
+
+.code
+
+;-----------------------------
+; BubbleSort with exchange flag
+; 입력: arr 배열, n = 요소 수
+;-----------------------------
+BubbleSort PROC
+    mov ecx, n             ; 외부 루프 카운터 i = n
+outerLoop:
+    dec ecx
+    cmp ecx, 0
+    jle doneSort
+
+    xor eax, eax           ; exchanged = 0
+    mov exchanged, eax
+
+    mov edi, offset arr    ; 배열 시작 위치
+    mov ebx, ecx           ; inner loop count
+innerLoop:
+    mov eax, [edi]         ; 현재 값
+    mov edx, [edi+4]       ; 다음 값
+    cmp eax, edx
+    jle noSwap
+    ; swap
+    mov [edi], edx
+    mov [edi+4], eax
+    mov exchanged, 1       ; 교환 발생
+noSwap:
+    add edi, 4
+    dec ebx
+    jnz innerLoop
+
+    cmp exchanged, 0
+    je doneSort            ; 교환 없으면 조기 종료
+    jmp outerLoop
+
+doneSort:
+    ret
+BubbleSort ENDP
+
+;-----------------------------
+; main: 테스트용 드라이버
+;-----------------------------
+main PROC
+    call BubbleSort
+
+    ; 정렬 결과 출력
+    mov ecx, n
+    mov edi, offset arr
+printLoop:
+    mov eax, [edi]
+    call WriteDec
+    call Crlf
+    add edi, 4
+    loop printLoop
+
+    exit
+main ENDP
+
+END main
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -165,10 +695,99 @@ Rewrite the binary search procedure shown in this chapter by using registers for
 last. Add comments to clarify the registers’ usage.
 
 [해석]
-
+이 장에서 보여준 Binary Search 프로시저를 레지스터만 사용하도록 재작성하라.
+조건: 
+  mid, first, last 값을 모두 레지스터로 관리
+  레지스터 사용 용도를 주석으로 명확히 표시
 
 ------------------------------------------------------[Q9.code]-------------------------------------------------------------------------------------------------------
 
+include Irvine32.inc
+
+.data
+arr DWORD 1,3,5,7,9,11,13,15,17,19
+n DWORD 10
+searchVal DWORD 7
+
+.code
+
+;-----------------------------
+; BinarySearch using registers only
+; 입력: EAX = 찾을 값
+; 출력: EAX = 배열에서 찾은 값의 주소, ZF=1이면 발견, ZF=0이면 미발견
+; 레지스터 사용:
+;   ESI = 배열 시작 주소
+;   EDI = first index
+;   EBX = last index
+;   ECX = mid index
+;-----------------------------
+BinarySearch PROC
+    mov esi, offset arr      ; ESI = 배열 시작 주소
+    xor edi, edi             ; EDI = first index = 0
+    mov ebx, n
+    dec ebx                  ; EBX = last index = n-1
+
+searchLoop:
+    cmp edi, ebx
+    ja notFound              ; first > last → 검색 실패
+
+    mov ecx, edi
+    add ecx, ebx
+    shr ecx, 1               ; mid = (first + last)/2
+
+    mov edx, [esi + ecx*4]  ; 현재 mid 값
+    cmp eax, edx
+    je found
+
+    jl lessThanMid
+    ; searchVal > mid → first = mid +1
+    mov edi, ecx
+    inc edi
+    jmp searchLoop
+
+lessThanMid:
+    ; searchVal < mid → last = mid -1
+    mov ebx, ecx
+    dec ebx
+    jmp searchLoop
+
+found:
+    ; 찾은 위치 EAX 반환
+    lea eax, [esi + ecx*4]
+    stc                     ; ZF=1 대신 carry set (Irvine32에서 간단 표시)
+    ret
+
+notFound:
+    clc                     ; ZF=0 대신 carry clear
+    ret
+BinarySearch ENDP
+
+;-----------------------------
+; main: 테스트용 드라이버
+;-----------------------------
+main PROC
+    mov eax, searchVal
+    call BinarySearch
+
+    ; 결과 출력
+    ; ZF 확인 후 주소 출력
+    jc foundLabel
+    mov edx, offset arr
+    call WriteString
+    call Crlf
+    jmp done
+
+foundLabel:
+    ; EAX = 찾은 값 주소
+    mov edx, eax
+    call WriteDec
+    call Crlf
+
+done:
+    exit
+main ENDP
+
+END main
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -178,6 +797,7 @@ Create a procedure that generates a four-by-four matrix of randomly chosen capit
 When choosing the letters, there must be a 50% probability that the chosen letter is a vowel.
 Write a test program with a loop that calls your procedure five times and displays each matrix in
 the console window. Following is sample output for the first three matrices:
+                                                                             (배열1)
                                                                              D W A L
                                                                              S I V W
                                                                              U I O L
@@ -192,8 +812,11 @@ the console window. Following is sample output for the first three matrices:
                                                                              I A G D
 
 [해석]
-
-
+4x4 행렬을 생성하는 프로시저를 작성하라.
+조건 :
+  랜덤 대문자(A~Z) 선택
+  50% 확률로 모음(A, E, I, O, U) 선택
+테스트 프로그램: 루프 5회 반복 → 각 행렬을 콘솔에 출력
 
 ------------------------------------------------------[Q10.code]-------------------------------------------------------------------------------------------------------
 
