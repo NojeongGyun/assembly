@@ -10,27 +10,24 @@ ESI는 원본 메모리 주소를 가리키는 레지스터입니다. 목적의 
 EDI는 목적지 메모리 주소를 가리키는 레지스터입니다. 목적의 문자를 쓰는 위치를 가리킬 떄 사용합니다.
 
 <b>MOVS</b> -
-ESI에서 1바이트 읽어서 EDI에 저장
+ESI에서 원하는 바이트를 읽어서 EDI에 저장
+MOVSB/MOVSW/MOVSD - 1BYTE/2BYTE/4BYTE
     
 <b>CMPS</b>-
-[ESI]와 [EDI]를 비교 → ZF, CF 등의 플래그에 영향
+ESI의 주소의 값*([ESI])와 EDI의 주소의 값([EDI])를 비교하여 ZF, CF 등의 플래그에 영향을 줍니다.
+CMPSB/CMPSW/CMPSD - 1BYTE/2BYTE/4BYTE    
     
 <b>STOS</b> -
-stosb  ; AL → [EDI]
-stosw  ; AX → [EDI]
-stosd  ; EAX → [EDI]
-    
+AL/AX/EAX에서 ESI의 주소에 값([ESI])을 저장합니다. 
+STOSB/STOSW/STOSD(AL/AX/EAX)- 1BYTE/2BYTE/4BYTE
+
 <b>LODS</b> -
-lodsb  ; 1바이트 읽어서 AL에 저장
-lodsw  ; 2바이트 읽어서 AX에 저장
-lodsd  ; 4바이트 읽어서 EAX에 저장
-AL/AX/EAX ← [ESI]
-    
+ESI의 주소의 값([ESI])을 AL/AX/EAX에 저장합니다. STOS와 상반되는 명령입니다.
+STOSB/STOSW/STOSD(AL/AX/EAX)- 1BYTE/2BYTE/4BYTE
+
 <b>SCAS</b> -
-[EDI]와 AL/AX/EAX 비교 → ZF 등 플래그 설정
-scasb  ; 1바이트 비교
-scasw  ; 2바이트 비교
-scasd  ; 4바이트 비교
+ESI 주소의 값([EDI])과 AL/AX/EAX 비교하여 ZF 등 플래그 설정합니다. STOS & LODS와 CMPS를 합친 개념이라고 봐도 무방합니다.
+SCANSB,SCANSW/SCANSD - 1BYTE/2BYTE/4BYTE
     
 - <mark>반복 접두사</mark> -
 반복 접두사란 명령어를 여러 번 자동으로 반복하게 만드는 접두사입니다. 반복 접두사는 REP, REPZ | REPE, REPNZ | REPENE가 있습니다.
