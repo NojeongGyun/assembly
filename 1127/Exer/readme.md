@@ -119,16 +119,71 @@ A. mov esi, offset wordArray
   
 Q6. Write a sequence of instructions that use the Str_compare procedure to determine the larger
 of two input strings and write it to the console window.
-  ()
-A. 
+  [해석]
+Str_compare 절차를 사용하여 두 개의 입력 문자열 중 더 큰 문자열을 비교하고, 그 문자열을 콘솔 창에 출력하는 명령어를 작성하세요.
+A. mov esi, offset string1     
+   mov edi, offset string2    
+  
+   call Str_compare            
+
+   cmp eax, 0                  
+   je  print_both             
+
+  cmp eax, 1                 
+  je  print_string1           
+
+  cmp eax, -1                
+  je  print_string2           
+  
+  print_both:
+      call Str_print           ;
+      call Str_print          
+      jmp end_program
+  
+  print_string1:
+      call Str_print          
+      jmp end_program
+  
+  print_string2:
+      call Str_print          
+      jmp end_program
+  
+  end_program:
+
   
 Q7. Show how to call the Str_trim procedure and remove all trailing "@" characters from a string.
-  ()
-A. 
+  (Str_trim 절차를 호출하여 문자열에서 모든 끝의 "@" 문자를 제거하는 방법을 보여주세요.)
+A. mov esi, offset myString    
+   mov al, '@'               
+   call Str_trim             
   
 Q8. Show how to modify the Str_ucase procedure from the Irvine32 library so it changes all characters to lower case.
-  ()
-A. 
+  (Irvine32 라이브러리의 Str_ucase 절차를 수정하여 모든 문자를 소문자로 변경하도록 하세요.)
+A. Str_lcase:
+    ; ESI가 가리키는 문자열을 소문자로 변환하는 절차
+    ; 문자열의 각 문자를 순차적으로 확인
+    start_loop:
+        mov al, [esi]         ; ESI가 가리키는 현재 문자 가져오기
+        cmp al, 0             ; NULL 문자 (문자열의 끝)인지 확인
+        je  end               ; 끝에 도달하면 종료
+
+        ; 대문자인지 확인 (대문자 'A'~'Z')
+        cmp al, 'A'           ; 'A'보다 크거나 같으면 대문자일 수 있음
+        jl  next_char         ; 대문자가 아니면 다음 문자로 넘어감
+        cmp al, 'Z'           ; 'Z'보다 작거나 같으면 대문자임
+        jg  next_char         ; 대문자가 아니면 다음 문자로 넘어감
+
+        ; 대문자 -> 소문자로 변환 (AL에 32를 더함)
+        add al, 32            ; 대문자에 32를 더해 소문자로 변환
+        mov [esi], al         ; 변환된 문자를 원래 위치에 저장
+
+    next_char:
+        inc esi               ; 다음 문자로 이동
+        jmp start_loop        ; 다시 루프
+
+    end:
+        ret
+
   
 Q9. Create a 64-bit version of the Str_trim procedure. 
   ()
