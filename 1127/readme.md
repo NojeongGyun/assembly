@@ -3,7 +3,6 @@
 MOVS(문자열 복사), CMPS(문자열 비교), STOS (저장), LODS (로드), SCAS (검색) 가 있습니다. 해당 명령어 모두 ESI/EDI의 값을 변경 시키는 명령들 입니다.
 해당 기능을 수행 할 떄 크기를 1바이트로 수행하고 싶다면, B(Byte)를 명령어 뒤에 붙이고, 2바이트는 W(WORD), 4바이트는 D(DOUBLE WORD)를 붙여 사용합니다.
 
-    
 <b>ESI</b> -
 ESI는 원본 메모리 주소를 가리키는 레지스터입니다. 목적의 문자를 읽어오는 위치를 가리킬 떄 사용합니다.
 
@@ -14,7 +13,6 @@ EDI는 목적지 메모리 주소를 가리키는 레지스터입니다. 목적�
 ESI에서 원하는 바이트를 읽어서 EDI에 저장합니다. 원래는 x86 자체 구조 때문에 메모리 to 메모리는 되지 않지만, MOVS 명령은 메모리 to 메모리가 가능합니다.
 MOVSB/MOVSW/MOVSD - 1BYTE/2BYTE/4BYTE
 
-    
 <b>CMPS</b>-
 ESI의 주소의 값*([ESI])와 EDI의 주소의 값([EDI])를 비교하여 ZF, CF 등의 플래그에 영향을 줍니다.
 CMPSB/CMPSW/CMPSD - 1BYTE/2BYTE/4BYTE    
