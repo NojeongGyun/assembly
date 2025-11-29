@@ -149,7 +149,6 @@ A. mov esi, offset string1
       jmp end_program
   
   end_program:
-
   
 Q7. Show how to call the Str_trim procedure and remove all trailing "@" characters from a string.
   (Str_trim 절차를 호출하여 문자열에서 모든 끝의 "@" 문자를 제거하는 방법을 보여주세요.)
