@@ -95,11 +95,27 @@ A.  mov esi, offset sourcew
 
 elements_equal:
    
-  
 Q5. Write instructions that use SCASW to scan for the 16-bit value 0100h in an array named
 wordArray, and copy the offset of the matching member into the EAX register.
-  ()
-A. 
+  [해석]
+SCASW 명령어를 사용하여 wordArray 배열에서 16비트 값 0100h를 검색하고, 일치하는 항목의 오프셋을 EAX 레지스터에 복사하는 명령어를 작성하세요.
+A. mov esi, offset wordArray    
+   mov eax, 0100h               
+   xor ecx, ecx                
+  
+   scan_loop:
+      scasw                     
+      je found_match           
+      inc ecx                   
+      loop scan_loop           
+  
+      jmp end
+  
+   found_match:
+       mov eax, ecx             
+  
+   end:
+      ....
   
 Q6. Write a sequence of instructions that use the Str_compare procedure to determine the larger
 of two input strings and write it to the console window.
