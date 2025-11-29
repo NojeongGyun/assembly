@@ -83,21 +83,18 @@ A. mov eax, [esi + edi*4 + 4*4]
   
 Q4. Write instructions using CMPSW that compare two arrays of 16-bit values named sourcew and targetw.
   (16비트 값으로 구성된 두 배열 sourcew와 targetw를 비교하는 CMPSW 명령어를 사용한 어셈블리 코드를 작성하세요.)
-A. ; SI와 DI는 배열의 시작 주소를 가리킨다고 가정
-    mov esi, offset sourcew    ; sourcew 배열의 시작 주소를 ESI에 로드
-    mov edi, offset targetw    ; targetw 배열의 시작 주소를 EDI에 로드
-    mov ecx, 4                 ; 비교할 항목의 수 (예: 4개의 16비트 값 비교)
-
-compare_loop:
-    cmpsw                   ; SI와 DI가 가리키는 16비트 값을 비교
-    je  elements_equal      ; 두 값이 같으면 elements_equal로 점프
-    ; 두 값이 다르면 추가 작업을 수행할 수 있습니다.
-    ; 예를 들어, 다르면 루프를 종료하거나 처리하는 로직을 작성할 수 있습니다.
-    
-    loop compare_loop       ; ECX가 0이 될 때까지 반복
+A.  mov esi, offset sourcew    
+    mov edi, offset targetw    
+    mov ecx, 4                
+  
+    compare_loop:
+      cmpsw                   
+      je  elements_equal    
+  
+    loop compare_loop     
 
 elements_equal:
-    ; 두 배열이 같을 때의 처리
+   
   
 Q5. Write instructions that use SCASW to scan for the 16-bit value 0100h in an array named
 wordArray, and copy the offset of the matching member into the EAX register.
