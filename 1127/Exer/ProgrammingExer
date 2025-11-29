@@ -1,1 +1,607 @@
+Q1. [FindLargest Procedure]
+Create a procedure named FindLargest that receives two parameters: a pointer to a signed
+doubleword array, and a count of the array’s length. The procedure must return the value of
+the largest array member in EAX. Use the PROC directive with a parameter list when declaring the procedure. Preserve all registers (except EAX) that are modified by the procedure.
+Write a test program that calls FindLargest and passes three different arrays of different
+lengths. Be sure to include negative values in your arrays. Create a PROTO declaration for
+FindLargest.
+[해석]
+AddThree라는 프로시저가 세 개의 더블워드를 더한다고 가정합니다. 호출 시 스택을 그림으로 그리세요.
 
+------------------------------------------------------[Q1.code]-------------------------------------------------------------------------------------------------------
+
+push 10h
+push 20h
+push 30h
+call AddThree
+
+- 그림 -
+
+param3 (30h) - ebp + 16     
+param2 (20h) - ebp + 12
+param1 (10h) - ebp + 8
+return Addresses
+이전 EBP
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Q. [Chess Board]
+Write a program that draws an 8  8 chess board, with alternating gray and white squares. You
+can use the SetTextColor and Gotoxy procedures from the Irvine32 library. Avoid the use of global variables, and use declared parameters in all procedures. Use short procedures that are
+focused on a single task.
+[해석]
+세 개의 정수 매개변수를 받는 AddThree 프로시저를 작성하라. 그리고 세 값을 더한 합계를 EAX 레지스터에 반환하라.
+
+------------------------------------------------------[Q2.code]-------------------------------------------------------------------------------------------------------
+
+AddThree PROC
+    push ebp            ; 스택 프레임 시작
+    mov ebp, esp
+
+    mov eax, [ebp+8]    ; param1
+    add eax, [ebp+12]   ; param2
+    add eax, [ebp+16]   ; param3
+
+    pop ebp             ; 스택 프레임 종료
+    ret 12              ; 매개변수 3개 * 4바이트 = 12바이트 정리
+AddThree ENDP
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Q3. [Chess Board with Alternating Colors]
+This exercise extends Exercise 2. Every 500 milliseconds, change the color of the colored
+squares and redisplay the board. Continue until you have shown the board 16 times, using all
+possible 4-bit background colors. (The white squares remain white throughout.)
+[해석]
+이 연습 문제는 연습 문제 2를 확장한 것입니다. 500밀리초마다 색이 있는 사각형의 색을 바꾸고, 보드를 다시 표시하세요.
+보드를 16번 표시할 때까지 계속하며, 가능한 모든 4비트 배경 색상을 사용하세요.(하얀색 사각형은 계속 하얀색으로 유지됩니다.)
+
+------------------------------------------------------[Q3.code]-------------------------------------------------------------------------------------------------------
+
+.data
+colors BYTE 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 ; 4-bit 배경색
+board  BYTE 8*8 DUP(0)  ; 8x8 보드 예제, 0 = 하얀색
+
+.code
+main PROC
+    mov ecx, 16          ; 16번 반복
+    xor ebx, ebx          ; 색 인덱스
+
+NextColor:
+    ; board의 색 있는 사각형 색 변경
+    ; 예: 모든 1~15 값에 colors[ebx] 적용
+    ; (간단하게 board 배열 값 변경 가능)
+
+    call DrawBoard       ; 보드 출력
+
+    ; 500ms 지연
+    mov eax, 500
+    call Wait
+
+    inc ebx
+    cmp ebx, 16
+    jl NextColor
+
+    exit
+main ENDP
+END main
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Q4. [FindThrees Procedure]
+Create a procedure named FindThrees that returns 1 if an array has three consecutive values of
+3 somewhere in the array. Otherwise, return 0. The procedure’s input parameter list contains a
+pointer to the array and the array’s size. Use the PROC directive with a parameter list when
+declaring the procedure. Preserve all registers (except EAX) that are modified by the procedure.
+Write a test program that calls FindThrees several times with different arrays. 
+[해석]
+배열을 입력으로 받음 (포인터 + 배열 크기), 배열에 연속된 3개의 3이 있으면 EAX = 1 반환, 없으면 EAX = 0
+PROC 선언 시 매개변수 리스트 사용, EAX 제외 모든 레지스터 보존, 테스트 프로그램에서 여러 배열로 호출
+
+------------------------------------------------------[Q4.code]-------------------------------------------------------------------------------------------------------
+
+- Proto 선언 -
+FindThrees PROTO :PTR DWORD, :DWORD
+
+- FindThrees PROC 구현 -
+FindThrees PROC arr:PTR DWORD, size:DWORD
+    push ebp
+    mov ebp, esp
+    push ebx        ; 보존
+    push esi        ; 보존
+
+    mov eax, 0      ; 기본값: 연속된 3개 없음
+    mov esi, arr    ; 배열 시작 주소
+    mov ecx, size
+    cmp ecx, 3
+    jb done         ; 배열 크기 < 3이면 종료
+
+    xor ebx, ebx    ; 인덱스 i = 0
+
+check_loop:
+    mov edx, [esi + ebx*4]      ; arr[i]
+    cmp edx, 3
+    jne next_index
+    mov edx, [esi + (ebx+1)*4]  ; arr[i+1]
+    cmp edx, 3
+    jne next_index
+    mov edx, [esi + (ebx+2)*4]  ; arr[i+2]
+    cmp edx, 3
+    jne next_index
+
+    mov eax, 1                  ; 연속 3개 3 발견
+    jmp done
+
+next_index:
+    inc ebx
+    mov edx, size
+    sub edx, 2                  ; i <= size - 3
+    cmp ebx, edx
+    jle check_loop
+
+done:
+    pop esi
+    pop ebx
+    pop ebp
+    ret 8
+FindThrees ENDP
+
+- test -
+INCLUDE Irvine32.inc
+
+.data
+arr1 DWORD 1,3,3,3,5,6
+arr2 DWORD 1,2,3,4,5
+arr3 DWORD 3,3,2,3,3,3
+arr4 DWORD 1,1,1,1,1
+
+.code
+main PROC
+    INVOKE FindThrees, ADDR arr1, LENGTHOF arr1
+    call DumpRegs   ; EAX = 1
+
+    INVOKE FindThrees, ADDR arr2, LENGTHOF arr2
+    call DumpRegs   ; EAX = 0
+
+    INVOKE FindThrees, ADDR arr3, LENGTHOF arr3
+    call DumpRegs   ; EAX = 1
+
+    INVOKE FindThrees, ADDR arr4, LENGTHOF arr4
+    call DumpRegs   ; EAX = 0
+
+    exit
+main ENDP
+END main
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q5. [DifferentInputs Procedure]
+Write a procedure named DifferentInputs that returns EAX = 1 if the values of its three input
+parameters are all different; otherwise, return with EAX = 0. Use the PROC directive with a
+parameter list when declaring the procedure. Create a PROTO declaration for your procedure,
+and call it five times from a test program that passes different inputs.
+[해석]
+DifferentInputs라는 프로시저 작성 세 개 매개변수를 받아 모두 서로 다른 값이면 EAX = 1, 하나라도 같으면 EAX = 0 반환
+PROC 선언 시 매개변수 리스트 사용, PROTO 선언도 작성, 테스트 프로그램에서 5번 호출, 서로 다른 입력값 사용)
+
+------------------------------------------------------[Q5.code]-------------------------------------------------------------------------------------------------------
+
+DifferentInputs PROC val1:DWORD, val2:DWORD, val3:DWORD
+    push ebp
+    mov ebp, esp
+
+    mov eax, 1          ; 기본값: 모두 다름
+    cmp val1, val2
+    je not_different    ; val1 == val2
+    cmp val1, val3
+    je not_different    ; val1 == val3
+    cmp val2, val3
+    je not_different    ; val2 == val3
+    jmp done
+
+not_different:
+    mov eax, 0
+
+done:
+    pop ebp
+    ret 12              ; 세 매개변수 3*4=12바이트 정리
+DifferentInputs ENDP
+
+- test -
+INCLUDE Irvine32.inc
+.data
+    ; 테스트용 값
+valA DWORD 10, 20, 30, 10, 15
+valB DWORD 20, 25, 30, 10, 25
+valC DWORD 30, 30, 30, 10, 35
+
+.code
+main PROC
+    ; 테스트 1
+    INVOKE DifferentInputs, valA[0], valB[0], valC[0]
+    call DumpRegs         ; 결과 확인용 (EAX)
+
+    ; 테스트 2
+    INVOKE DifferentInputs, valA[1], valB[1], valC[1]
+    call DumpRegs
+
+    ; 테스트 3
+    INVOKE DifferentInputs, valA[2], valB[2], valC[2]
+    call DumpRegs
+
+    ; 테스트 4
+    INVOKE DifferentInputs, valA[3], valB[3], valC[3]
+    call DumpRegs
+
+    ; 테스트 5
+    INVOKE DifferentInputs, valA[4], valB[4], valC[4]
+    call DumpRegs
+
+    exit
+main ENDP
+END main
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q6. [Exchanging Integers]
+Create an array of randomly ordered integers. Using the Swap procedure from Section 8.4.6 as a
+tool, write a loop that exchanges each consecutive pair of integers in the array.
+[해석]
+무작위 순서의 정수 배열을 생성하고, Swap 프로시저를 활용하여, 배열 내 연속된 두 정수를 서로 교환하는 루프를 작성하라.
+
+------------------------------------------------------[Q6.code]-------------------------------------------------------------------------------------------------------
+
+.data
+arr DWORD 1, 2, 3, 4, 5, 6, 7, 8   ; 예제 배열, 무작위 정수
+size DWORD LENGTHOF arr
+
+.code
+main PROC
+    mov ecx, 0                ; 배열 인덱스 초기화
+    mov edx, size
+    dec edx                   ; 마지막 쌍까지 반복 (i < size-1)
+
+swap_loop:
+    lea eax, arr[ecx*4]       ; arr[i] 주소
+    lea ebx, arr[ecx*4+4]     ; arr[i+1] 주소
+    push ebx
+    push eax
+    call Swap                 ; arr[i] <-> arr[i+1]
+    add esp, 8                ; 스택 정리
+
+    add ecx, 2                ; 다음 연속 쌍
+    cmp ecx, edx
+    jl swap_loop
+
+    exit
+main ENDP
+END main
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q7. [Greatest Common Divisor]
+Write a recursive implementation of Euclid’s algorithm for finding the greatest common divisor
+(GCD) of two integers. Descriptions of this algorithm are available in algebra books and on the
+Web. Write a test program that calls your GCD procedure five times, using the following pairs of
+integers: (5,20), (24,18), (11,7), (432,226), (26,13). After each procedure call, display the GCD.
+[해석]
+두 정수의 최대공약수(GCD)를 구하기 위해 재귀적으로 동작하는 유클리드 알고리즘을 구현하시오.
+이 알고리즘에 대한 설명은 대수학 책이나 인터넷에서 확인할 수 있다. 작성한 GCD 프로시저를 테스트 프로그램에서 다섯 번 호출하시오.
+호출할 정수 쌍: (5,20), (24,18), (11,7), (432,226), (26,13)
+각 프로시저 호출 후에는 GCD 값을 화면에 출력하시오.
+
+------------------------------------------------------[Q7.code]-------------------------------------------------------------------------------------------------------
+
+- PROTO 선언 -
+GCD PROTO :DWORD, :DWORD
+
+GCD PROC a:DWORD, b:DWORD
+    push ebp
+    mov ebp, esp
+    push ebx        ; 보존
+    push esi        ; 보존
+
+    mov eax, b
+    cmp eax, 0
+    je done         ; b=0이면 GCD=a
+
+    ; a mod b 계산
+    mov eax, a
+    cdq             ; EDX:EAX 준비
+    idiv b          ; EAX = a / b, EDX = a mod b
+
+    ; 재귀 호출: GCD(b, a mod b)
+    push edx        ; a mod b
+    push b          ; b
+    call GCD
+    add esp, 8      ; 스택 정리
+
+done:
+    pop esi
+    pop ebx
+    pop ebp
+    ret 8
+GCD ENDP
+
+- test -
+INCLUDE Irvine32.inc
+
+.data
+pairs DWORD 5,20, 24,18, 11,7, 432,226, 26,13
+
+.code
+main PROC
+    mov esi, 0                  ; 인덱스 초기화
+    mov ecx, 5                  ; 5쌍 반복
+
+TestLoop:
+    mov eax, pairs[esi*4]       ; a
+    mov ebx, pairs[esi*4 + 4]   ; b
+    push ebx
+    push eax
+    call GCD
+    add esp, 8
+
+    ; EAX에 GCD 있음, 출력
+    call WriteDec
+    call Crlf
+
+    add esi, 2
+    loop TestLoop
+
+    exit
+main ENDP
+END main
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q8. [Counting Matching Elements]
+Write a procedure named CountMatches that receives points to two arrays of signed doublewords, and a third parameter that indicates the length of the two arrays. For each element xi
+in the first array, if the corresponding yiin the second array is equal, increment a count. At the end,
+return a count of the number of matching array elements in EAX. Write a test program that calls
+your procedure and passes pointers to two different pairs of arrays. Use the INVOKE statement
+to call your procedure and pass stack parameters. Create a PROTO declaration for CountMatches. 
+Save and restore any registers (other than EAX) changed by your procedure
+[해석]
+CountMatches라는 프로시저 작성
+입력 매개변수:
+  두 배열의 포인터 (signed DWORD 배열)
+  배열 길이 (DWORD)
+동일한 인덱스 요소 비교:
+  x[i] == y[i]이면 count 증가
+결과 반환:
+  EAX에 일치하는 요소 개수 반환
+테스트 프로그램 작성:
+  두 쌍의 서로 다른 배열로 호출
+  INVOKE 사용
+  EAX를 제외한 변경된 레지스터는 반드시 복원
+
+------------------------------------------------------[Q8.code]-------------------------------------------------------------------------------------------------------
+
+- PROTO선언 -
+CountMatches PROTO :PTR DWORD, :PTR DWORD, :DWORD
+
+- PROC 구현 -
+CountMatches PROC arr1:PTR DWORD, arr2:PTR DWORD, length:DWORD
+    push ebp
+    mov ebp, esp
+    push ebx
+    push esi
+    push edi
+
+    mov eax, 0          ; count 초기화
+    mov esi, arr1       ; 첫 번째 배열 주소
+    mov edi, arr2       ; 두 번째 배열 주소
+    mov ecx, length     ; 배열 길이
+
+    xor ebx, ebx        ; 인덱스
+
+LoopCompare:
+    cmp ecx, 0
+    je Done
+
+    mov edx, [esi + ebx*4]   ; arr1[i]
+    cmp edx, [edi + ebx*4]   ; arr2[i]
+    jne SkipIncrement
+    inc eax                  ; 일치 시 count 증가
+
+SkipIncrement:
+    inc ebx
+    dec ecx
+    jmp LoopCompare
+
+Done:
+    pop edi
+    pop esi
+    pop ebx
+    pop ebp
+    ret 12       ; 세 매개변수 스택 정리
+CountMatches ENDP
+
+- test -
+INCLUDE Irvine32.inc
+
+.data
+arrA1 DWORD 1,2,3,4,5
+arrA2 DWORD 1,0,3,0,5
+
+arrB1 DWORD 10,20,30
+arrB2 DWORD 10,25,30
+
+.code
+main PROC
+    ; 첫 번째 배열 쌍
+    INVOKE CountMatches, ADDR arrA1, ADDR arrA2, LENGTHOF arrA1
+    call WriteDec
+    call Crlf
+
+    ; 두 번째 배열 쌍
+    INVOKE CountMatches, ADDR arrB1, ADDR arrB2, LENGTHOF arrB1
+    call WriteDec
+    call Crlf
+
+    exit
+main ENDP
+END main
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q9. [Counting Nearly Matching Elements]
+Write a procedure named CountNearMatches that receives pointers to two arrays of signed doublewords, 
+a parameter that indicates the length of the two arrays, and a parameter that indicates the
+maximum allowed difference (called diff) between any two matching elements. For each element
+xiin the first array, if the difference between it and the corresponding ylin the second array is less
+than or equal to diff, increment a count. At the end, return a count of the number of nearly matching array 
+elements in EAX. Write a test program that calls CountNearMatches and passes pointers
+to two different pairs of arrays. Use the INVOKE statement to call your procedure and pass stack
+parameters. Create a PROTO declaration for CountMatches. Save and restore any registers (other
+than EAX) changed by your procedure.
+[해석]
+CountNearMatches 프로시저 작성
+
+입력 매개변수:
+  두 배열 포인터 (signed DWORD 배열)
+  배열 길이 (length)
+  허용 최대 차이 (diff)
+각 요소 비교:
+  abs(x[i] - y[i]) <= diff이면 count 증가
+결과 반환: 
+  EAX에 count 반환
+테스트 프로그램 작성:
+  두 쌍의 배열로 INVOKE 사용 호출
+  EAX를 제외한 변경된 레지스터는 반드시 복원
+
+------------------------------------------------------[Q9.code]-------------------------------------------------------------------------------------------------------
+
+- PROTO 선언 -
+CountNearMatches PROTO :PTR DWORD, :PTR DWORD, :DWORD, :DWORD
+
+- PROC 구현 -
+CountNearMatches PROC arr1:PTR DWORD, arr2:PTR DWORD, length:DWORD, diff:DWORD
+    push ebp
+    mov ebp, esp
+    push ebx
+    push esi
+    push edi
+
+    mov eax, 0          ; count 초기화
+    mov esi, arr1       ; 첫 번째 배열 주소
+    mov edi, arr2       ; 두 번째 배열 주소
+    mov ecx, length     ; 배열 길이
+
+    xor ebx, ebx        ; 인덱스
+
+LoopCompare:
+    cmp ecx, 0
+    je Done
+
+    mov edx, [esi + ebx*4]   ; arr1[i]
+    mov ebp, [edi + ebx*4]   ; arr2[i]
+
+    ; 차이 계산
+    mov eax, edx
+    sub eax, ebp
+    cmp eax, 0
+    jge SkipNeg
+    neg eax                   ; abs(x-y)
+
+SkipNeg:
+    cmp eax, diff
+    jg NoMatch
+    inc eax                    ; 일치 count
+    mov ebx, ebx               ; 인덱스 그대로
+
+NoMatch:
+    inc ebx
+    dec ecx
+    jmp LoopCompare
+
+Done:
+    ; EAX에 count 값 존재
+    pop edi
+    pop esi
+    pop ebx
+    pop ebp
+    ret 16       ; 네 매개변수 스택 정리
+CountNearMatches ENDP
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Q10.[Show Procedure Parameters]
+Write a procedure named ShowParams that displays the address and hexadecimal value of the
+32-bit parameters on the runtime stack of the procedure that called it. The parameters are to be
+displayed in order from the lowest address to the highest. Input to the procedure will be a single
+integer that indicates the number of parameters to display. For example, suppose the following
+statement in main calls MySample, passing three arguments:
+INVOKE MySample, 1234h, 5000h, 6543h
+Next, inside MySample, you should be able to call ShowParams, passing the number of parameters you want to display:
+MySample PROC first:DWORD, second:DWORD, third:DWORD
+paramCount = 3
+call ShowParams, paramCount
+ShowParams should display output in the following format:
+Stack parameters:
+---------------------------
+Address 0012FF80 = 00001234
+Address 0012FF84 = 00005000
+Address 0012FF88 = 00006543
+[해석]
+ShowParams라는 프로시저 작성
+호출한 함수의 스택에 있는 32비트 매개변수를 출력
+출력 순서: 주소가 낮은 순 → 높은 순
+입력 매개변수: 출력할 매개변수 개수 (DWORD)
+예제 : INVOKE MySample, 1234h, 5000h, 6543h
+출력 예시 :  Address 0012FF80 = 00001234
+             Address 0012FF84 = 00005000
+             Address 0012FF88 = 00006543
+
+
+------------------------------------------------------[Q10.code]-------------------------------------------------------------------------------------------------------
+
+INCLUDE Irvine32.inc
+
+.code
+
+ShowParams PROC paramCount:DWORD
+    push ebp
+    mov ebp, esp
+    push eax
+    push ecx
+    push edx
+
+    ; 헤더 출력
+    mov edx, OFFSET header
+    call WriteString
+
+    mov ecx, paramCount       ; 출력할 매개변수 개수
+    mov esi, 8                ; 첫 번째 매개변수 offset (EBP+8)
+
+ShowLoop:
+    mov eax, [ebp + esi]      ; 매개변수 값
+    lea edx, [ebp + esi]      ; 매개변수 주소
+
+    ; 주소 출력
+    call WriteHex
+    call WriteString, OFFSET equalStr
+
+    ; 값 출력
+    mov eax, [ebp + esi]
+    call WriteHex
+    call Crlf
+
+    add esi, 4                ; 다음 매개변수
+    loop ShowLoop
+
+    pop edx
+    pop ecx
+    pop eax
+    pop ebp
+    ret 4                     ; paramCount 스택 정리
+ShowParams ENDP
+
+.data
+header BYTE "Stack parameters:",0Dh,0Ah,"---------------------------",0Dh,0Ah,0
+equalStr BYTE " = ",0
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
