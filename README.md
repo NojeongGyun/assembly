@@ -44,4 +44,4 @@ AssemblyProgramming/ <br>
 ├  [9주차 정리](./1127/readme.md) | <br>
 ├ <br>
 ├── Week9_Project/ # 10주차 - 과제 <br>
-├  [9주차 정리](./1204/readme.md) | <br>
+├  [10주차 정리](./1204/readme.md) | <br>
