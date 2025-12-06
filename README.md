@@ -16,7 +16,7 @@
 
 ## 🗂 프로젝트 구조
 AssemblyProgramming/
-├── Week1_Intro/ # 1주차 기초
+├── Week1_Intro/ # 1주차 기초 <br>
 ├── Week2_BasicOps/ # 2주차 연산
 ├── Week3_ControlFlow/ # 3주차 조건문과 반복문
 ├── Week4_Functions/ # 4주차 함수
