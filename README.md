@@ -43,5 +43,5 @@ AssemblyProgramming/ <br>
 ├── Week9_Project/ # 9주차 - 어셈블리 문자열 처리 및 배열 접근 명령어 <br>
 ├  [9주차 정리](./1127/readme.md) | <br>
 ├ <br>
-├── Week9_Project/ # 10주차 - 과제 <br>
+├── Week10_Project/ # 10주차 - 과제 <br>
 ├  [10주차 정리](./1204/readme.md) | <br>
