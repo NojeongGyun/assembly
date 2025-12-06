@@ -16,9 +16,9 @@
 
 ## 🗂 프로젝트 구조
 AssemblyProgramming/ <br>
-├── Week1_Intro/ # 1주차 기초 <br>
+├── Week1_Intro/ # 1주차 - 어셈블리 언어 기초 및 진법 변환 정리 <br>
 ├ <br>
-├── Week2_BasicOps/ # 2주차 연산 <br>
+├── Week2_BasicOps/ # 2주차 -  <br>
 ├ <br>
 ├── Week3_ControlFlow/ # 3주차 조건문과 반복문 <br>
 ├ <br>
