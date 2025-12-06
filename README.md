@@ -16,7 +16,7 @@
 
 ## 🗂 프로젝트 구조
 AssemblyProgramming/ <br>
-├── Week1_Intro/ # 1주차 - 어셈블리 언어 기초 및 진법 변환 정리((./0911/readme.md) <br>
+├── Week1_Intro/ # 1주차 - 어셈블리 언어 기초 및 진법 변환 | [1주차 정리](./0911/readme.md) | <br>
 ├ <br>
 ├── Week2_BasicOps/ # 2주차 -  <br>
 ├ <br>
