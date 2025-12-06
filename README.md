@@ -16,20 +16,32 @@
 
 ## 🗂 프로젝트 구조
 AssemblyProgramming/ <br>
-├── Week1_Intro/ # 1주차 - 어셈블리 언어 기초 및 진법 변환 | [1주차 정리](./0911/readme.md) | <br>
+├── Week1_Intro/ # 1주차 - 어셈블리 언어 기초 및 진법 변환 | <br>
+├  [1주차 정리](./0911/readme.md) | <br>
 ├ <br>
-├── Week2_BasicOps/ # 2주차 -  <br>
+├── Week2_BasicOps/ # 2주차 - 컴퓨터 구조와 CPU 동작 원리 정리 <br>
+├  [2주차 정리](./0918/readme.md) | <br>
 ├ <br>
-├── Week3_ControlFlow/ # 3주차 조건문과 반복문 <br>
+├── Week3_ControlFlow/ # 3주차 - 어셈블리 언어 프로그램 구성 요소와 명령어 규칙 <br>
+├  [3주차 정리](./0925/readme.md) | <br>
 ├ <br>
-├── Week4_Functions/ # 4주차 함수 <br>
+├── Week4_Functions/ # 4주차 - 어셈블리 명령어와 연산자 규칙 <br>
+├  [4주차 정리](./1016/readme.md) | <br>
 ├ <br>
-├── Week5_Memory/ # 5주차 메모리와 레지스터 <br>
+├── Week5_Memory/ # 5주차 - 어셈블리 스택과 함수 호출 <br>
+├  [5주차 정리](./1030/readme.md) | <br>
 ├ <br>
-├── Week6_IO/ # 6주차 입출력 <br>
+├── Week6_IO/ # 6주차 - 어셈블리 논리 연산자와 조건 분기 <br>
+├  [6주차 정리](./1106/readme.md) | <br>
 ├ <br>
-├── Week7_Libraries/ # 7주차 외부 라이브러리 호출 <br>
+├── Week7_Libraries/ # 7주차 - 어셈블리 비트 연산 및 수치 연산 명령어 <br>
+├  [7주차 정리](./1113/readme.md) | <br>
 ├ <br>
-├── Week8_DLL/ # 8주차 DLL 생성 및 호출 <br>
+├── Week8_DLL/ # 8주차 - 어셈블리 함수 호출 및 스택 프레임 명령어  <br>
+├  [8주차 정리](./1120/readme.md) | <br>
 ├ <br>
-└── Week9_Project/ # 9주차 종합 실습 <br>
+├── Week9_Project/ # 9주차 - 어셈블리 문자열 처리 및 배열 접근 명령어 <br>
+├  [9주차 정리](./1127/readme.md) | <br>
+├ <br>
+├── Week9_Project/ # 10주차 - 과제 <br>
+├  [9주차 정리](./1204/readme.md) | <br>
